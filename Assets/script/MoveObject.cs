@@ -1,15 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEditor;
+
 
 public class MoveObject : MonoBehaviour
 {
-    #region
+    #region//進むスピード
+    //プレイヤーのHpを保管する変数
+    private int oldHp;
     //x方向に進むスピード(一般的)
     private float xMoveFloorSpeed = 3.0f;
     //x方向に進むスピード(氷)
     private float xMoveIceSpeed = 5.0f;
     #endregion
+
+    //プレイヤーアニメーション用変数
+    [SerializeField]
+    private Animator anime = null;
 
     #region//レイ関係
     //　レイを飛ばす場所
@@ -27,20 +37,83 @@ public class MoveObject : MonoBehaviour
     //private float takeDamageDistance = 3f;
     #endregion
 
-    #region
-    
-
+    #region//状況に応じて使用するフラグ関係
+    //移動
+    private bool moveFlag = false;
+    //落下中
+    private bool fallFlag = false;
+    //着地中
+    private bool landFlag = false;
+    //ゲームオーバー
+    private bool gameOverFlag = false;
     #endregion
+
+    //RigidBodyとボックスコライダーの定義
+    private Rigidbody2D rb;
+    private BoxCollider2D bc;
+
+    //スプリクト用
+    private TotalGM gm;
+
+    #region//効果音関係
+    private AudioSource audios = null;
+    [SerializeField]
+    private AudioClip runSE;//移動用
+    [SerializeField]
+    private AudioClip iceRunSE;//氷移動用
+    [SerializeField]
+    private AudioClip itemGetSE;//アイテムとった時
+    [SerializeField]
+    private AudioClip gameOverSE;//ゲームオーバーになった時
+    //効果音がなったら
+    private bool soundFlag = true;
+    #endregion
+
+    //コルーチン戻り値用
+    private Coroutine lineCast;
+
+    private void Awake()
+    {
+        audios = GetComponent<AudioSource>();
+    }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        gm = FindObjectOfType<TotalGM>();
+        rb = GetComponent<Rigidbody2D>();
+        bc = GetComponent<BoxCollider2D>();
+        this.anime = GetComponent<Animator>();
+
+        //hp初期化
+        oldHp = gm.PlayerHp;
+
+        //落ちた時に使う数値リセット
+        fallenDistance = 0f;
+        fallenPosition = transform.position.y;
+        fallFlag = false;
+
+        //ray投射開始
+        lineCast = StartCoroutine("StartLineCast");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if (gm.PlayerHp < oldHp)
+        {
+            if (gm.PlayerHp == 0)
+            {
+                gameOverFlag = true;
+            }
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
+        {
+
+        }
     }
 }
