@@ -8,7 +8,7 @@ using UnityEditor;
 
 public class MoveObject : MonoBehaviour
 {
-    #region//進むスピード
+    #region//プレイヤー関係
     //プレイヤーのHpを保管する変数
     private int oldHp;
     //x方向に進むスピード(一般的)
@@ -20,6 +20,10 @@ public class MoveObject : MonoBehaviour
     //プレイヤーアニメーション用変数
     [SerializeField]
     private Animator anime = null;
+
+    //氷の上に乗っているかどうか
+    private bool IceWalkFlag = false;
+
 
     #region//レイ関係
     //　レイを飛ばす場所
@@ -46,6 +50,8 @@ public class MoveObject : MonoBehaviour
     private bool landFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
+    //クリア
+    private bool clearFlag = false;
     #endregion
 
     //RigidBodyとボックスコライダーの定義
@@ -71,6 +77,20 @@ public class MoveObject : MonoBehaviour
 
     //コルーチン戻り値用
     private Coroutine lineCast;
+
+    public bool GameOverFlag
+    {
+        get { return this.gameOverFlag; }
+        set { this.gameOverFlag = value; }
+    }
+
+    public bool ClearFlag
+    {
+        get { return this.clearFlag; }
+        set { this.clearFlag = value; }
+    }
+
+    
 
     private void Awake()
     {
@@ -107,6 +127,7 @@ public class MoveObject : MonoBehaviour
                 gameOverFlag = true;
             }
         }
+
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -115,5 +136,41 @@ public class MoveObject : MonoBehaviour
         {
 
         }
+
+        if (other.gameObject.CompareTag("IceGorund"))
+        {
+
+        }
+
+        if (other.gameObject.CompareTag("GoalPoint"))
+        {
+
+        }
     }
+
+    //効果音を流す処理
+    public void PlaySE(AudioClip clip)
+    {
+        if (audios != null)
+        {
+            audios.PlayOneShot(clip);
+        }
+        else
+        {
+
+        }
+    }
+
+    public void WalkSE()
+    {
+        if(IceWalkFlag == true)
+        {
+            PlaySE(iceRunSE);
+        }
+        if(IceWalkFlag == false)
+        {
+            PlaySE(runSE);
+        }
+    }
+
 }
