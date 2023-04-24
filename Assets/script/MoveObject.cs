@@ -18,12 +18,11 @@ public class MoveObject : MonoBehaviour
     #endregion
 
     //プレイヤーアニメーション用変数
-    [SerializeField]
-    private Animator anime = null;
+    //[SerializeField]
+    //private Animator anime = null;
 
     //氷の上に乗っているかどうか
-    private bool IceWalkFlag = false;
-
+    private bool iceWalkFlag = false;
 
     #region//レイ関係
     //　レイを飛ばす場所
@@ -63,7 +62,7 @@ public class MoveObject : MonoBehaviour
 
     #region//効果音関係
     private AudioSource audios = null;
-    [SerializeField]
+    /*[SerializeField]
     private AudioClip runSE;//移動用
     [SerializeField]
     private AudioClip iceRunSE;//氷移動用
@@ -72,7 +71,7 @@ public class MoveObject : MonoBehaviour
     [SerializeField]
     private AudioClip gameOverSE;//ゲームオーバーになった時
     //効果音がなったら
-    private bool soundFlag = true;
+    private bool soundFlag = true;*/
     #endregion
 
     //コルーチン戻り値用
@@ -103,7 +102,7 @@ public class MoveObject : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
-        this.anime = GetComponent<Animator>();
+        //this.anime = GetComponent<Animator>();
 
         //hp初期化
         oldHp = gm.PlayerHp;
@@ -113,13 +112,20 @@ public class MoveObject : MonoBehaviour
         fallenPosition = transform.position.y;
         fallFlag = false;
 
-        //ray投射開始
-        lineCast = StartCoroutine("StartLineCast");
     }
 
     // Update is called once per frame
     void Update()
     {
+
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.forward * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.right * rayRange, Color.red, 1.0f);
+        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.back * rayRange, Color.red, 1.0f);
+
+        Debug.Log(fallFlag);
+
         if (gm.PlayerHp < oldHp)
         {
             if (gm.PlayerHp == 0)
@@ -128,19 +134,58 @@ public class MoveObject : MonoBehaviour
             }
         }
 
+        RaycastHit hit;
+        if (Physics.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange ,out hit,LayerMask.GetMask("Ground")))
+        {
+            Debug.Log("ari");
+            fallFlag = false;
+        }
+        else
+        {
+            //レイが届かないなら
+            if (!Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground")))
+            {
+                //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+                //その時に落下状態を判別するためfallFlagをtrueにする
+                //最初の落下地点を設定
+                fallenPosition = transform.position.y;
+                fallenDistance = 0;
+                //フラグを立てる
+                fallFlag = true;
+                iceWalkFlag = false;
+                //Debug.Log("地面から離れたよ");
+            }
+        }
+
+        if(fallFlag == false &&iceWalkFlag == false)
+        {
+            transform.Translate(transform.rotation.x * xMoveFloorSpeed, 0,0);
+        }
+        if(fallFlag == false && iceWalkFlag == true)
+        {
+            transform.Translate(transform.rotation.x * xMoveIceSpeed,0,0);
+        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
     {
+
         if (other.gameObject.CompareTag("Ground"))
         {
-
+            iceWalkFlag = false;
         }
 
-        if (other.gameObject.CompareTag("IceGorund"))
+        if (other.gameObject.CompareTag("IceGround"))
         {
-
+            iceWalkFlag = true;
         }
+
+
+        if (other.gameObject.CompareTag("IceGround")&&other.gameObject.CompareTag("Ground"))
+        {
+            iceWalkFlag = true;
+        }
+
 
         if (other.gameObject.CompareTag("GoalPoint"))
         {
@@ -161,16 +206,16 @@ public class MoveObject : MonoBehaviour
         }
     }
 
-    public void WalkSE()
+    /*public void WalkSE()
     {
-        if(IceWalkFlag == true)
+        if(iceWalkFlag == true)
         {
             PlaySE(iceRunSE);
         }
-        if(IceWalkFlag == false)
+        if(iceWalkFlag == false)
         {
             PlaySE(runSE);
         }
-    }
+    }*/
 
 }
