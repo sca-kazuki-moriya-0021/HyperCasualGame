@@ -31,6 +31,18 @@ public class MoveObject : MonoBehaviour
     //　レイを飛ばす距離
     [SerializeField]
     private float rayRange;
+    //レイを飛ばす角度計算
+    [SerializeField]
+    private float _Velocity_0;
+    [SerializeField]
+    private float degree;
+    [SerializeField]
+    private float angle_Split;
+    //各計算用変数
+    float _theta;
+    float PI = Mathf.PI;
+    //レイを飛ばす角度保存用
+    Vector2 rayVector2;
     //　落ちたy座標
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
@@ -59,6 +71,20 @@ public class MoveObject : MonoBehaviour
 
     //スプリクト用
     private TotalGM gm;
+
+    //ヒットしたオブジェクトの角度
+    private Quaternion hitObjectRotaion;
+
+    //どっちの方向に線をひいたか
+    private bool rightLine = true;
+
+    //タンジェント
+    private float tan;
+
+    //重力　使うかはわからん
+    [SerializeField]
+    private float _graviry = 9.80655f;
+    private Vector3 _moveVelocity;
 
     #region//効果音関係
     private AudioSource audios = null;
@@ -100,8 +126,8 @@ public class MoveObject : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
-        rb = GetComponent<Rigidbody2D>();
         bc = GetComponent<BoxCollider2D>();
+        rb = GetComponent<Rigidbody2D>();
         //this.anime = GetComponent<Animator>();
 
         //hp初期化
@@ -111,19 +137,11 @@ public class MoveObject : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag = false;
-
     }
 
     // Update is called once per frame
     void Update()
     {
-
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.down * rayRange, Color.red, 1.0f);
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.forward * rayRange, Color.red, 1.0f);
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.left * rayRange, Color.red, 1.0f);
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.right * rayRange, Color.red, 1.0f);
-        Debug.DrawLine(rayPosition.position, rayPosition.position + Vector3.back * rayRange, Color.red, 1.0f);
-
         Debug.Log(fallFlag);
 
         if (gm.PlayerHp < oldHp)
@@ -134,37 +152,61 @@ public class MoveObject : MonoBehaviour
             }
         }
 
-        RaycastHit hit;
-        if (Physics.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange ,out hit,LayerMask.GetMask("Ground")))
+        //レイの角度計算
+        RayAngleIns();
+
+        //レイが触れたか触れないかの関数
+        RayHit();
+
+    }
+
+    private void FixedUpdate()
+    {
+        //自由落下
+        /*moveVelocity.y += -_graviry *Time.fixedDeltaTime;
+
+        var p = transform.position;
+
+        p+= _moveVelocity *Time.fixedDeltaTime;
+        transform.position =p;*/
+
+        //坂を上る処理
+
+        tan = 0f;
+        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position,(Vector2)rayPosition.position + Vector2.up *rayRange);
+        if(fallFlag == false && hit2D.transform.gameObject.CompareTag("Ground"))
         {
-            Debug.Log("ari");
-            fallFlag = false;
+            
         }
-        else
+
+
+        //移動
+        //trueなら右
+        if (rightLine == true)
         {
-            //レイが届かないなら
-            if (!Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground")))
+            
+            if (fallFlag == false && iceWalkFlag == false)
             {
-                //地面から一回でもLineCastの線が離れたとき = 落下状態とする
-                //その時に落下状態を判別するためfallFlagをtrueにする
-                //最初の落下地点を設定
-                fallenPosition = transform.position.y;
-                fallenDistance = 0;
-                //フラグを立てる
-                fallFlag = true;
-                iceWalkFlag = false;
-                //Debug.Log("地面から離れたよ");
+                transform.Translate(transform.rotation.x * xMoveFloorSpeed, 0, 0);
+            }
+            if (fallFlag == false && iceWalkFlag == true)
+            {
+                transform.Translate(transform.rotation.x * xMoveIceSpeed, 0, 0);
+            }
+        }
+        else//falseなら左
+        {
+           
+            if (fallFlag == false && iceWalkFlag == false)
+            {
+                transform.Translate(transform.rotation.x * -xMoveFloorSpeed, 0, 0);
+            }
+            if (fallFlag == false && iceWalkFlag == true)
+            {
+                transform.Translate(transform.rotation.x * -xMoveIceSpeed, 0, 0);
             }
         }
 
-        if(fallFlag == false &&iceWalkFlag == false)
-        {
-            transform.Translate(transform.rotation.x * xMoveFloorSpeed, 0,0);
-        }
-        if(fallFlag == false && iceWalkFlag == true)
-        {
-            transform.Translate(transform.rotation.x * xMoveIceSpeed,0,0);
-        }
     }
 
     private void OnCollisionEnter2D(Collision2D other)
@@ -193,6 +235,65 @@ public class MoveObject : MonoBehaviour
         }
     }
 
+    //レイの角度計算用
+    public void RayAngleIns()
+    {
+        for (int i = 0; i <= (angle_Split - 1); i++)
+        {
+            //n-way弾の端から端までの角度
+            float AngleRange = PI * (degree / 180);
+
+            //弾インスタンスに渡す角度の計算
+            if (angle_Split > 1) _theta = (AngleRange / (angle_Split - 1)) * i + 0.5f * (PI - AngleRange);
+            else _theta = 0.5f * PI;
+        }
+
+        rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
+        rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
+
+    }
+
+    //着地した瞬間の処理
+    public void RayHit(){
+
+        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position + rayVector2 * rayRange,(Vector2)rayPosition.position);
+        if (hit2D && hit2D.transform.gameObject.CompareTag("Ground"))
+        {
+            hitObjectRotaion = hit2D.transform.rotation;
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+            transform.rotation = hitObjectRotaion;
+            //objectRotaion = hitObjectRotaion;
+            Debug.Log("ki");
+            fallFlag = false;
+        }
+        else if (hit2D && hit2D.transform.gameObject.CompareTag("IceGround"))
+        {
+            hitObjectRotaion = hit2D.transform.rotation;
+            transform.rotation = new Quaternion(0, 0, 0, 0);
+            transform.rotation = hitObjectRotaion;
+            //objectRotaion = hitObjectRotaion;
+            Debug.Log("ari");
+            fallFlag = false;
+            iceWalkFlag = true;
+        }
+        //レイが届かないなら
+        else
+        {
+            //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+            //その時に落下状態を判別するためfallFlagをtrueにする
+            //最初の落下地点を設定
+            fallenPosition = transform.position.y;
+            fallenDistance = 0;
+            hitObjectRotaion = default;
+            //フラグを立てる
+            fallFlag = true;
+            iceWalkFlag = false;
+            Debug.Log("地面から離れたよ");
+
+        }
+    }
+
+   
     //効果音を流す処理
     public void PlaySE(AudioClip clip)
     {
