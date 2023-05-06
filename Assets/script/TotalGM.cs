@@ -16,6 +16,12 @@ public class TotalGM : MonoBehaviour
         get { return this.playerHp; }
         set { this.playerHp = value; }
     }
+
+    //ƒVƒ“ƒOƒ‹ƒgƒ“
+    private void Awake()
+    {
+        DontDestroyOnLoad(this.gameObject);
+    }
     // Start is called before the first frame update
     void Start()
     {

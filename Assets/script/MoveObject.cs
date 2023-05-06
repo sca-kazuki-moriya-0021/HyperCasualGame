@@ -173,7 +173,7 @@ public class MoveObject : MonoBehaviour
         //ç‚Çè„ÇÈèàóù
 
         tan = 0f;
-        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position,(Vector2)rayPosition.position + Vector2.up *rayRange);
+        RaycastHit2D hit2D = Physics2D.Raycast((Vector2)rayPosition.position,(Vector2)rayPosition.position + Vector2.up *rayRange);
         if(fallFlag == false && hit2D.transform.gameObject.CompareTag("Ground"))
         {
             
@@ -222,17 +222,23 @@ public class MoveObject : MonoBehaviour
             iceWalkFlag = true;
         }
 
-
         if (other.gameObject.CompareTag("IceGround")&&other.gameObject.CompareTag("Ground"))
         {
             iceWalkFlag = true;
         }
 
-
         if (other.gameObject.CompareTag("GoalPoint"))
         {
-
+            SceneManager.LoadScene("Goal");
         }
+
+        //âä&&êÖÇΩÇ‹ÇË&&ñÿçﬁÇ…ìñÇΩÇÈ
+        /*if (other.gameObject.CompareTag("FlameFloor")||
+            other.gameObject.CompareTag("PuddleFloor")||
+            other.gameObject.CompareTag("Obstacle")     )
+        {
+            
+        }*/
     }
 
     //ÉåÉCÇÃäpìxåvéZóp
@@ -250,13 +256,15 @@ public class MoveObject : MonoBehaviour
 
         rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
         rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
-
     }
 
     //íÖínÇµÇΩèuä‘ÇÃèàóù
-    public void RayHit(){
+    public void RayHit()
+    {
 
-        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position + rayVector2 * rayRange,(Vector2)rayPosition.position);
+        RaycastHit2D hit2D = Physics2D.Raycast((Vector2)rayPosition.position,((Vector2)rayPosition.position + rayVector2) * rayRange);
+        Debug.DrawRay((Vector2)rayPosition.position, ((Vector2)rayPosition.position + rayVector2) * rayRange, Color.red);
+
         if (hit2D && hit2D.transform.gameObject.CompareTag("Ground"))
         {
             hitObjectRotaion = hit2D.transform.rotation;

@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 391921040}
   - component: {fileID: 391921039}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GoalPoint
   m_TagString: GoalPoint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -174,7 +174,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 391921038}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.04, y: -1.19, z: 0}
+  m_LocalPosition: {x: 3.59, y: 2.11, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -523,8 +523,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayPosition: {fileID: 1442091177}
-  rayRange: 2
-  _Velocity_0: 1
+  rayRange: 5
+  _Velocity_0: 10
   degree: 360
   angle_Split: 360
   _graviry: 9.80655

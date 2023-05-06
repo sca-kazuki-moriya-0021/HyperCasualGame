@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class TitleNexrStege : MonoBehaviour
+public class TitleNexrStage : MonoBehaviour
 {
     // Start is called before the first frame update
     void Start()
@@ -17,9 +17,9 @@ public class TitleNexrStege : MonoBehaviour
         
     }
 
-    public void NextStege()
+    public void NextStage()
     {
-       SceneManager.LoadScene("Stege");
+       SceneManager.LoadScene("Stage");
     }
     
 }
