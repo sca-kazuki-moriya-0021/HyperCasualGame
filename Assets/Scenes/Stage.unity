@@ -523,7 +523,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayPosition: {fileID: 1442091177}
-  rayRange: 5
+  rayRange: 2
   _Velocity_0: 10
   degree: 360
   angle_Split: 360

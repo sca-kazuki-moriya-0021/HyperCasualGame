@@ -8,6 +8,9 @@ TagManager:
   - MoveObject
   - IceGround
   - GoalPoint
+  - FlameFloor
+  - PuddleFloor
+  - Obstacle
   layers:
   - Default
   - TransparentFX

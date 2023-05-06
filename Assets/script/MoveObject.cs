@@ -255,6 +255,7 @@ public class MoveObject : MonoBehaviour
             if (angle_Split > 1) _theta = (AngleRange / (angle_Split - 1)) * i + 0.5f * (PI - AngleRange);
             else _theta = 0.5f * PI;
 
+            //Žæ“¾‚µ‚½Šp“x‚ð•Û‘¶
             rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
             rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
 
