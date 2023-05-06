@@ -103,6 +103,13 @@ public class MoveObject : MonoBehaviour
     //コルーチン戻り値用
     private Coroutine lineCast;
 
+    SelectAngle selectAngle;
+
+    enum SelectAngle
+    {
+        
+    }
+
     public bool GameOverFlag
     {
         get { return this.gameOverFlag; }
@@ -114,8 +121,6 @@ public class MoveObject : MonoBehaviour
         get { return this.clearFlag; }
         set { this.clearFlag = value; }
     }
-
-    
 
     private void Awake()
     {
@@ -157,7 +162,6 @@ public class MoveObject : MonoBehaviour
 
         //レイが触れたか触れないかの関数
         RayHit();
-
     }
 
     private void FixedUpdate()
@@ -246,10 +250,10 @@ public class MoveObject : MonoBehaviour
     {
         for (int i = 0; i <= (angle_Split - 1); i++)
         {
-            //n-way弾の端から端までの角度
+            //レイの端から端までの角度
             float AngleRange = PI * (degree / 180);
 
-            //弾インスタンスに渡す角度の計算
+            //レイに渡す角度の計算
             if (angle_Split > 1) _theta = (AngleRange / (angle_Split - 1)) * i + 0.5f * (PI - AngleRange);
             else _theta = 0.5f * PI;
         }
@@ -261,7 +265,8 @@ public class MoveObject : MonoBehaviour
     //着地した瞬間の処理
     public void RayHit()
     {
-
+       
+        //レイを出す
         RaycastHit2D hit2D = Physics2D.Raycast((Vector2)rayPosition.position,((Vector2)rayPosition.position + rayVector2) * rayRange);
         Debug.DrawRay((Vector2)rayPosition.position, ((Vector2)rayPosition.position + rayVector2) * rayRange, Color.red);
 
@@ -302,6 +307,7 @@ public class MoveObject : MonoBehaviour
     }
 
    
+
     //効果音を流す処理
     public void PlaySE(AudioClip clip)
     {
