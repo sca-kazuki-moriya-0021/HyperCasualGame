@@ -167,6 +167,14 @@ public class MoveObject : MonoBehaviour
         //レイの角度計算
         RayAngleIns();
 
+        //debug
+        /*RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
+        Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
+        if (hit2D.transform.gameObject.CompareTag("IceGround") || hit2D.transform.gameObject.CompareTag("Ground"))
+        {
+            Debug.Log("OK");
+        }*/
+
 
         //自由落下
         /*moveVelocity.y += -_graviry *Time.fixedDeltaTime;
@@ -261,20 +269,14 @@ public class MoveObject : MonoBehaviour
             rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
             rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
         }*/
+        
+        var downObject = GetDownObject();
 
-        Debug.Log("test");
-        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position, Vector2.down * rayRange, LayerMask.GetMask("Ground"));
-        if (!hit2D)
-        {
-            return;
-        }
         if (fallFlag == true)
         {
             //レイを出す
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
-            
-
-            if (hit2D && hit2D.transform.gameObject.CompareTag("Ground"))
+            if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
             {
                 /*hitObjectRotaion = hit2D.transform.rotation;
                 transform.rotation = new Quaternion(0, 0, 0, 0);
@@ -283,7 +285,7 @@ public class MoveObject : MonoBehaviour
                 Debug.Log("ki");
                 fallFlag = false;
             }
-            else if (hit2D && hit2D.transform.gameObject.CompareTag("IceGround"))
+            else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
                 /*hitObjectRotaion = hit2D.transform.rotation;
                 transform.rotation = new Quaternion(0, 0, 0, 0);
@@ -295,14 +297,12 @@ public class MoveObject : MonoBehaviour
             }
 
         }
-        //レイが届かないなら
         else
         {
-
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.blue);
-            //Debug.Log(hit2D.transform.gameObject.tag);
 
-            if (!hit2D.transform.gameObject.CompareTag("Ground") && !hit2D.transform.gameObject.CompareTag("IceGround"))
+            //地面から空中にいった時(fallFlag == false　から　true　になる時)
+            if (!IsOnGrounds(downObject))
             {
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
@@ -318,6 +318,35 @@ public class MoveObject : MonoBehaviour
 
         }
 
+        //レイが何にも当たっていないときは強制リターン
+        if (!downObject)
+        {
+            return ;
+        }
+    }
+
+    private RaycastHit2D GetDownObject()
+    {
+        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
+
+        return hit2D;
+    }
+
+    private bool IsOnGrounds(RaycastHit2D h)
+    {
+        if (!h)
+        {
+            return false;
+        }
+        if (h.transform.gameObject.CompareTag("Ground"))
+        {
+            return true;
+        }
+        if (h.transform.gameObject.CompareTag("IceGround"))
+        {
+            return true;
+        }
+        return false;
     }
 
     //効果音を流す処理

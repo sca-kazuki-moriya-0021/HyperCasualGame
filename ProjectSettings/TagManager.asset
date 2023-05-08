@@ -4,13 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Ground
   - MoveObject
   - IceGround
   - GoalPoint
   - FlameFloor
   - PuddleFloor
   - Obstacle
+  - Ground
   layers:
   - Default
   - TransparentFX
