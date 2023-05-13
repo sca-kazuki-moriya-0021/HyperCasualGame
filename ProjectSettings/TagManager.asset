@@ -11,6 +11,7 @@ TagManager:
   - PuddleFloor
   - Obstacle
   - Ground
+  - OutSide
   layers:
   - Default
   - TransparentFX

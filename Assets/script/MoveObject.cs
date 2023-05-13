@@ -9,8 +9,6 @@ using UnityEditor;
 public class MoveObject : MonoBehaviour
 {
     #region//プレイヤー関係
-    //プレイヤーのHpを保管する変数
-    private int oldHp;
     //x方向に進むスピード(一般的)
     private float xMoveFloorSpeed = 3.0f;
     //x方向に進むスピード(氷)
@@ -133,10 +131,7 @@ public class MoveObject : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         bc = GetComponent<BoxCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        //this.anime = GetComponent<Animator>();
-
-        //hp初期化
-        oldHp = gm.PlayerHp;
+        //this.anime = GetComponent<Animator>();;
 
         //落ちた時に使う数値リセット
         fallenDistance = 0f;
@@ -154,14 +149,6 @@ public class MoveObject : MonoBehaviour
     private void FixedUpdate()
     {
         Debug.Log(fallFlag);
-
-        if (gm.PlayerHp < oldHp)
-        {
-            if (gm.PlayerHp == 0)
-            {
-                gameOverFlag = true;
-            }
-        }
 
 
         //レイの角度計算
@@ -199,11 +186,11 @@ public class MoveObject : MonoBehaviour
 
             if (fallFlag == false && iceWalkFlag == false)
             {
-                transform.Translate(transform.rotation.x * xMoveFloorSpeed, 0, 0);
+                transform.Translate(xMoveFloorSpeed*Time.fixedDeltaTime, 0, 0);
             }
             if (fallFlag == false && iceWalkFlag == true)
             {
-                transform.Translate(transform.rotation.x * xMoveIceSpeed, 0, 0);
+                transform.Translate(xMoveIceSpeed*Time.fixedDeltaTime, 0, 0);
             }
         }
         else//falseなら左
@@ -211,11 +198,11 @@ public class MoveObject : MonoBehaviour
 
             if (fallFlag == false && iceWalkFlag == false)
             {
-                transform.Translate(transform.rotation.x * -xMoveFloorSpeed, 0, 0);
+                transform.Translate(-xMoveFloorSpeed, 0, 0);
             }
             if (fallFlag == false && iceWalkFlag == true)
             {
-                transform.Translate(transform.rotation.x * -xMoveIceSpeed, 0, 0);
+                transform.Translate(-xMoveIceSpeed, 0, 0);
             }
         }
 
@@ -242,6 +229,14 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("GoalPoint"))
         {
             SceneManager.LoadScene("Goal");
+        }
+
+        //障害物に当たったら
+        if (other.gameObject.CompareTag("Obstacle") || other.gameObject.CompareTag("OutSide"))
+        {
+            GameOverFlag = true;
+            //シーン呼び出し
+
         }
 
         //炎&&水たまり&&木材に当たる
