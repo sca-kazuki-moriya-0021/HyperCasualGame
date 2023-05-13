@@ -12,6 +12,8 @@ TagManager:
   - Obstacle
   - Ground
   - OutSide
+  - Flameline
+  - FlameGround
   layers:
   - Default
   - TransparentFX

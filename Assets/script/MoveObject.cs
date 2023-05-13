@@ -74,7 +74,7 @@ public class MoveObject : MonoBehaviour
     private Quaternion hitObjectRotaion;
 
     //どっちの方向に線をひいたか
-    private bool rightLine = true;
+    private bool rightLine = false;
 
     //タンジェント
     private float tan;
@@ -150,35 +150,24 @@ public class MoveObject : MonoBehaviour
     {
         Debug.Log(fallFlag);
 
-
         //レイの角度計算
         RayAngleIns();
 
-        //debug
-        /*RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
-        Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
-        if (hit2D.transform.gameObject.CompareTag("IceGround") || hit2D.transform.gameObject.CompareTag("Ground"))
-        {
-            Debug.Log("OK");
-        }*/
-
+        //坂を上る処理
+        SlopeUp();
 
         //自由落下
-        /*moveVelocity.y += -_graviry *Time.fixedDeltaTime;
+        { 
+            /*moveVelocity.y += -_graviry *Time.fixedDeltaTime;
 
-        var p = transform.position;
+            var p = transform.position;
 
-        p+= _moveVelocity *Time.fixedDeltaTime;
-        transform.position =p;*/
+            p+= _moveVelocity *Time.fixedDeltaTime;
+            transform.position =p;*/
+        }
 
         //坂を上る処理
 
-        /*tan = 0f;
-        RaycastHit2D hit2D = Physics2D.Raycast((Vector2)rayPosition.position, Vector2.up *rayRange);
-        if(fallFlag == false && hit2D.transform.gameObject.CompareTag("Ground"))
-        {
-            
-        }*/
         //移動
         //trueなら右
         if (rightLine == true)
@@ -196,74 +185,36 @@ public class MoveObject : MonoBehaviour
         else//falseなら左
         {
 
-            if (fallFlag == false && iceWalkFlag == false)
+            if (iceWalkFlag == false)
             {
-                transform.Translate(-xMoveFloorSpeed, 0, 0);
+                transform.Translate(-xMoveFloorSpeed * Time.fixedDeltaTime, 0, 0);
             }
-            if (fallFlag == false && iceWalkFlag == true)
+            if (iceWalkFlag == true)
             {
-                transform.Translate(-xMoveIceSpeed, 0, 0);
+                transform.Translate(-xMoveIceSpeed * Time.fixedDeltaTime, 0, 0);
             }
         }
 
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            iceWalkFlag = false;
-        }
-
-        if (other.gameObject.CompareTag("IceGround"))
-        {
-            iceWalkFlag = true;
-        }
-
-        if (other.gameObject.CompareTag("IceGround")&&other.gameObject.CompareTag("Ground"))
-        {
-            iceWalkFlag = true;
-        }
-
-        if (other.gameObject.CompareTag("GoalPoint"))
-        {
-            SceneManager.LoadScene("Goal");
-        }
-
-        //障害物に当たったら
-        if (other.gameObject.CompareTag("Obstacle") || other.gameObject.CompareTag("OutSide"))
-        {
-            GameOverFlag = true;
-            //シーン呼び出し
-
-        }
-
-        //炎&&水たまり&&木材に当たる
-        /*if (other.gameObject.CompareTag("FlameFloor")||
-            other.gameObject.CompareTag("PuddleFloor")||
-            other.gameObject.CompareTag("Obstacle")     )
-        {
-            
-        }*/
-    }
-
-    //レイの角度計算用
+    //下方向レイの角度計算用
     public void RayAngleIns()
     {
+        { 
         /*for (int i = 0; i <= (angle_Split - 1); i++)
-        {
-            //レイの端から端までの角度
-            float AngleRange = PI * (degree / 180);
+            {
+                //レイの端から端までの角度
+                float AngleRange = PI * (degree / 180);
 
-            //レイに渡す角度の計算
-            if (angle_Split > 1) _theta = (AngleRange / (angle_Split - 1)) * i + 0.5f * (PI - AngleRange);
-            else _theta = 0.5f * PI;
+                //レイに渡す角度の計算
+                if (angle_Split > 1) _theta = (AngleRange / (angle_Split - 1)) * i + 0.5f * (PI - AngleRange);
+                else _theta = 0.5f * PI;
 
-            //取得した角度を保存
-            rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
-            rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
-        }*/
+                //取得した角度を保存
+                rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
+                rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
+            }*/
+        }
         
         var downObject = GetDownObject();
 
@@ -273,24 +224,27 @@ public class MoveObject : MonoBehaviour
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
             {
+                { 
                 /*hitObjectRotaion = hit2D.transform.rotation;
-                transform.rotation = new Quaternion(0, 0, 0, 0);
-                transform.rotation = hitObjectRotaion;
-                objectRotaion = hitObjectRotaion;*/
+                    transform.rotation = new Quaternion(0, 0, 0, 0);
+                    transform.rotation = hitObjectRotaion;
+                    objectRotaion = hitObjectRotaion;*/
+                }
                 Debug.Log("ki");
                 fallFlag = false;
             }
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
-                /*hitObjectRotaion = hit2D.transform.rotation;
-                transform.rotation = new Quaternion(0, 0, 0, 0);
-                transform.rotation = hitObjectRotaion;
-                objectRotaion = hitObjectRotaion;*/
+                { 
+                    /*hitObjectRotaion = hit2D.transform.rotation;
+                    transform.rotation = new Quaternion(0, 0, 0, 0);
+                    transform.rotation = hitObjectRotaion;
+                    objectRotaion = hitObjectRotaion;*/
+                }
                 Debug.Log("ari");
                 fallFlag = false;
                 iceWalkFlag = true;
             }
-
         }
         else
         {
@@ -312,21 +266,20 @@ public class MoveObject : MonoBehaviour
             }
 
         }
-
         //レイが何にも当たっていないときは強制リターン
         if (!downObject)
         {
-            return ;
+            return;
         }
     }
-
+    //下にオブジェクトがあったときhit2Dを返す
     private RaycastHit2D GetDownObject()
     {
         RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
 
         return hit2D;
     }
-
+    //下方向にヒットした時の場合分け
     private bool IsOnGrounds(RaycastHit2D h)
     {
         if (!h)
@@ -342,6 +295,112 @@ public class MoveObject : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    //坂を上るときに使う関数
+    private float SlopeUp()
+    {
+      if(fallFlag == false)
+      {
+            tan = 0f;
+            var forwardObject = GetForwardObject();
+            var backObject = GetBackObject();
+
+            if (forwardObject && forwardObject.transform.gameObject.CompareTag("Ground"))
+            {
+                return_tan();
+            }
+            else if (forwardObject && forwardObject.transform.gameObject.CompareTag("IceGround"))
+            {
+                return_tan();
+            }
+
+            if (backObject && backObject.transform.gameObject.CompareTag("Ground"))
+            {
+                return_backtan();
+            }
+            else if (backObject && backObject.transform.gameObject.CompareTag("IceGround"))
+            {
+                return_backtan();
+            }
+
+            if (forwardObject.normal.x == 1f || backObject.normal.x == -1f)
+            {
+                tan = 0f;
+            }
+        }
+        return tan;
+    }
+    //前方向にレイを飛ばす
+    private RaycastHit2D GetForwardObject()
+    {
+        Debug.DrawRay((Vector2)rayPosition.position, Vector2.right * rayRange, Color.green);
+        RaycastHit2D upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
+
+        return upHit2D;
+    }
+    //後ろ方向にレイを飛ばす
+    private RaycastHit2D GetBackObject()
+    {
+        Debug.DrawRay((Vector2)rayPosition.position, -Vector2.right * rayRange, Color.green);
+        RaycastHit2D backHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + - Vector2.right * rayRange, LayerMask.GetMask("Ground"));
+
+        return backHit2D;
+    }
+
+    private void return_tan()
+    {
+        if (GetForwardObject().normal.x > 0f)
+        {
+            tan = Mathf.PI * 0.5f + Mathf.Atan(GetForwardObject().normal.y / Mathf.Abs(GetForwardObject().normal.x));
+        }
+        tan = Mathf.Tan(tan);
+    }
+
+    private void return_backtan()
+    {
+        if (GetBackObject().normal.x > 0f)
+        {
+            tan = Mathf.PI * 0.5f - Mathf.Atan(GetBackObject().normal.y / Mathf.Abs(GetBackObject().normal.x));
+        }
+        tan = Mathf.Tan(tan);
+    }
+
+    //何かしらに当たった時
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+
+        if (other.gameObject.CompareTag("Ground"))
+        {
+            iceWalkFlag = false;
+        }
+
+        if (other.gameObject.CompareTag("IceGround"))
+        {
+            iceWalkFlag = true;
+        }
+
+        if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("Ground"))
+        {
+            iceWalkFlag = true;
+        }
+
+        if (other.gameObject.CompareTag("GoalPoint"))
+        {
+            SceneManager.LoadScene("Goal");
+        }
+
+        //障害物に当たったら
+        if (other.gameObject.CompareTag("Obstacle")
+            || other.gameObject.CompareTag("PuddleFloor")
+            || other.gameObject.CompareTag("FlameFloor")
+            || other.gameObject.CompareTag("FlameGround"))
+        {
+            GameOverFlag = true;
+            //シーン呼び出し
+
+        }
+
     }
 
     //効果音を流す処理

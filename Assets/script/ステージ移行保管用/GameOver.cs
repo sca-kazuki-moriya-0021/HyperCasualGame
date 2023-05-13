@@ -2,10 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObstacleCon : MonoBehaviour
+public class GameOver : MonoBehaviour
 {
-    //è·äQï®
-
     // Start is called before the first frame update
     void Start()
     {
@@ -15,17 +13,6 @@ public class ObstacleCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-       
+        
     }
-
-
-    private void OnCollisionEnter2D(Collision2D other)
-    {
-        if (other.gameObject.CompareTag("FlameGround"))
-        {
-            Destroy(gameObject);
-        }
-
-    }
-
 }
