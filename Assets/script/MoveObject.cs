@@ -15,6 +15,9 @@ public class MoveObject : MonoBehaviour
     private float xMoveIceSpeed = 5.0f;
     #endregion
 
+    private float time = 5f;
+    private float countTime;
+
     //プレイヤーアニメーション用変数
     //[SerializeField]
     //private Animator anime = null;
@@ -74,7 +77,7 @@ public class MoveObject : MonoBehaviour
     private Quaternion hitObjectRotaion;
 
     //どっちの方向に線をひいたか
-    private bool rightLine = false;
+    private bool rightLine = true;
 
     //タンジェント
     private float tan;
@@ -148,6 +151,7 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
+        var oldtrans = transform.position;
         Debug.Log(fallFlag);
 
         //レイの角度計算
@@ -166,18 +170,33 @@ public class MoveObject : MonoBehaviour
             transform.position =p;*/
         }
 
-        //坂を上る処理
+        //どちらいくかの判定
+        if(oldtrans == transform.position)
+        {
+            countTime++;
+            if(countTime >= time && rightLine == true)
+            {
+               rightLine = false;
+                countTime = 0;
+            }
+            if(countTime >= time && rightLine == false)
+            {
+                rightLine = true;
+                countTime = 0;
+            }
+        }
 
         //移動
         //trueなら右
+        
         if (rightLine == true)
         {
 
-            if (fallFlag == false && iceWalkFlag == false)
+            if (iceWalkFlag == false)
             {
                 transform.Translate(xMoveFloorSpeed*Time.fixedDeltaTime, 0, 0);
             }
-            if (fallFlag == false && iceWalkFlag == true)
+            if (iceWalkFlag == true)
             {
                 transform.Translate(xMoveIceSpeed*Time.fixedDeltaTime, 0, 0);
             }
@@ -194,7 +213,7 @@ public class MoveObject : MonoBehaviour
                 transform.Translate(-xMoveIceSpeed * Time.fixedDeltaTime, 0, 0);
             }
         }
-
+       
     }
 
     //下方向レイの角度計算用
@@ -403,6 +422,11 @@ public class MoveObject : MonoBehaviour
 
     }
 
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log("Collision Stay: " + collision.gameObject.name);
+    }
+
     //効果音を流す処理
     public void PlaySE(AudioClip clip)
     {
@@ -428,4 +452,5 @@ public class MoveObject : MonoBehaviour
         }
     }*/
 
+ 
 }

@@ -72,13 +72,16 @@ public class LineDraw : MonoBehaviour
         lineRenderer.material = lineMaterial;
         //マテリアルの色を設定
         lineRenderer.material.color = lineColor;
-        Debug.Log("test");
         //始点の太さを設定
         lineRenderer.startWidth = lineWidth;
         //終点の太さを設定
         lineRenderer.endWidth = lineWidth;
         //レイヤー指定
         lineRenderer.renderingLayerMask = 2;
+        //レイヤーをGroundにする
+        lineObj.layer = 6;
+        //タグ変更
+        lineObj.tag = "Ground";
     }
 
     void _addPositionDataToLineRenderer()
