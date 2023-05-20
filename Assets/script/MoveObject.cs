@@ -15,7 +15,7 @@ public class MoveObject : MonoBehaviour
     private float xMoveIceSpeed = 5.0f;
     #endregion
 
-    private float time = 0.5f;
+    private float time = 400f;
     private float countTime;
 
     //プレイヤーアニメーション用変数
@@ -153,11 +153,7 @@ public class MoveObject : MonoBehaviour
     {
         var oldtrans = transform.position;
         Debug.Log(oldtrans);
-        Vector3 pos = transform.position;
-        Vector3 pos2 = transform.position;
-        pos.x = pos.x +0.1f;
-        pos2.x = pos.x - 0.1f;
-        
+     
         Debug.Log(fallFlag);
 
         //レイの角度計算
@@ -176,28 +172,10 @@ public class MoveObject : MonoBehaviour
             transform.position =p;*/
         }
 
-        //どちらいくかの判定
-        if(oldtrans == transform.position)
-        {
-            countTime++;
-            if(countTime >= time && rightLine == true)
-            {
-               rightLine = false;
-                countTime = 0;
-            }
-            if(countTime >= time && rightLine == false)
-            {
-                rightLine = true;
-                countTime = 0;
-            }
-        }
-
         //移動
         //trueなら右
-        
         if (rightLine == true)
         {
-
             if (iceWalkFlag == false)
             {
                 transform.Translate(xMoveFloorSpeed*Time.fixedDeltaTime, 0, 0);
@@ -207,9 +185,8 @@ public class MoveObject : MonoBehaviour
                 transform.Translate(xMoveIceSpeed*Time.fixedDeltaTime, 0, 0);
             }
         }
-        else//falseなら左
+        if(rightLine == false)//falseなら左
         {
-
             if (iceWalkFlag == false)
             {
                 transform.Translate(-xMoveFloorSpeed * Time.fixedDeltaTime, 0, 0);
@@ -219,7 +196,24 @@ public class MoveObject : MonoBehaviour
                 transform.Translate(-xMoveIceSpeed * Time.fixedDeltaTime, 0, 0);
             }
         }
-       
+
+        //どちらにいくかの判定
+        if (oldtrans.x.ToString("N2") == transform.position.x.ToString("N2"))
+        {
+            Debug.Log("aik");
+            countTime++;
+            if (countTime >= time && rightLine == true)
+            {
+                rightLine = false;
+                countTime = 0;
+            }
+            if (countTime >= time && rightLine == false)
+            {
+                rightLine = true;
+                countTime = 0;
+            }
+        }
+
     }
 
     //下方向レイの角度計算用
@@ -353,7 +347,7 @@ public class MoveObject : MonoBehaviour
             {
                 tan = 0f;
             }
-        }
+      }
         return tan;
     }
     //前方向にレイを飛ばす

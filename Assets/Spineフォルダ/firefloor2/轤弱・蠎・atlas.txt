@@ -1,0 +1,15 @@
+炎の床.png
+size:657,993
+filter:Linear,Linear
+pma:true
+1
+bounds:468,82,909,187
+offsets:2,1,912,190
+rotate:90
+2
+bounds:263,82,909,203
+rotate:90
+3
+bounds:2,2,989,259
+offsets:1,1,991,261
+rotate:90
