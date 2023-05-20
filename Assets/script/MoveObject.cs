@@ -15,7 +15,7 @@ public class MoveObject : MonoBehaviour
     private float xMoveIceSpeed = 5.0f;
     #endregion
 
-    private float time = 5f;
+    private float time = 0.5f;
     private float countTime;
 
     //プレイヤーアニメーション用変数
@@ -152,6 +152,12 @@ public class MoveObject : MonoBehaviour
     private void FixedUpdate()
     {
         var oldtrans = transform.position;
+        Debug.Log(oldtrans);
+        Vector3 pos = transform.position;
+        Vector3 pos2 = transform.position;
+        pos.x = pos.x +0.1f;
+        pos2.x = pos.x - 0.1f;
+        
         Debug.Log(fallFlag);
 
         //レイの角度計算
