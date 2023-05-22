@@ -10,9 +10,11 @@ public class MoveObject : MonoBehaviour
 {
     #region//プレイヤー関係
     //x方向に進むスピード(一般的)
-    private float xMoveFloorSpeed = 3.0f;
+    private float xMoveFloorSpeed = 6.0f;
     //x方向に進むスピード(氷)
-    private float xMoveIceSpeed = 5.0f;
+    private float xMoveIceSpeed = 7.0f;
+    //デフォルトの角度
+    private Quaternion defeltRotation;
     #endregion
 
     private float time = 400f;
@@ -76,11 +78,14 @@ public class MoveObject : MonoBehaviour
     //ヒットしたオブジェクトの角度
     private Quaternion hitObjectRotaion;
 
+    //方向判別
+    private bool dirSwitchFlag = false;
     //どっちの方向に線をひいたか
     private bool rightLine = true;
 
     //タンジェント
     private float tan;
+    private RaycastHit2D upHit2D;
 
     //重力　使うかはわからん
     [SerializeField]
@@ -140,6 +145,8 @@ public class MoveObject : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag = false;
+
+        defeltRotation = this.transform.rotation;
     }
 
     // Update is called once per frame
@@ -151,11 +158,6 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var oldtrans = transform.position;
-        Debug.Log(oldtrans);
-     
-        Debug.Log(fallFlag);
-
         //レイの角度計算
         RayAngleIns();
 
@@ -197,22 +199,32 @@ public class MoveObject : MonoBehaviour
             }
         }
 
+
         //どちらにいくかの判定
-        if (oldtrans.x.ToString("N2") == transform.position.x.ToString("N2"))
         {
-            Debug.Log("aik");
-            countTime++;
-            if (countTime >= time && rightLine == true)
+            if (dirSwitchFlag == true)
             {
-                rightLine = false;
-                countTime = 0;
-            }
-            if (countTime >= time && rightLine == false)
-            {
-                rightLine = true;
-                countTime = 0;
+                Debug.Log("aik");
+                countTime++;
+                if (countTime >= time && rightLine == true)
+                {
+                    transform.Rotate(0,180f,0);
+                    rightLine = false;
+                    countTime = 0;
+                }
+                if (countTime >= time && rightLine == false)
+                {
+                    transform.Rotate(0, 0f, 0);
+                    rightLine = true;
+                    countTime = 0;
+                }
+                dirSwitchFlag = false;
             }
         }
+
+        //コライダー同士がめりこんだとき
+        //Physics2D.OverlapPointAll()
+        
 
     }
 
@@ -323,7 +335,7 @@ public class MoveObject : MonoBehaviour
       {
             tan = 0f;
             var forwardObject = GetForwardObject();
-            var backObject = GetBackObject();
+            Debug.Log("関数入り");
 
             if (forwardObject && forwardObject.transform.gameObject.CompareTag("Ground"))
             {
@@ -333,19 +345,11 @@ public class MoveObject : MonoBehaviour
             {
                 return_tan();
             }
-
-            if (backObject && backObject.transform.gameObject.CompareTag("Ground"))
+            if (forwardObject.normal.x == 1f)
             {
-                return_backtan();
-            }
-            else if (backObject && backObject.transform.gameObject.CompareTag("IceGround"))
-            {
-                return_backtan();
-            }
-
-            if (forwardObject.normal.x == 1f || backObject.normal.x == -1f)
-            {
+                Debug.Log("進行方向変更フラグ変わったよ");
                 tan = 0f;
+                dirSwitchFlag = true;
             }
       }
         return tan;
@@ -353,36 +357,40 @@ public class MoveObject : MonoBehaviour
     //前方向にレイを飛ばす
     private RaycastHit2D GetForwardObject()
     {
-        Debug.DrawRay((Vector2)rayPosition.position, Vector2.right * rayRange, Color.green);
-        RaycastHit2D upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
-
+        var direciton = transform.rotation;
+        if(direciton != defeltRotation)
+        {
+            Debug.DrawRay((Vector2)rayPosition.position, Vector2.left * rayRange, Color.green);
+            upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.left * rayRange, LayerMask.GetMask("Ground"));
+           
+        }
+        if(direciton == defeltRotation)
+        {
+            Debug.DrawRay((Vector2)rayPosition.position, Vector2.right * rayRange, Color.green);
+            upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
+         
+        }
         return upHit2D;
     }
-    //後ろ方向にレイを飛ばす
-    private RaycastHit2D GetBackObject()
-    {
-        Debug.DrawRay((Vector2)rayPosition.position, -Vector2.right * rayRange, Color.green);
-        RaycastHit2D backHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + - Vector2.right * rayRange, LayerMask.GetMask("Ground"));
 
-        return backHit2D;
-    }
-
+    //タンジェント計算＆方向判別
     private void return_tan()
     {
+        //タンジェント計算
         if (GetForwardObject().normal.x > 0f)
         {
             tan = Mathf.PI * 0.5f + Mathf.Atan(GetForwardObject().normal.y / Mathf.Abs(GetForwardObject().normal.x));
         }
-        tan = Mathf.Tan(tan);
-    }
 
-    private void return_backtan()
-    {
-        if (GetBackObject().normal.x > 0f)
-        {
-            tan = Mathf.PI * 0.5f - Mathf.Atan(GetBackObject().normal.y / Mathf.Abs(GetBackObject().normal.x));
-        }
         tan = Mathf.Tan(tan);
+        Debug.Log(tan);
+
+        //タンジェントがn度以上なら進行方向を変える
+        if(tan == 0 || tan >= Mathf.PI /9)
+        {
+            Debug.Log("進行方向変更フラグ変わったよ");
+            dirSwitchFlag = true;
+        }
     }
 
     //何かしらに当たった時
