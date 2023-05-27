@@ -150,11 +150,40 @@ public class MoveObject : MonoBehaviour
     }
 
     // Update is called once per frame
-    /*void Update()
+    void Update()
     {
 
+        if(GameOverFlag == true)
+        {
+            GameOverFlag = false;
+            SceneManager.LoadScene("GameOver");
+        }
 
-    }*/
+        //移動
+        //trueなら右
+        if (rightLine == true)
+        {
+            if (iceWalkFlag == false)
+            {
+                transform.Translate(xMoveFloorSpeed * Time.deltaTime, 0, 0);
+            }
+            if (iceWalkFlag == true)
+            {
+                transform.Translate(xMoveIceSpeed * Time.deltaTime, 0, 0);
+            }
+        }
+        if (rightLine == false)//falseなら左
+        {
+            if (iceWalkFlag == false)
+            {
+                transform.Translate(-xMoveFloorSpeed * Time.deltaTime, 0, 0);
+            }
+            if (iceWalkFlag == true)
+            {
+                transform.Translate(-xMoveIceSpeed * Time.deltaTime, 0, 0);
+            }
+        }
+    }
 
     private void FixedUpdate()
     {
@@ -163,6 +192,8 @@ public class MoveObject : MonoBehaviour
 
         //坂を上る処理
         SlopeUp();
+
+        Debug.Log(rightLine);
 
         //自由落下
         { 
@@ -173,32 +204,6 @@ public class MoveObject : MonoBehaviour
             p+= _moveVelocity *Time.fixedDeltaTime;
             transform.position =p;*/
         }
-
-        //移動
-        //trueなら右
-        if (rightLine == true)
-        {
-            if (iceWalkFlag == false)
-            {
-                transform.Translate(xMoveFloorSpeed*Time.fixedDeltaTime, 0, 0);
-            }
-            if (iceWalkFlag == true)
-            {
-                transform.Translate(xMoveIceSpeed*Time.fixedDeltaTime, 0, 0);
-            }
-        }
-        if(rightLine == false)//falseなら左
-        {
-            if (iceWalkFlag == false)
-            {
-                transform.Translate(-xMoveFloorSpeed * Time.fixedDeltaTime, 0, 0);
-            }
-            if (iceWalkFlag == true)
-            {
-                transform.Translate(-xMoveIceSpeed * Time.fixedDeltaTime, 0, 0);
-            }
-        }
-
 
         //どちらにいくかの判定
         {
@@ -424,8 +429,6 @@ public class MoveObject : MonoBehaviour
             || other.gameObject.CompareTag("FlameGround"))
         {
             GameOverFlag = true;
-            //シーン呼び出し
-
         }
 
     }

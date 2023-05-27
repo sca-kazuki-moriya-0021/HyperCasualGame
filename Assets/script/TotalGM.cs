@@ -7,7 +7,15 @@ using UnityEngine.SceneManagement;
 public class TotalGM : MonoBehaviour
 {
     #region
-    
+    private enum stageCon{ 
+        zero = 0,
+        fiast,
+        second,
+        therd,
+        fouthe,
+        NO,
+    }
+
     #endregion
 
     //ƒVƒ“ƒOƒ‹ƒgƒ“
@@ -18,12 +26,12 @@ public class TotalGM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

@@ -21,5 +21,10 @@ public class TitleNexrStage : MonoBehaviour
     {
        SceneManager.LoadScene("Stage");
     }
+
+    public void StageSelect()
+    {
+        SceneManager.LoadScene("StageSelect");
+    }
     
 }
