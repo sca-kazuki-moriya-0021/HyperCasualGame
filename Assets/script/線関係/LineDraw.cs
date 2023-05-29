@@ -24,6 +24,10 @@ public class LineDraw : MonoBehaviour
     //コライダーのための座標を保持するリスト型の変数
     private List<Vector2> linePoints;
 
+    
+    private PhysicMaterial slip;
+    private EdgeCollider2D edge;
+
     private void Start()
     {
         //Listの初期化
@@ -103,6 +107,7 @@ public class LineDraw : MonoBehaviour
         linePoints.Add(worldPos);
         //EdgeCollider2Dのポイントを設定
         lineObj.GetComponent<EdgeCollider2D>().SetPoints(linePoints);
+
     }
 
 }
