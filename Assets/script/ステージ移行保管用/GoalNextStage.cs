@@ -8,10 +8,13 @@ using UnityEditor;
 public class GoalNextStage : MonoBehaviour
 {
 
+    //スプリクト用
+    private TotalGM gm;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        gm = FindObjectOfType<TotalGM>();
     }
 
     // Update is called once per frame
@@ -27,6 +30,6 @@ public class GoalNextStage : MonoBehaviour
 
     public void StageSlect()
     {
-        SceneManager.LoadScene("StageSlect");
+        gm.ReloadClearSchene();
     }
 }

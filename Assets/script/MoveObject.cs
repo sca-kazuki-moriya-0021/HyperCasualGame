@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
-
+using System.Linq;
 
 public class MoveObject : MonoBehaviour
 {
@@ -152,13 +152,12 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if(GameOverFlag == true)
+        if(gameOverFlag == true)
         {
-            GameOverFlag = false;
+            gm.BackScene = gm.MyGetScene();
+            gameOverFlag = false;
             SceneManager.LoadScene("GameOver");
         }
-
         //à⁄ìÆ
         //trueÇ»ÇÁâE
         if (rightLine == true)
@@ -441,7 +440,10 @@ public class MoveObject : MonoBehaviour
 
         if (other.gameObject.CompareTag("GoalPoint"))
         {
+            gm.BackScene = gm.MyGetScene();
+            clearFlag = true;
             SceneManager.LoadScene("Goal");
+            
         }
 
         //è·äQï®Ç…ìñÇΩÇ¡ÇΩÇÁ

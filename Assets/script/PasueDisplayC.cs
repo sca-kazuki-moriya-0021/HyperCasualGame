@@ -7,7 +7,7 @@ public class PasueDisplayC : MonoBehaviour
 {
 
     //ゲーマネ呼び出し
-    private TotalGM totalGM;
+    private TotalGM gm;
 
     //ポーズが開いたかのフラグ
     private bool menuFlag = false;
@@ -31,10 +31,8 @@ public class PasueDisplayC : MonoBehaviour
     private GameObject playOperatePrafab;
     */
 
-    //操作説明フラグを立てるフラグ
-    private bool stageSelect = false;
-    //ゲームに戻る動作を行うフラグ
-    private bool returnGame = false;
+    //リスタートするフラグ
+    private bool restartFlag = false;
 
     //ゲッターセッター
     public bool MenuFlag
@@ -43,16 +41,10 @@ public class PasueDisplayC : MonoBehaviour
         set { this.menuFlag = value; }
     }
 
-    public bool OpenManual
+    public bool RestartFlag
     {
-        get { return this.stageSelect; }
-        set { this.stageSelect = value; }
-    }
-
-    public bool ReturnGame
-    {
-        get { return this.returnGame; }
-        set { this.returnGame = value; }
+        get { return this.restartFlag; }
+        set { this.restartFlag = value; }
     }
 
     public bool OnlyFlag
@@ -65,7 +57,7 @@ public class PasueDisplayC : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        gm = FindObjectOfType<TotalGM>();
     }
 
     // Update is called once per frame
@@ -118,6 +110,14 @@ public class PasueDisplayC : MonoBehaviour
             Destroy(pauseUIInstance);
             Time.timeScale = 1f;
             SceneManager.LoadScene("StageSelect");
+        }
+        if (Input.GetKey(KeyCode.E))
+        {
+            menuFlag = false;
+            Destroy(pauseUIInstance);
+            Time.timeScale = 1f;
+            restartFlag = true;
+            gm.ReloadCurrentSchene();
         }
     }
 }
