@@ -25,6 +25,7 @@ public class PenDisplay : MonoBehaviour
     }
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -37,15 +38,23 @@ public class PenDisplay : MonoBehaviour
 
     }
 
-    void PenDisplayFlag()
+    public void DisplayFlag()
     {
         //ÉyÉìÇÃëIëâÊñ èoÇ∑
-        if (penUIInstance == null && penUIPrefab == false)
+        if (penUIInstance == null && penMenuFlag == false)
         {
             penUIInstance = GameObject.Instantiate(penUIPrefab) as GameObject;
             Time.timeScale = 0f;
-            this.gameObject.SetActive(false);
-            //penMenuFlag = true;
+            this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+            penMenuFlag = true;
+
+        }
+        if(penUIInstance && penMenuFlag == true)
+        {
+            penUIInstance.SetActive(true);
+            Time.timeScale = 0f;
+            this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+            penMenuFlag = true;
         }
     }
 }
