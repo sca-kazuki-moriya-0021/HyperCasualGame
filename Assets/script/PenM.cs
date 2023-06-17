@@ -8,6 +8,21 @@ public class PenM : MonoBehaviour
     private TotalGM gm;
     private PenDisplay penDis;
 
+    public enum PenCom
+    {
+        Unknown = 0,
+        Ice,
+        Fire,
+        General,
+    }
+
+    private PenCom nowPen;
+
+    public PenCom NowPen
+    {
+        get { return this.nowPen; }
+        set { this.nowPen = value; }
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +46,8 @@ public class PenM : MonoBehaviour
             penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
         }
 
+        nowPen = PenCom.Fire;
+
         //タイム戻す
         Time.timeScale = 1f;
 
@@ -44,6 +61,8 @@ public class PenM : MonoBehaviour
 
         //タイム戻す
         Time.timeScale = 1f;
+
+        nowPen = PenCom.Ice;
 
 
         if (penDis.PenMenuFlag == true)
@@ -64,6 +83,8 @@ public class PenM : MonoBehaviour
             Debug.Log("haiyo");
             penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
         }
+
+        nowPen = PenCom.General;
 
         //タイム戻す
         Time.timeScale = 1f;

@@ -23,9 +23,8 @@ public class LineDraw : MonoBehaviour
     private LineRenderer lineRenderer;
     //コライダーのための座標を保持するリスト型の変数
     private List<Vector2> linePoints;
-
     
-    private PhysicMaterial slip;
+    private PhysicsMaterial2D sMaterial;
     private EdgeCollider2D edge;
 
     private void Start()
@@ -60,6 +59,7 @@ public class LineDraw : MonoBehaviour
         lineObj.AddComponent<LineRenderer>();
         //lineObjにEdgeCollider2Dコンポーネントを追加
         lineObj.AddComponent<EdgeCollider2D>();
+        sMaterial = GetComponent<EdgeCollider2D>().sharedMaterial;
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         _initRenderer();
@@ -86,6 +86,7 @@ public class LineDraw : MonoBehaviour
         lineObj.layer = 6;
         //タグ変更
         lineObj.tag = "Ground";
+        //Material変更
     }
 
     void _addPositionDataToLineRenderer()
