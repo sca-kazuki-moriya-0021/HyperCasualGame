@@ -59,7 +59,7 @@ public class LineDraw : MonoBehaviour
         lineObj.AddComponent<LineRenderer>();
         //lineObjにEdgeCollider2Dコンポーネントを追加
         lineObj.AddComponent<EdgeCollider2D>();
-        sMaterial = GetComponent<EdgeCollider2D>().sharedMaterial;
+        //sMaterial = GetComponent<EdgeCollider2D>().sharedMaterial;
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         _initRenderer();
