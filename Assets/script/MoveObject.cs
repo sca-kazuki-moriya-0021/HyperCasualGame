@@ -454,15 +454,15 @@ public class MoveObject : MonoBehaviour
     void OnCollisionStay2D(Collision2D collision)
     {
         var capsuleDir = new Vector2 { [(int)col2D.direction] = 1 };
-        var capsuleOffset = col2D.size.x / 2 - (col2D.size.x / 2);
-        var localPoint0 = (Vector2)col2D.bounds.center - capsuleDir * capsuleOffset * 2;
-        var localPoint1 = (Vector2)col2D.bounds.center + capsuleDir * capsuleOffset * 2;
+        var capsuleOffset = col2D.size.y / 2 - (col2D.size.x / 2);
+        Debug.Log(capsuleOffset);
+        var localPoint0 = (Vector2)col2D.bounds.center - capsuleDir * capsuleOffset;
+        var localPoint1 = (Vector2)col2D.bounds.center + capsuleDir * capsuleOffset;
         var point0 = (Vector2)transform.TransformPoint(localPoint0);
         var point1 = (Vector2)transform.TransformPoint(localPoint1);
         var r = transform.TransformVector(col2D.size.x / 2, col2D.size.y / 2, 0);
         var radius = Enumerable.Range(0, 2).Select(xy => xy == (int)col2D.direction ? 0 : r[xy]).Select(Mathf.Abs).Max();
 
-        iceWalkFlag = false;
         var merging = Physics2D.OverlapCapsule(point0, point1, (CapsuleDirection2D)radius, LayerMask.GetMask("Ground"));
         Debug.Log(merging);
 
@@ -477,7 +477,7 @@ public class MoveObject : MonoBehaviour
 
            }*/
 
-        var num = Physics.OverlapCapsuleNonAlloc(point0, point1, radius, _result);
+        //var num = Physics.OverlapCapsuleNonAlloc(point0, point1, radius, _result);
         Debug.Log("Collision Stay: " + collision.gameObject.name);
     }
 

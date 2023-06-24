@@ -28,6 +28,7 @@ public class PenM : MonoBehaviour
     {
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
+        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     // Update is called once per frame
@@ -48,10 +49,11 @@ public class PenM : MonoBehaviour
 
         nowPen = PenCom.Fire;
 
+        penDis.PenMenuFlag = false;
         //タイム戻す
         Time.timeScale = 1f;
 
-        this.gameObject.SetActive(false);
+        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
 
     }
 
@@ -71,7 +73,9 @@ public class PenM : MonoBehaviour
             penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
         }
 
-        this.gameObject.SetActive(false);
+        penDis.PenMenuFlag = false;
+
+        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public void GeneralPen()
@@ -89,7 +93,9 @@ public class PenM : MonoBehaviour
         //タイム戻す
         Time.timeScale = 1f;
 
-        this.gameObject.SetActive(false);
+        penDis.PenMenuFlag = false;
+
+        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public void GameBark()
@@ -103,6 +109,8 @@ public class PenM : MonoBehaviour
         //タイム戻す
         Time.timeScale = 1f;
 
-        this.gameObject.SetActive(false);
+        penDis.PenMenuFlag = false;
+
+        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
     }
 }

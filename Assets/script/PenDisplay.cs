@@ -11,10 +11,7 @@ public class PenDisplay : MonoBehaviour
     private bool penMenuFlag = false;
 
     [SerializeField]
-    //ポーズした時に表示するUIのプレハブ
-    private GameObject penUIPrefab;
-    //ポーズUIのインスタンス
-    private GameObject penUIInstance;
+    private GameObject penM;
 
 
     //ゲッターセッター
@@ -30,6 +27,7 @@ public class PenDisplay : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
+        
     }
 
     // Update is called once per frame
@@ -41,17 +39,9 @@ public class PenDisplay : MonoBehaviour
     public void DisplayFlag()
     {
         //ペンの選択画面出す
-        if (penUIInstance == null && penMenuFlag == false)
+        if ( penMenuFlag == false)
         {
-            penUIInstance = GameObject.Instantiate(penUIPrefab) as GameObject;
-            Time.timeScale = 0f;
-            this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
-            penMenuFlag = true;
-
-        }
-        if(penUIInstance && penMenuFlag == true)
-        {
-            penUIInstance.SetActive(true);
+            penM.gameObject.GetComponent<CanvasGroup>().alpha = 1;
             Time.timeScale = 0f;
             this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
             penMenuFlag = true;

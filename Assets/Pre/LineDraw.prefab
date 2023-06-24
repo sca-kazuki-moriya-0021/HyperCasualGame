@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3494122244446107522}
   - component: {fileID: 3494122244446107523}
+  - component: {fileID: 7633257128925591759}
   m_Layer: 0
   m_Name: LineDraw
   m_TagString: Untagged
@@ -43,6 +44,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5cf548d426aa8a4a8beb1ca77dd17be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  iceMaterial: {fileID: 6200000, guid: 782a55e8d05d2e949857baf795a0fb8e, type: 2}
+  generalMaterial: {fileID: 6200000, guid: 516de371c9bcec842adf16dbb11517f4, type: 2}
   lineMaterial: {fileID: 2100000, guid: 59eb4d655293e0847a2479ccba92d79d, type: 2}
   lineColor: {r: 1, g: 0.31116822, b: 0, a: 0}
-  lineWidth: 0.144
+  lineWidth: 0.18
+--- !u!114 &7633257128925591759
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3494122244446107520}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dfe5c5d95736aca4aab0b3d3e8896eff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  iceMaterial: {fileID: 6200000, guid: 782a55e8d05d2e949857baf795a0fb8e, type: 2}
+  generalMaterial: {fileID: 6200000, guid: 516de371c9bcec842adf16dbb11517f4, type: 2}

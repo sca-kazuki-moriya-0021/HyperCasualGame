@@ -39,10 +39,6 @@ public class TotalGM : MonoBehaviour
     #endregion
 
 
-    private PhysicsMaterial2D sMaterial;
-    private BoxCollider2D boxC2D;
-    private PenM penM;
-
 
     public StageCon Scene
     {
@@ -54,12 +50,6 @@ public class TotalGM : MonoBehaviour
     {
         get {return this.backScene; }
         set {this.backScene = value; }
-    }
-
-    public PhysicsMaterial2D SMaterial
-    {
-        get { return this.sMaterial; }
-        set { this.sMaterial = value; }
     }
 
     public  Dictionary<string,StageCon> SceneDic
@@ -78,31 +68,13 @@ public class TotalGM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        boxC2D = GetComponent<BoxCollider2D>();
-        penM = FindObjectOfType<PenM>();
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        /*switch (penM.NowPen)
-        {
-            case :
-            sMaterial = boxC2D.sharedMaterial;
-            sMaterial.friction = 0.001f;
-            break;
-
-            case 2:
-
-            break;
-
-            case 3:
-            sMaterial = boxC2D.sharedMaterial;
-            sMaterial.friction = 0.1f;
-            break;
-
-
-        }*/
+      
     }
 
     //現在のステージを返す

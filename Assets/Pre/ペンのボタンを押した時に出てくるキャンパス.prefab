@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5391731856537602889}
   - component: {fileID: 5391731856537602888}
   - component: {fileID: 8837359070463945122}
+  - component: {fileID: 3560922284281467600}
   m_Layer: 5
   m_Name: "\u30DA\u30F3\u306E\u30DC\u30BF\u30F3\u3092\u62BC\u3057\u305F\u6642\u306B\u51FA\u3066\u304F\u308B\u30AD\u30E3\u30F3\u30D1\u30B9"
   m_TagString: Untagged
@@ -116,6 +117,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c56880fadfc6cef4c83a00ec52e5109b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!225 &3560922284281467600
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5391731856537602895}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &5391731856605791996
 GameObject:
   m_ObjectHideFlags: 0

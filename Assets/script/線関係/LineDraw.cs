@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-public class LineDraw : MonoBehaviour
+public class LineDraw : LineDrawCon
 {
 
     //線の材質
     [SerializeField]
     private Material lineMaterial;
-    //線の色
-    [SerializeField]
-    private Color lineColor;
+    private Material _myMat;
+
     //線の太さ
     [Range(0.1f, 0.5f)]
     [SerializeField]
@@ -24,13 +23,17 @@ public class LineDraw : MonoBehaviour
     //コライダーのための座標を保持するリスト型の変数
     private List<Vector2> linePoints;
     
-    private PhysicsMaterial2D sMaterial;
     private EdgeCollider2D edge;
+
+    private LineDrawCon lineDrawCon;
+
+
 
     private void Start()
     {
         //Listの初期化
         linePoints = new List<Vector2>();
+        lineDrawCon = FindObjectOfType<LineDrawCon>();
     }
 
     private void Update()
@@ -59,7 +62,9 @@ public class LineDraw : MonoBehaviour
         lineObj.AddComponent<LineRenderer>();
         //lineObjにEdgeCollider2Dコンポーネントを追加
         lineObj.AddComponent<EdgeCollider2D>();
-        //sMaterial = GetComponent<EdgeCollider2D>().sharedMaterial;
+        //マテリアルのコライダーの追加
+        lineObj.AddComponent<EdgeCollider2D>().sharedMaterial =lineDrawCon.SMaterial;
+        Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         _initRenderer();
@@ -70,12 +75,15 @@ public class LineDraw : MonoBehaviour
     {
         //LineRendererを取得
         lineRenderer = lineObj.GetComponent<LineRenderer>();
+
+        _myMat = new Material(lineMaterial);
+        lineRenderer.material = _myMat;
         //ポジションカウントをリセット
         lineRenderer.positionCount = 0;
-        //マテリアルを設定
-        lineRenderer.material = lineMaterial;
+        lineMaterial.SetColor("_Color", lineDrawCon.LineColor);
         //マテリアルの色を設定
-        lineRenderer.material.color = lineColor;
+        //lineRenderer.material.color = lineDrawCon.LineColor;
+        Debug.Log(lineRenderer.material.color);
         //始点の太さを設定
         lineRenderer.startWidth = lineWidth;
         //終点の太さを設定
