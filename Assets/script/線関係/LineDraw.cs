@@ -64,7 +64,7 @@ public class LineDraw : LineDrawCon
         lineObj.AddComponent<EdgeCollider2D>();
         //マテリアルのコライダーの追加
         lineObj.AddComponent<EdgeCollider2D>().sharedMaterial =lineDrawCon.SMaterial;
-        Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
+        //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         _initRenderer();
@@ -83,7 +83,7 @@ public class LineDraw : LineDrawCon
         lineMaterial.SetColor("_Color", lineDrawCon.LineColor);
         //マテリアルの色を設定
         //lineRenderer.material.color = lineDrawCon.LineColor;
-        Debug.Log(lineRenderer.material.color);
+        //Debug.Log(lineRenderer.material.color);
         //始点の太さを設定
         lineRenderer.startWidth = lineWidth;
         //終点の太さを設定

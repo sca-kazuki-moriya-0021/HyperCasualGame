@@ -29,6 +29,8 @@ public class LineDrawCon : MonoBehaviour
         get { return this.sMaterial; }
         set { this.sMaterial = value; }
     }
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -46,7 +48,8 @@ public class LineDrawCon : MonoBehaviour
             case PenM.PenCom.Ice:
                 sMaterial = iceMaterial;
                 lineColor = iceColor;
-                Debug.Log(lineColor);
+
+                //Debug.Log(lineColor);
                 break;
 
             case PenM.PenCom.Fire:
@@ -56,8 +59,7 @@ public class LineDrawCon : MonoBehaviour
             case PenM.PenCom.General:
                 sMaterial = generalMaterial;
                 lineColor = generalColor;
-                Debug.Log(lineColor);
-                Debug.Log("‚Ä‚Â");
+                //Debug.Log(lineColor);
                 break;
         }
     }
