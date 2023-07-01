@@ -1,12 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Video;
 using System.Linq;
 
 public class LineDraw : LineDrawCon
 {
-
-    //線の材質
+    //
     [SerializeField]
     private Material lineMaterial;
     private Material _myMat;
@@ -26,8 +26,6 @@ public class LineDraw : LineDrawCon
     private EdgeCollider2D edge;
 
     private LineDrawCon lineDrawCon;
-
-
 
     private void Start()
     {
@@ -64,7 +62,7 @@ public class LineDraw : LineDrawCon
         lineObj.AddComponent<EdgeCollider2D>();
         //マテリアルのコライダーの追加
         lineObj.AddComponent<EdgeCollider2D>().sharedMaterial =lineDrawCon.SMaterial;
-        //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
+        Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         _initRenderer();
@@ -75,15 +73,14 @@ public class LineDraw : LineDrawCon
     {
         //LineRendererを取得
         lineRenderer = lineObj.GetComponent<LineRenderer>();
-
         _myMat = new Material(lineMaterial);
         lineRenderer.material = _myMat;
+        lineMaterial.SetColor("_Color", lineDrawCon.LineColor);
         //ポジションカウントをリセット
         lineRenderer.positionCount = 0;
-        lineMaterial.SetColor("_Color", lineDrawCon.LineColor);
         //マテリアルの色を設定
         //lineRenderer.material.color = lineDrawCon.LineColor;
-        //Debug.Log(lineRenderer.material.color);
+        Debug.Log(lineRenderer.material.color);
         //始点の太さを設定
         lineRenderer.startWidth = lineWidth;
         //終点の太さを設定

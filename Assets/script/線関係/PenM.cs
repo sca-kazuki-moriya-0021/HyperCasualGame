@@ -61,9 +61,6 @@ public class PenM : MonoBehaviour
     {
         //ペンの入れ替え
 
-        //タイム戻す
-        Time.timeScale = 1f;
-
         nowPen = PenCom.Ice;
 
 
@@ -74,6 +71,9 @@ public class PenM : MonoBehaviour
         }
 
         penDis.PenMenuFlag = false;
+
+        //タイム戻す
+        Time.timeScale = 1f;
 
         this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
     }

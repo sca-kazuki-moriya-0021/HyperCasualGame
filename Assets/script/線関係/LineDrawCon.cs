@@ -53,7 +53,6 @@ public class LineDrawCon : MonoBehaviour
                 break;
 
             case PenM.PenCom.Fire:
-
                 break;
 
             case PenM.PenCom.General:
