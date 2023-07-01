@@ -1,0 +1,14 @@
+ice_floor.png
+size:267,33
+filter:Linear,Linear
+pma:true
+scale:0.5
+ice_floor
+bounds:2,2,148,29
+offsets:0,1,148,30
+light１
+bounds:216,2,49,29
+offsets:33,0,82,29
+light２
+bounds:152,2,62,29
+offsets:20,0,82,29

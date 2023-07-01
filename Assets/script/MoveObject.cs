@@ -427,18 +427,23 @@ public class MoveObject : MonoBehaviour
         Debug.Log((CapsuleDirection2D)radius);
 
         var merging = Physics2D.OverlapCapsule(point0, point1, (CapsuleDirection2D)radius, LayerMask.GetMask("Ground"));
-        //Debug.Log(merging);
+        Debug.Log(other.gameObject.name);
 
-        /*if (merging)
-           {
-               //Vector2 closePosition = Collision2D.ClosestPointOnBounds(Collision2D.transform.position);
-               transform.position = closePosition + (Vector2)transform.position;
+        if (merging)
+        {
+             Vector2 a = merging.transform.position;
+            if(a.y >= transform.position.y)
+            {
+
+            }
+
+               //9transform.position = closePosition + (Vector2)transform.position;
                //ベクトル計算
                Vector2 awayDir = merging.transform.position - transform.position;
                awayDir = awayDir / 2;
                awayDir = awayDir.normalized;
 
-         }*/
+        }
 
 
         if (other.gameObject.CompareTag("Ground"))

@@ -47,6 +47,11 @@ public class LineDraw : LineDrawCon
         {
             _addPositionDataToLineRenderer();
         }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            linePoints = new List<Vector2>();
+        }
     }
 
    //クリックしたら発動
@@ -59,10 +64,10 @@ public class LineDraw : LineDrawCon
         //lineObjにLineRendererコンポーネントを追加
         lineObj.AddComponent<LineRenderer>();
         //lineObjにEdgeCollider2Dコンポーネントを追加
-        lineObj.AddComponent<EdgeCollider2D>();
+        EdgeCollider2D c = lineObj.AddComponent<EdgeCollider2D>();
         //マテリアルのコライダーの追加
-        lineObj.AddComponent<EdgeCollider2D>().sharedMaterial =lineDrawCon.SMaterial;
-        Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
+        c.sharedMaterial =lineDrawCon.SMaterial;
+        //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         _initRenderer();
@@ -80,7 +85,7 @@ public class LineDraw : LineDrawCon
         lineRenderer.positionCount = 0;
         //マテリアルの色を設定
         //lineRenderer.material.color = lineDrawCon.LineColor;
-        Debug.Log(lineRenderer.material.color);
+        //Debug.Log(lineRenderer.material.color);
         //始点の太さを設定
         lineRenderer.startWidth = lineWidth;
         //終点の太さを設定
