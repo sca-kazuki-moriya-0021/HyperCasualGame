@@ -11,6 +11,8 @@ public class LineDraw : LineDrawCon
     private Material lineMaterial;
     private Material _myMat;
 
+    private EdgeCollider2D c;
+
     //ü‚Ì‘¾‚³
     [Range(0.1f, 0.5f)]
     [SerializeField]

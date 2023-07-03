@@ -139,6 +139,7 @@ public class MoveObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 0.1f;
         gm = FindObjectOfType<TotalGM>();
         col2D = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -411,41 +412,6 @@ public class MoveObject : MonoBehaviour
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
     {
-        var capsuleDir = new Vector2 { [(int)col2D.direction] = 1 };
-        Debug.Log("Dir:" + capsuleDir);
-        var capsuleOffset = col2D.size.y / 2 - (col2D.size.x / 2);
-        Debug.Log("Offset:" + capsuleOffset);
-        var localPoint0 = (Vector2)transform.position + col2D.offset - capsuleDir * capsuleOffset ;
-        Debug.Log("ローカル座標0" + localPoint0);
-        var localPoint1 = (Vector2)transform.position + col2D.offset + capsuleDir * capsuleOffset ;
-        Debug.Log("ローカル座標1" + localPoint1);
-        var point0 = (Vector2)transform.TransformPoint(localPoint0);
-        Debug.Log("ワールド座標:" + point0);
-        var point1 = (Vector2)transform.TransformPoint(localPoint1);
-        var r = transform.TransformVector(col2D.size.x / 2, col2D.size.y / 2, 0);
-        var radius = Enumerable.Range(0, 2).Select(xy => xy == (int)col2D.direction ? 0 : r[xy]).Select(Mathf.Abs).Max();
-        Debug.Log((CapsuleDirection2D)radius);
-
-        var merging = Physics2D.OverlapCapsule(point0, point1, (CapsuleDirection2D)radius, LayerMask.GetMask("Ground"));
-        Debug.Log(other.gameObject.name);
-
-        if (merging)
-        {
-             Vector2 a = merging.transform.position;
-            if(a.y >= transform.position.y)
-            {
-
-            }
-
-               //9transform.position = closePosition + (Vector2)transform.position;
-               //ベクトル計算
-               Vector2 awayDir = merging.transform.position - transform.position;
-               awayDir = awayDir / 2;
-               awayDir = awayDir.normalized;
-
-        }
-
-
         if (other.gameObject.CompareTag("Ground"))
         {
 
@@ -485,9 +451,35 @@ public class MoveObject : MonoBehaviour
 
     void OnCollisionStay2D(Collision2D collision)
     {
-      
-        //var num = Physics.OverlapCapsuleNonAlloc(point0, point1, radius, _result);
-        //Debug.Log("Collision Stay: " + collision.gameObject.name);
+        /*var capsuleDir = new Vector2 { [(int)col2D.direction] = 1 };
+        //Debug.Log("Dir:" + capsuleDir);
+        var capsuleOffset = col2D.size.y / 2 - (col2D.size.x / 2);
+       // Debug.Log("Offset:" + capsuleOffset);
+        var localPoint0 = (Vector2)transform.position + col2D.offset - capsuleDir * capsuleOffset;
+       // Debug.Log("ローカル座標0" + localPoint0);
+        var localPoint1 = (Vector2)transform.position + col2D.offset + capsuleDir * capsuleOffset;
+        //Debug.Log("ローカル座標1" + localPoint1);
+        var point0 = (Vector2)transform.TransformPoint(localPoint0);
+       // Debug.Log("ワールド座標:" + point0);
+        var point1 = (Vector2)transform.TransformPoint(localPoint1);
+        var r = transform.TransformVector(col2D.size.x / 2, col2D.size.y / 2, 0);
+        var radius = Enumerable.Range(0, 2).Select(xy => xy == (int)col2D.direction ? 0 : r[xy]).Select(Mathf.Abs).Max();
+        //Debug.Log((CapsuleDirection2D)radius);
+
+        var merging = Physics2D.OverlapCapsule(point0, point1, (CapsuleDirection2D)radius, LayerMask.GetMask("Ground"));
+        Debug.Log(collision.gameObject.name);*/
+        {
+             Vector3 a =  collision.collider.ClosestPoint(transform.position);
+             Vector3 b = (a - transform.position);
+             Vector3 c = b.normalized;
+             float returnDistance = col2D.size.y * transform.localScale.y / 2 - b.magnitude;
+            Debug.Log(a);
+            Debug.Log("sizey" + col2D.size.y *transform.localScale.y);
+            Debug.Log(b.magnitude);
+            Debug.Log(returnDistance);
+
+            transform.position = (transform.position - returnDistance * c);
+        }
     }
 
     //効果音を流す処理
