@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LineDrawCon : MonoBehaviour
 {
@@ -15,6 +16,13 @@ public class LineDrawCon : MonoBehaviour
     private Color iceColor;
     [SerializeField]
     private Color generalColor;
+
+    [SerializeField]
+    private Animation iceSprite;
+    [SerializeField]
+    private Sprite fireSprite;
+    [SerializeField]
+    private Sprite GenealSprite;
     
     private PenM penM;
 
@@ -36,7 +44,7 @@ public class LineDrawCon : MonoBehaviour
     {
         penM = FindObjectOfType<PenM>();
         sMaterial = generalMaterial;
-        penM.NowPen = PenM.PenCom.General;
+        //penM.NowPen = PenM.PenCom.General;
     }
 
     // Update is called once per frame

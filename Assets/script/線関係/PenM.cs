@@ -1,12 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PenM : MonoBehaviour
 {
     //ゲーマネ呼び出し
     private TotalGM gm;
     private PenDisplay penDis;
+    [SerializeField]
+    private Canvas penC;
+    
+    private Canvas c;
 
     public enum PenCom
     {
@@ -28,7 +33,10 @@ public class PenM : MonoBehaviour
     {
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
-        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        c = this.GetComponent<Canvas>();
+        penC = penC.GetComponent<Canvas>();
+
+        c.enabled = false;
     }
 
     // Update is called once per frame
@@ -41,11 +49,8 @@ public class PenM : MonoBehaviour
     {
         //ペンの入れ替え
 
-        if(penDis.PenMenuFlag == true)
-        {
-            Debug.Log("haiyo");
-            penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
-        }
+        /**/
+
 
         nowPen = PenCom.Fire;
 
@@ -53,7 +58,8 @@ public class PenM : MonoBehaviour
         //タイム戻す
         Time.timeScale = 1f;
 
-        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        penC.enabled = true;
+        c.enabled = false;
 
     }
 
@@ -64,29 +70,20 @@ public class PenM : MonoBehaviour
         nowPen = PenCom.Ice;
 
 
-        if (penDis.PenMenuFlag == true)
-        {
-            Debug.Log("haiyo");
-            penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
-        }
-
         penDis.PenMenuFlag = false;
 
         //タイム戻す
         Time.timeScale = 1f;
 
-        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        penC.enabled = true;
+        c.enabled = false;
     }
 
     public void GeneralPen()
     {
         //ペンの入れ替え
 
-        if (penDis.PenMenuFlag == true)
-        {
-            Debug.Log("haiyo");
-            penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
-        }
+
 
         nowPen = PenCom.General;
 
@@ -95,22 +92,20 @@ public class PenM : MonoBehaviour
 
         penDis.PenMenuFlag = false;
 
-        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        penC.enabled = true;
+        c.enabled = false;
     }
 
     public void GameBark()
     {
-        if (penDis.PenMenuFlag == true)
-        {
-            Debug.Log("haiyo");
-            penDis.gameObject.GetComponent<CanvasGroup>().alpha = 1;
-        }
+
 
         //タイム戻す
         Time.timeScale = 1f;
 
         penDis.PenMenuFlag = false;
 
-        this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
+        penC.enabled = true;
+        c.enabled = false;
     }
 }

@@ -168,14 +168,14 @@ public class MoveObject : MonoBehaviour
         {
             if (iceWalkFlag == false)
             {
-                transform.Translate(xMoveFloorSpeed * Time.deltaTime, 0, 0);
+                transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
             if (iceWalkFlag == true)
             {
-                transform.Translate(xMoveIceSpeed * Time.deltaTime, 0, 0);
+                transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
         }
-        if (rightLine == false)//falseなら左
+        /*if (rightLine == false)//falseなら左
         {
             if (iceWalkFlag == false)
             {
@@ -185,7 +185,7 @@ public class MoveObject : MonoBehaviour
             {
                 transform.Translate(-xMoveIceSpeed * Time.deltaTime, 0, 0);
             }
-        }
+        }*/
 
     }
 
@@ -195,7 +195,7 @@ public class MoveObject : MonoBehaviour
         RayAngleIns();
 
         //坂を上る処理
-        SlopeUp();
+        //SlopeUp();
 
         //コライダーがめり込んだ時
         //CollderMerging();
@@ -339,7 +339,7 @@ public class MoveObject : MonoBehaviour
     }
 
     //坂を上るときに使う関数
-    private float SlopeUp()
+    /*private float SlopeUp()
     {
       if(fallFlag == false)
       {
@@ -395,18 +395,11 @@ public class MoveObject : MonoBehaviour
         Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        if(tan == 0 || tan >= Mathf.PI /9)
+        if(tan <= 0 || tan >= Mathf.PI /9)
         {
             Debug.Log("進行方向変更フラグ変わったよ");
             dirSwitchFlag = true;
         }
-    }
-
-    //コライダーがめり込む判定
-   /*private Vector2 CollderMerging()
-    {
-        
-
     }*/
 
     //何かしらに当たった時
@@ -473,10 +466,10 @@ public class MoveObject : MonoBehaviour
              Vector3 b = (a - transform.position);
              Vector3 c = b.normalized;
              float returnDistance = col2D.size.y * transform.localScale.y / 2 - b.magnitude;
-            Debug.Log(a);
-            Debug.Log("sizey" + col2D.size.y *transform.localScale.y);
-            Debug.Log(b.magnitude);
-            Debug.Log(returnDistance);
+            //Debug.Log(a);
+            //Debug.Log("sizey" + col2D.size.y *transform.localScale.y);
+            //Debug.Log(b.magnitude);
+            //Debug.Log(returnDistance);
 
             transform.position = (transform.position - returnDistance * c);
         }

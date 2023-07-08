@@ -63,22 +63,35 @@ public class PasueDisplayC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
+
+    }
+
+    public void PauseButton()
+    {
+
+        if (pauseUIInstance != null && menuFlag == true)
         {
-         
-            //ポーズ画面出す
-            if (pauseUIInstance == null && menuFlag == false)
-            {
-                pauseUIInstance = GameObject.Instantiate(pasueUIPrefab) as GameObject;
-                Time.timeScale = 0f;
-                menuFlag = true;
-            }
+            Debug.Log("asiki");
+            menuFlag = false;
+            Destroy(pauseUIInstance);
+            Time.timeScale = 1f;
         }
+
+        //ポーズ画面出す
+        if (pauseUIInstance == null && menuFlag == false)
+        {
+            Debug.Log("ポーズ画面押されたよ");
+           pauseUIInstance = GameObject.Instantiate(pasueUIPrefab) as GameObject;
+           Time.timeScale = 0f;
+           menuFlag = true;
+        }
+
         //メニューが開かれたら
         if (menuFlag == true)
         {
             PauseMenu();
         }
+
     }
 
     private void PauseMenu()
@@ -97,13 +110,7 @@ public class PasueDisplayC : MonoBehaviour
             Time.timeScale = 1f;
             menuFlag = false;
         }
-        if (Input.GetKey(KeyCode.Z))
-        {
-            Debug.Log("asiki");
-            menuFlag = false;
-            Destroy(pauseUIInstance);
-            Time.timeScale = 1f;
-        }
+      
         if (Input.GetKey(KeyCode.Q))
         {
             menuFlag = false;

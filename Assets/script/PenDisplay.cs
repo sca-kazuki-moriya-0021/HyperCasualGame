@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PenDisplay : MonoBehaviour
 {
@@ -11,8 +12,22 @@ public class PenDisplay : MonoBehaviour
     private bool penMenuFlag = false;
 
     [SerializeField]
-    private GameObject penM;
+    private Canvas penMCanvas;
 
+    private Canvas c;
+
+    //ボタン用
+    [SerializeField]
+    private Button penMButton;
+    [SerializeField]
+    private Sprite sprite;
+    [SerializeField]
+    private Sprite fireSprite;
+    [SerializeField]
+    private Sprite iceSprite;
+
+
+    private PenM penM;
 
     //ゲッターセッター
     public bool PenMenuFlag
@@ -27,13 +42,34 @@ public class PenDisplay : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
-        
+        penMCanvas = penMCanvas.GetComponent<Canvas>();
+        c = this.GetComponent<Canvas>();
+
+        penM = FindObjectOfType<PenM>();
+
+        penMButton = penMButton.GetComponent<Button>();
     }
 
     // Update is called once per frame
     void Update()
     {
 
+        switch (penM.NowPen)
+        {
+            case PenM.PenCom.Ice:
+                Debug.Log("oir");
+                penMButton.GetComponent<Image>().sprite = iceSprite;
+
+                break;
+
+            case PenM.PenCom.Fire:
+                penMButton.GetComponent<Image>().sprite = fireSprite;
+                break;
+
+            case PenM.PenCom.General:
+                penMButton.GetComponent<Image>().sprite = sprite;
+                break;
+        }
     }
 
     public void DisplayFlag()
@@ -41,9 +77,11 @@ public class PenDisplay : MonoBehaviour
         //ペンの選択画面出す
         if ( penMenuFlag == false)
         {
-            penM.gameObject.GetComponent<CanvasGroup>().alpha = 1;
+            Debug.Log("a");
+            penMCanvas.enabled = true;
+            c.enabled = false;
+
             Time.timeScale = 0f;
-            this.gameObject.GetComponent<CanvasGroup>().alpha = 0;
             penMenuFlag = true;
         }
     }
