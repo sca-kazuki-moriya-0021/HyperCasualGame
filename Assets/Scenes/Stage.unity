@@ -740,9 +740,9 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 15
+  m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 30}
---- !u!1001 &813423978
+--- !u!1001 &912374455
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -753,13 +753,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: LineDraw
       objectReference: {fileID: 0}
-    - target: {fileID: 3494122244446107520, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: m_TagString
-      value: Ground
-      objectReference: {fileID: 0}
     - target: {fileID: 3494122244446107522, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 3494122244446107522, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -802,49 +798,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3494122244446107523, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.a
-      value: 1
-      objectReference: {fileID: 0}
+      propertyPath: instansIcePrefab
+      value: 
+      objectReference: {fileID: 773359225131675975, guid: 6d6b7166feda0f24d97ae676a6e42485, type: 3}
     - target: {fileID: 3494122244446107523, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3494122244446107523, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.g
-      value: 0.021445274
-      objectReference: {fileID: 0}
-    - target: {fileID: 3494122244446107523, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.a
-      value: 0.9882353
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.b
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.g
-      value: 0.37962008
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: iceColor.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: generalColor.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: generalColor.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7633257128925591759, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
-      propertyPath: generalColor.r
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: instansfirePrefab
+      value: 
+      objectReference: {fileID: 8889629819785719149, guid: 8076b45146a64e74d8c2d850e1318914, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5cff85b5a6e69db4f9eb2cbbca7ee9e1, type: 3}
 --- !u!223 &1211770599 stripped
@@ -873,7 +833,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!212 &1442091176
 SpriteRenderer:
   m_ObjectHideFlags: 0

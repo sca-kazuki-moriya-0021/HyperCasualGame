@@ -3,8 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 using System.Linq;
+using UnityEngine.UI;
+using UnityEditor;
+using Spine.Unity;
 
-public class LineDraw : LineDrawCon
+public class LineDraw : MonoBehaviour
+
 {
     //
     [SerializeField]
@@ -24,16 +28,33 @@ public class LineDraw : LineDrawCon
     private LineRenderer lineRenderer;
     //コライダーのための座標を保持するリスト型の変数
     private List<Vector2> linePoints;
-    
+
+    //アニメーションを適用するために必要なAnimationState
+    private Spine.AnimationState spineAnimationState = default;
+
     private EdgeCollider2D edge;
 
     private LineDrawCon lineDrawCon;
 
+    [SerializeField]
+    private GameObject nullObject;
+
+    [SerializeField]
+    private GameObject instansIcePrefab;
+    SkeletonAnimation ice;
+    [SerializeField]
+    private GameObject instansfirePrefab;
+    SkeletonAnimation fire;
+
     private void Start()
     {
+        ice = instansIcePrefab.GetComponent<SkeletonAnimation>();
+        fire = instansfirePrefab.GetComponent<SkeletonAnimation>();
+        ice.AnimationName = "None";
         //Listの初期化
         linePoints = new List<Vector2>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
+
     }
 
     private void Update()
@@ -72,6 +93,24 @@ public class LineDraw : LineDrawCon
         //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
+
+        //アニメーションセット
+        /*if (lineDrawCon.NowSkeletonAnima != null)
+        {
+            Debug.Log(lineDrawCon.NowSkeletonAnima.name);
+            spineAnimationState.SetAnimation(1, lineDrawCon.NowSkeletonAnima.name, true);
+        }*/
+
+        //アイスが押された
+        if(lineDrawCon.IceFlag == true)
+        {
+            Instantiate(instansIcePrefab ,new Vector3(0, 0, 1.0f),Quaternion.identity);
+            ice.AnimationName = lineDrawCon.lineName(lineDrawCon.Name);
+            lineDrawCon.IceFlag = false;
+        }
+
+       
+
         _initRenderer();
     }
 
@@ -80,14 +119,16 @@ public class LineDraw : LineDrawCon
     {
         //LineRendererを取得
         lineRenderer = lineObj.GetComponent<LineRenderer>();
-        _myMat = new Material(lineMaterial);
-        lineRenderer.material = _myMat;
-        lineMaterial.SetColor("_Color", lineDrawCon.LineColor);
+         _myMat = new Material(lineMaterial);
+         lineRenderer.material = _myMat;
+         //マテリアルの色を設定
+         //lineRenderer.material.color = lineDrawCon.LineColor;
+         //Debug.Log(lineRenderer.material.color);
+         lineMaterial.SetColor("_Color", lineDrawCon.LineColor);
+
         //ポジションカウントをリセット
         lineRenderer.positionCount = 0;
-        //マテリアルの色を設定
-        //lineRenderer.material.color = lineDrawCon.LineColor;
-        //Debug.Log(lineRenderer.material.color);
+
         //始点の太さを設定
         lineRenderer.startWidth = lineWidth;
         //終点の太さを設定

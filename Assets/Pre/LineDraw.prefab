@@ -44,11 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5cf548d426aa8a4a8beb1ca77dd17be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  iceMaterial: {fileID: 6200000, guid: 782a55e8d05d2e949857baf795a0fb8e, type: 2}
-  generalMaterial: {fileID: 6200000, guid: 516de371c9bcec842adf16dbb11517f4, type: 2}
   lineMaterial: {fileID: 2100000, guid: 59eb4d655293e0847a2479ccba92d79d, type: 2}
-  lineColor: {r: 1, g: 0.31116822, b: 0, a: 0}
   lineWidth: 0.18
+  nullObject: {fileID: 1641463897729915164, guid: dc200b7d958810c41b9431f56aebb9ac, type: 3}
 --- !u!114 &7633257128925591759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63,3 +61,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   iceMaterial: {fileID: 6200000, guid: 782a55e8d05d2e949857baf795a0fb8e, type: 2}
   generalMaterial: {fileID: 6200000, guid: 516de371c9bcec842adf16dbb11517f4, type: 2}
+  iceColor: {r: 0, g: 0, b: 0, a: 0}
+  generalColor: {r: 0, g: 0, b: 0, a: 0}
+  iceObject: {fileID: 773359225131675975, guid: 6d6b7166feda0f24d97ae676a6e42485, type: 3}
+  fireObject: {fileID: 8889629819785719149, guid: 8076b45146a64e74d8c2d850e1318914, type: 3}
+  ironSprite: {fileID: 21300000, guid: 3b24b0f2d0499b54ea4c3e79cbdfdf38, type: 3}
