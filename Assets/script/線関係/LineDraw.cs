@@ -5,17 +5,15 @@ using UnityEngine.Video;
 using System.Linq;
 using UnityEngine.UI;
 using UnityEditor;
-using Spine.Unity;
+//using Spine.Unity;
 
-public class LineDraw : MonoBehaviour
+/*public class LineDraw : MonoBehaviour
 
 {
     //
     [SerializeField]
     private Material lineMaterial;
     private Material _myMat;
-
-    private EdgeCollider2D c;
 
     //線の太さ
     [Range(0.1f, 0.5f)]
@@ -31,8 +29,6 @@ public class LineDraw : MonoBehaviour
 
     //アニメーションを適用するために必要なAnimationState
     private Spine.AnimationState spineAnimationState = default;
-
-    private EdgeCollider2D edge;
 
     private LineDrawCon lineDrawCon;
 
@@ -95,11 +91,11 @@ public class LineDraw : MonoBehaviour
         lineObj.transform.SetParent(transform);
 
         //アニメーションセット
-        /*if (lineDrawCon.NowSkeletonAnima != null)
+        if (lineDrawCon.NowSkeletonAnima != null)
         {
             Debug.Log(lineDrawCon.NowSkeletonAnima.name);
             spineAnimationState.SetAnimation(1, lineDrawCon.NowSkeletonAnima.name, true);
-        }*/
+        }
 
         //アイスが押された
         if(lineDrawCon.IceFlag == true)
@@ -108,9 +104,6 @@ public class LineDraw : MonoBehaviour
             ice.AnimationName = lineDrawCon.lineName(lineDrawCon.Name);
             lineDrawCon.IceFlag = false;
         }
-
-       
-
         _initRenderer();
     }
 
@@ -144,24 +137,24 @@ public class LineDraw : MonoBehaviour
 
     void _addPositionDataToLineRenderer()
     {
-        /*座標に関する処理*/
+        /*座標に関する処理
         //マウス座標取得
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
         //ワールド座標へ変換
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
-        /*LineRendererに関する処理*/
+        /*LineRendererに関する処理
         //LineRendererのポイントを増やす
         lineRenderer.positionCount += 1;
         //LineRendererのポジションを設定
         lineRenderer.SetPosition(lineRenderer.positionCount - 1, worldPos);
 
-        /*EdgeCollider2Dに関する処理*/
+        /*EdgeCollider2Dに関する処理
         //ワールド座標をリストに追加
         linePoints.Add(worldPos);
         //EdgeCollider2Dのポイントを設定
         lineObj.GetComponent<EdgeCollider2D>().SetPoints(linePoints);
 
     }
-
-}
+    
+}*/

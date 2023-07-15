@@ -3,10 +3,34 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using UnityEngine.Video;
+using System.Linq;
 using Spine.Unity;
 
 public class LineDrawCon : MonoBehaviour
 {
+    //色
+    [SerializeField]
+    private Material iceTexture;
+    [SerializeField]
+    private Material fierTexture;
+    [SerializeField]
+    private Material ironTexture;
+
+    private Material lineMaterial;
+    private Material _myMat;
+
+    //線の太さ
+    [Range(0.1f, 0.5f)]
+    [SerializeField]
+    private float lineWidth;
+
+    //線となるゲームオブジェクト用変数
+    private GameObject lineObj;
+    //lineObjのlineRenderer用変数
+    private LineRenderer lineRenderer;
+    //コライダーのための座標を保持するリスト型の変数
+    private List<Vector2> linePoints;
 
     protected PhysicsMaterial2D sMaterial;
     protected Color lineColor;
@@ -19,21 +43,37 @@ public class LineDrawCon : MonoBehaviour
     [SerializeField]
     private Color generalColor;
 
-    private SkeletonAnimation iceSkelton;
 
-    private SkeletonAnimation fireSkelton;
     [SerializeField]
-    private Sprite ironSprite;
+    private GameObject nullObject;
 
-    private SkeletonAnimation nowSkeletonAnima;
-    private Sprite nowSprite;
+    [SerializeField]
+    private GameObject instansIcePrefab;
+    private SkeletonAnimation iceSkelton;
+    private string ice;
 
-    private string name;
 
-    
+    [SerializeField]
+    private GameObject instansfirePrefab;
+    private SkeletonAnimation fireSkelton;
+    private string fire;
+
+
+    //アニメーションを適用するために必要なAnimationState
+    private Spine.AnimationState iceAnimationState = default;
+    private Spine.AnimationState fireAnimationState = default;
+
+    //private SkeletonAnimation nowSkeletonAnima;
+
+
+    private bool iceflag = false;
+    private bool fireflag = false;
+
+
+    //ペンのスプリクト
     private PenM penM;
 
-    public Color LineColor
+    /*public Color LineColor
     {
         get { return this.lineColor; }
         set { this.lineColor = value; }
@@ -51,7 +91,7 @@ public class LineDrawCon : MonoBehaviour
         set { this.nowSkeletonAnima = value; }
     }
 
-    public string Name
+    /*public string Name
     {
         get { return this.name; }
         set { this.name = value; }
@@ -63,21 +103,35 @@ public class LineDrawCon : MonoBehaviour
         set { this.nowSprite = value; }
     }
 
-    bool iceflag = false;
+
     public bool IceFlag
     {
         get { return this.iceflag; }
         set { this.iceflag = value; }
-    }
+    }*/
 
 
     // Start is called before the first frame update
     void Start()
     {
         penM = FindObjectOfType<PenM>();
+
+        iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
+        fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
+        //iceAnimationState = iceSkelton.AnimationState
+        //fireAnimationState = fireSkelton.AnimationState;
+
+
+        iceSkelton.AnimationName = "None";
+        fireSkelton.AnimationName = "None";
+
+
         sMaterial = generalMaterial;
-        
-        //penM.NowPen = PenM.PenCom.General;
+
+        linePoints = new List<Vector2>();
+
+        penM.NowPen = PenM.PenCom.General;
+        lineColor = generalColor;
     }
 
     // Update is called once per frame
@@ -88,36 +142,121 @@ public class LineDrawCon : MonoBehaviour
         {
             case PenM.PenCom.Ice:
                 sMaterial = iceMaterial;
+                lineMaterial = iceTexture;
                 lineColor = iceColor;
-                nowSkeletonAnima = iceSkelton;
-                name = "animetion";
+                //nowSkeletonAnima = iceSkelton;
+                iceSkelton.AnimationName = "animetion";
                 iceflag = true;
                 //Debug.Log(lineColor);
-                lineName(name);
                 break;
 
             case PenM.PenCom.Fire:
-                nowSkeletonAnima = fireSkelton;
-                name = "animetion";
-                fireName(name);
+                //nowSkeletonAnima = fireSkelton;
+                fireSkelton.AnimationName = "animetion";
+                fireflag = true;
                 break;
 
             case PenM.PenCom.General:
                 sMaterial = generalMaterial;
+                lineMaterial = ironTexture;
                 lineColor = generalColor;
-                nowSkeletonAnima = null;
-                nowSprite = ironSprite;
+                //nowSkeletonAnima = null;
                 break;
         }
+
+
+        //左クリックされたら
+        if (Input.GetMouseButtonDown(0))
+        {
+            _addLineObject();
+        }
+
+        //クリック中（ストローク中）
+        if (Input.GetMouseButton(0))
+        {
+            _addPositionDataToLineRenderer();
+        }
+
+        if (Input.GetMouseButtonUp(0))
+        {
+            linePoints = new List<Vector2>();
+        }
+
     }
 
-    public string lineName(string name)
+
+    //クリックしたら発動
+    void _addLineObject()
     {
-        return name;
+        //ゲームオブジェクト作成
+        lineObj = new GameObject();
+        //名前をLineにする
+        lineObj.name = "Line";
+        //lineObjにLineRendererコンポーネントを追加
+        lineObj.AddComponent<LineRenderer>();
+        //lineObjにEdgeCollider2Dコンポーネントを追加
+        EdgeCollider2D c = lineObj.AddComponent<EdgeCollider2D>();
+        //マテリアルのコライダーの追加
+        c.sharedMaterial = sMaterial;
+        //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
+        //lineObjを自身（Stroke）の子要素に設定
+        lineObj.transform.SetParent(transform);
+
+        _initRenderer();
     }
 
-    public string fireName(string name)
+
+    //lineObj初期化処理
+    void _initRenderer()
     {
-        return name;
+        //LineRendererを取得
+        lineRenderer = lineObj.GetComponent<LineRenderer>();
+        _myMat = new Material(lineMaterial);
+        lineRenderer.material = _myMat;
+        
+        //マテリアルの色を設定
+        //lineRenderer.material.color = lineDrawCon.LineColor;
+        //Debug.Log(lineRenderer.material.color);
+        lineMaterial.SetColor("_Color",lineColor);
+        lineRenderer.textureMode = LineTextureMode.Tile;
+
+        //ポジションカウントをリセット
+        lineRenderer.positionCount = 0;
+
+        //始点の太さを設定
+        lineRenderer.startWidth = lineWidth;
+        //終点の太さを設定
+        lineRenderer.endWidth = lineWidth;
+        //レイヤー指定
+        lineRenderer.renderingLayerMask = 2;
+        //レイヤーをGroundにする
+        lineObj.layer = 6;
+        //タグ変更
+        lineObj.tag = "Ground";
+        //Material変更
     }
+
+
+    void _addPositionDataToLineRenderer()
+    {
+        /*座標に関する処理*/
+        //マウス座標取得
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
+        //ワールド座標へ変換
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+        /*LineRendererに関する処理*/
+        //LineRendererのポイントを増やす
+        lineRenderer.positionCount += 1;
+        //LineRendererのポジションを設定
+        lineRenderer.SetPosition(lineRenderer.positionCount - 1, worldPos);
+
+        /*EdgeCollider2Dに関する処理*/
+        //ワールド座標をリストに追加
+        linePoints.Add(worldPos);
+        //EdgeCollider2Dのポイントを設定
+        lineObj.GetComponent<EdgeCollider2D>().SetPoints(linePoints);
+
+    }
+
 }
