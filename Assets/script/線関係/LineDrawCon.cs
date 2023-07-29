@@ -66,6 +66,10 @@ public class LineDrawCon : MonoBehaviour
     //private SkeletonAnimation nowSkeletonAnima;
 
 
+    private PasueDisplayC pasueDisplayC;
+    private PenDisplay penDisplayC;
+
+
     private bool iceflag = false;
     private bool fireflag = false;
 
@@ -115,9 +119,13 @@ public class LineDrawCon : MonoBehaviour
     void Start()
     {
         penM = FindObjectOfType<PenM>();
+        pasueDisplayC = FindObjectOfType<PasueDisplayC>();
+        penDisplayC = FindObjectOfType<PenDisplay>();
 
         iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
         fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
+
+
         //iceAnimationState = iceSkelton.AnimationState
         //fireAnimationState = fireSkelton.AnimationState;
 
@@ -164,23 +172,26 @@ public class LineDrawCon : MonoBehaviour
                 break;
         }
 
-
-        //左クリックされたら
-        if (Input.GetMouseButtonDown(0))
+        if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false )
         {
-            _addLineObject();
+            //左クリックされたら
+            if (Input.GetMouseButtonDown(0))
+            {
+                _addLineObject();
+            }
+
+            //クリック中（ストローク中）
+            if (Input.GetMouseButton(0))
+            {
+                _addPositionDataToLineRenderer();
+            }
+
+            if (Input.GetMouseButtonUp(0))
+            {
+                linePoints = new List<Vector2>();
+            }
         }
 
-        //クリック中（ストローク中）
-        if (Input.GetMouseButton(0))
-        {
-            _addPositionDataToLineRenderer();
-        }
-
-        if (Input.GetMouseButtonUp(0))
-        {
-            linePoints = new List<Vector2>();
-        }
 
     }
 

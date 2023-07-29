@@ -9,9 +9,9 @@ public class PenM : MonoBehaviour
     private TotalGM gm;
     private PenDisplay penDis;
     [SerializeField]
-    private Canvas penC;
+    private Canvas penCanvas;
     
-    private Canvas c;
+    private Canvas myCanvas;
 
     public enum PenCom
     {
@@ -33,10 +33,11 @@ public class PenM : MonoBehaviour
     {
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
-        c = this.GetComponent<Canvas>();
-        penC = penC.GetComponent<Canvas>();
 
-        c.enabled = false;
+        myCanvas = this.GetComponent<Canvas>();
+        penCanvas = penCanvas.GetComponent<Canvas>();
+
+        myCanvas.enabled = false;
     }
 
     // Update is called once per frame
@@ -58,8 +59,8 @@ public class PenM : MonoBehaviour
         //タイム戻す
         Time.timeScale = 1f;
 
-        penC.enabled = true;
-        c.enabled = false;
+        penCanvas.enabled = true;
+        myCanvas.enabled = false;
 
     }
 
@@ -75,8 +76,8 @@ public class PenM : MonoBehaviour
         //タイム戻す
         Time.timeScale = 1f;
 
-        penC.enabled = true;
-        c.enabled = false;
+        penCanvas.enabled = true;
+        myCanvas.enabled = false;
     }
 
     public void GeneralPen()
@@ -92,8 +93,8 @@ public class PenM : MonoBehaviour
 
         penDis.PenMenuFlag = false;
 
-        penC.enabled = true;
-        c.enabled = false;
+        penCanvas.enabled = true;
+        myCanvas.enabled = false;
     }
 
     public void GameBark()
@@ -105,7 +106,7 @@ public class PenM : MonoBehaviour
 
         penDis.PenMenuFlag = false;
 
-        penC.enabled = true;
-        c.enabled = false;
+        penCanvas.enabled = true;
+        myCanvas.enabled = false;
     }
 }

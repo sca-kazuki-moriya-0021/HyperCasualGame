@@ -8,13 +8,16 @@ public class PenDisplay : MonoBehaviour
     //ゲーマネ呼び出し
     private TotalGM gm;
 
+    private PasueDisplayC pasueDisplayC;
+
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
+
 
     [SerializeField]
     private Canvas penMCanvas;
 
-    private Canvas c;
+    private Canvas myCanvas;
 
     //ボタン用
     [SerializeField]
@@ -42,8 +45,10 @@ public class PenDisplay : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
+        pasueDisplayC = FindObjectOfType<PasueDisplayC>();
+
         penMCanvas = penMCanvas.GetComponent<Canvas>();
-        c = this.GetComponent<Canvas>();
+        myCanvas = this.GetComponent<Canvas>();
 
         penM = FindObjectOfType<PenM>();
 
@@ -75,11 +80,11 @@ public class PenDisplay : MonoBehaviour
     public void DisplayFlag()
     {
         //ペンの選択画面出す
-        if ( penMenuFlag == false)
+        if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
             Debug.Log("a");
             penMCanvas.enabled = true;
-            c.enabled = false;
+            myCanvas.enabled = false;
 
             Time.timeScale = 0f;
             penMenuFlag = true;
