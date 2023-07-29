@@ -59,6 +59,16 @@ public class PenDisplay : MonoBehaviour
     void Update()
     {
 
+        if(pasueDisplayC.MenuFlag == true)
+        {
+            myCanvas.enabled = false;
+        }
+        if(pasueDisplayC.MenuFlag == false && penMenuFlag == false)
+        {
+            myCanvas.enabled = true;
+        }
+
+
         switch (penM.NowPen)
         {
             case PenM.PenCom.Ice:

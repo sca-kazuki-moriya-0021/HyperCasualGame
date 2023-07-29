@@ -57,6 +57,16 @@ public class PasueDisplayC : MonoBehaviour
             Time.timeScale = 1f;
         }
 
+        if(penDisplay.PenMenuFlag == true)
+        {
+            myCanvas.enabled = false;
+        }
+
+        if(penDisplay.PenMenuFlag == false)
+        {
+            myCanvas.enabled = true;
+        }
+
     }
 
     public void PauseButton()
