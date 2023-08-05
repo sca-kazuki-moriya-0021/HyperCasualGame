@@ -195,7 +195,7 @@ public class MoveObject : MonoBehaviour
         RayAngleIns();
 
         //坂を上る処理
-        //SlopeUp();
+        SlopeUp();
 
         //コライダーがめり込んだ時
         //CollderMerging();
@@ -339,9 +339,9 @@ public class MoveObject : MonoBehaviour
     }
 
     //坂を上るときに使う関数
-    /*private float SlopeUp()
+    private float SlopeUp()
     {
-      if(fallFlag == false)
+      //if(fallFlag == false||)
       {
             tan = 0f;
             var forwardObject = GetForwardObject();
@@ -356,9 +356,8 @@ public class MoveObject : MonoBehaviour
             }
             if (forwardObject.normal.x == 1f)
             {
-                Debug.Log("進行方向変更フラグ変わったよ");
+                //Debug.Log("ジャンプする地点だよ");
                 tan = 0f;
-                dirSwitchFlag = true;
             }
       }
         return tan;
@@ -367,17 +366,10 @@ public class MoveObject : MonoBehaviour
     private RaycastHit2D GetForwardObject()
     {
         var direciton = transform.rotation;
-        if(direciton != defeltRotation)
-        {
-            Debug.DrawRay((Vector2)rayPosition.position, Vector2.left * rayRange, Color.green);
-            upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.left * rayRange, LayerMask.GetMask("Ground"));
-           
-        }
         if(direciton == defeltRotation)
         {
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.right * rayRange, Color.green);
-            upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
-         
+            upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange*0.5f), LayerMask.GetMask("Ground"));
         }
         return upHit2D;
     }
@@ -395,12 +387,12 @@ public class MoveObject : MonoBehaviour
         Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        if(tan <= 0 || tan >= Mathf.PI /9)
+        if(tan <= 2*0)
         {
             Debug.Log("進行方向変更フラグ変わったよ");
-            dirSwitchFlag = true;
+            transform.Translate(0f,1000*Time.deltaTime,0f);
         }
-    }*/
+    }
 
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
