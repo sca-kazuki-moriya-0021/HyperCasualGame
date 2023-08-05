@@ -9,6 +9,12 @@ using Spine.Unity;
 
 public class LineDrawCon : MonoBehaviour
 {
+    //ÉyÉìÇ≈ï`Ç¢ÇƒÇ¢ÇÈí∑Ç≥
+    private float drawTime;
+    private float iceDrawTime;
+    private float fireDrawTime;
+
+
     //êF
     [SerializeField]
     private Material iceTexture;
@@ -64,7 +70,6 @@ public class LineDrawCon : MonoBehaviour
     private Spine.AnimationState fireAnimationState = default;
 
     //private SkeletonAnimation nowSkeletonAnima;
-
 
     private PasueDisplayC pasueDisplayC;
     private PenDisplay penDisplayC;
