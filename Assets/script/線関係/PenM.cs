@@ -51,8 +51,6 @@ public class PenM : MonoBehaviour
         //ƒyƒ“‚Ì“ü‚ê‘Ö‚¦
 
         /**/
-
-
         nowPen = PenCom.Fire;
 
         penDis.PenMenuFlag = false;

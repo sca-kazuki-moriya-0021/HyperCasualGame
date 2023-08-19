@@ -74,7 +74,6 @@ public class PenDisplay : MonoBehaviour
             case PenM.PenCom.Ice:
                 Debug.Log("oir");
                 penMButton.GetComponent<Image>().sprite = iceSprite;
-
                 break;
 
             case PenM.PenCom.Fire:

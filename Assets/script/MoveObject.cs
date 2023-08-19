@@ -31,6 +31,10 @@ public class MoveObject : MonoBehaviour
     //　レイを飛ばす場所
     [SerializeField]
     private Transform rayPosition;
+    [SerializeField]
+    private Vector2 upOffset;
+    [SerializeField]
+    private Vector2 downOffset;
     //　レイを飛ばす距離
     [SerializeField]
     private float rayRange;
@@ -88,7 +92,9 @@ public class MoveObject : MonoBehaviour
 
     //タンジェント
     private float tan;
-    private RaycastHit2D upHit2D;
+    private RaycastHit2D headHitObject;
+    private RaycastHit2D footHitObject;
+    private RaycastHit2D forwardHitObject;
 
     //重力　使うかはわからん
     [SerializeField]
@@ -194,8 +200,10 @@ public class MoveObject : MonoBehaviour
         //レイの角度計算
         RayAngleIns();
 
-        //坂を上る処理
+        //坂をジャンプする処理
         SlopeUp();
+
+        Debug.Log(fallFlag);
 
         //コライダーがめり込んだ時
         //CollderMerging();
@@ -278,8 +286,6 @@ public class MoveObject : MonoBehaviour
             {
                 { 
                     /*hitObjectRotaion = hit2D.transform.rotation;
-                    transform.rotation = new Quaternion(0, 0, 0, 0);
-                    transform.rotation = hitObjectRotaion;
                     objectRotaion = hitObjectRotaion;*/
                 }
                 Debug.Log("ari");
@@ -313,6 +319,7 @@ public class MoveObject : MonoBehaviour
             return;
         }
     }
+
     //下にオブジェクトがあったときhit2Dを返す
     private RaycastHit2D GetDownObject()
     {
@@ -320,6 +327,7 @@ public class MoveObject : MonoBehaviour
 
         return hit2D;
     }
+
     //下方向にヒットした時の場合分け
     private bool IsOnGrounds(RaycastHit2D h)
     {
@@ -338,23 +346,24 @@ public class MoveObject : MonoBehaviour
         return false;
     }
 
-    //坂を上るときに使う関数
+    //坂をジャンプするときに使う関数
     private float SlopeUp()
     {
       //if(fallFlag == false||)
       {
             tan = 0f;
-            var forwardObject = GetForwardObject();
+            var GetObject = ForwardObject();
 
-            if (forwardObject && forwardObject.transform.gameObject.CompareTag("Ground"))
+            if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
             {
                 return_tan();
             }
-            else if (forwardObject && forwardObject.transform.gameObject.CompareTag("IceGround"))
+            else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
             {
                 return_tan();
             }
-            if (forwardObject.normal.x == 1f)
+
+            if (GetObject.normal.x == 1f)
             {
                 //Debug.Log("ジャンプする地点だよ");
                 tan = 0f;
@@ -362,35 +371,32 @@ public class MoveObject : MonoBehaviour
       }
         return tan;
     }
-    //前方向にレイを飛ばす
-    private RaycastHit2D GetForwardObject()
+
+    //横方向に飛ばす
+    private RaycastHit2D ForwardObject()
     {
-        var direciton = transform.rotation;
-        if(direciton == defeltRotation)
-        {
-            Debug.DrawRay((Vector2)rayPosition.position, Vector2.right * rayRange, Color.green);
-            upHit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange*0.5f), LayerMask.GetMask("Ground"));
-        }
-        return upHit2D;
+        Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
+        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
+        return forwardHitObject;
     }
 
     //タンジェント計算＆方向判別
     private void return_tan()
     {
         //タンジェント計算
-        if (GetForwardObject().normal.x > 0f)
+        if (ForwardObject().normal.x > 0f)
         {
-            tan = Mathf.PI * 0.5f + Mathf.Atan(GetForwardObject().normal.y / Mathf.Abs(GetForwardObject().normal.x));
+            tan = Mathf.PI * 0.5f + Mathf.Atan(ForwardObject().normal.y / Mathf.Abs(ForwardObject().normal.x));
         }
 
         tan = Mathf.Tan(tan);
         Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        if(tan <= 2*0)
+        if(tan <= 0 || tan >= 3.73205)
         {
-            Debug.Log("進行方向変更フラグ変わったよ");
-            transform.Translate(0f,1000*Time.deltaTime,0f);
+            Debug.Log("飛んだ");
+            StartCoroutine(jumpCoroutine());
         }
     }
 
@@ -493,4 +499,42 @@ public class MoveObject : MonoBehaviour
     }*/
 
  
+    private IEnumerator jumpCoroutine()
+    {
+        Vector3 pos = this.transform.position;
+        pos.y += 0.1f;
+        while (true)
+        {
+            //var headGetObject = HeadGetForwardObject();
+            var footGetObject = FootGetForwardObject();
+
+            if(footHitObject)
+            {
+                this.transform.position += pos;
+                fallFlag = true;
+                Debug.Log("とびすぎ");
+                yield return null;
+            }
+            if (!footHitObject)
+            {
+               break;
+            }
+        }
+    }
+
+    //頭の上から横方向にレイを飛ばす
+    private RaycastHit2D HeadGetForwardObject()
+    {
+        Debug.DrawRay((Vector2)rayPosition.position + upOffset, Vector2.right * rayRange, Color.green);
+        headHitObject = Physics2D.Linecast((Vector2)rayPosition.position + upOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
+        return headHitObject;
+    }
+
+    //足元から横方向にレイを飛ばす
+    private RaycastHit2D FootGetForwardObject()
+    {
+        Debug.DrawRay((Vector2)rayPosition.position + downOffset, Vector2.right * rayRange, Color.green);
+        footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
+        return footHitObject;
+    }
 }
