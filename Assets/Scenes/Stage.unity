@@ -893,7 +893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!212 &1442091176
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1124,6 +1124,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rayPosition: {fileID: 1442091177}
+  upOffset: {x: 0, y: 0}
+  downOffset: {x: 0, y: 0}
   rayRange: 1
   _graviry: 9.80655
 --- !u!1001 &1505608287

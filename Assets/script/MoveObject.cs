@@ -70,6 +70,9 @@ public class MoveObject : MonoBehaviour
     private bool gameOverFlag = false;
     //クリア
     private bool clearFlag = false;
+    //ジャンプ
+    private bool jumpFlag = false;
+
     #endregion
 
     //RigidBodyとカプセルコライダーの定義
@@ -87,8 +90,6 @@ public class MoveObject : MonoBehaviour
 
     //方向判別
     private bool dirSwitchFlag = false;
-    //どっちの方向に線をひいたか
-    private bool rightLine = true;
 
     //タンジェント
     private float tan;
@@ -100,6 +101,9 @@ public class MoveObject : MonoBehaviour
     [SerializeField]
     private float _graviry = 9.80655f;
     private Vector3 _moveVelocity;
+
+
+    private bool jumpTime = false;
 
     #region//効果音関係
     private AudioSource audios = null;
@@ -170,8 +174,9 @@ public class MoveObject : MonoBehaviour
         }
         //移動
         //trueなら右
-        if (rightLine == true)
+        if (jumpFlag == false)
         {
+
             if (iceWalkFlag == false)
             {
                 transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
@@ -181,28 +186,22 @@ public class MoveObject : MonoBehaviour
                 transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
         }
-        /*if (rightLine == false)//falseなら左
-        {
-            if (iceWalkFlag == false)
-            {
-                transform.Translate(-xMoveFloorSpeed * Time.deltaTime, 0, 0);
-            }
-            if (iceWalkFlag == true)
-            {
-                transform.Translate(-xMoveIceSpeed * Time.deltaTime, 0, 0);
-            }
-        }*/
 
+    
     }
 
     private void FixedUpdate()
     {
+        //坂をジャンプする処理
+        if(jumpTime == false)
+        {
+            SlopeUp();
+        }
+
+
         //レイの角度計算
         RayAngleIns();
-
-        //坂をジャンプする処理
-        SlopeUp();
-
+        
         Debug.Log(fallFlag);
 
         //コライダーがめり込んだ時
@@ -220,7 +219,7 @@ public class MoveObject : MonoBehaviour
 
         //どちらにいくかの判定
         {
-            if (dirSwitchFlag == true)
+           /* if (dirSwitchFlag == true)
             {
                 Debug.Log("aik");
                 countTime++;
@@ -237,13 +236,12 @@ public class MoveObject : MonoBehaviour
                     countTime = 0;
                 }
                 dirSwitchFlag = false;
-            }
+            }*/
         }
 
         //コライダー同士がめりこんだとき
         //Physics2D.OverlapPointAll()
         
-
     }
 
     //下方向レイの角度計算用
@@ -281,6 +279,7 @@ public class MoveObject : MonoBehaviour
                 }
                 //Debug.Log("ki");
                 fallFlag = false;
+                jumpFlag = false;
             }
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
@@ -288,9 +287,10 @@ public class MoveObject : MonoBehaviour
                     /*hitObjectRotaion = hit2D.transform.rotation;
                     objectRotaion = hitObjectRotaion;*/
                 }
-                Debug.Log("ari");
+                //Debug.Log("ari");
                 fallFlag = false;
                 iceWalkFlag = true;
+                jumpFlag = false;
             }
         }
         else
@@ -346,6 +346,7 @@ public class MoveObject : MonoBehaviour
         return false;
     }
 
+
     //坂をジャンプするときに使う関数
     private float SlopeUp()
     {
@@ -365,7 +366,6 @@ public class MoveObject : MonoBehaviour
 
             if (GetObject.normal.x == 1f)
             {
-                //Debug.Log("ジャンプする地点だよ");
                 tan = 0f;
             }
       }
@@ -376,7 +376,7 @@ public class MoveObject : MonoBehaviour
     private RaycastHit2D ForwardObject()
     {
         Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
+        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
         return forwardHitObject;
     }
 
@@ -390,15 +390,86 @@ public class MoveObject : MonoBehaviour
         }
 
         tan = Mathf.Tan(tan);
-        Debug.Log(tan);
+        //Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        if(tan <= 0 || tan >= 3.73205)
+        //if(tan <= 0)
         {
-            Debug.Log("飛んだ");
-            StartCoroutine(jumpCoroutine());
+
+            Debug.Log("確かめ中");
+           
+
+            var footGetObject = FootGetForwardObject();
+            var headGetObject = HeadGetForwardObject();
+           
+            
+            //Vector3 a = footGetObject.transform.position;
+            //Jumpvalue(a);
+
+            //Debug.Log(footGetObject.transform.position);
+
+            while(transform.position.y <= footGetObject.y + 0.04f)
+            {
+                Debug.Log("ジャンプしているよ");
+                Vector3 pos = this.transform.position;
+                pos.y += 0.01f;
+                this.transform.position = pos;
+                jumpFlag = true;
+                fallFlag = true;
+                if (jumpFlag == true)
+                {
+                    transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.01f, 0, 0);
+                }
+
+            }
+            jumpTime = false;
         }
     }
+
+    //頭の上から横方向にレイを飛ばす
+    private RaycastHit2D HeadGetForwardObject()
+    {
+        Debug.DrawRay((Vector2)rayPosition.position + upOffset, Vector2.right * rayRange, Color.green);
+        headHitObject = Physics2D.Linecast((Vector2)rayPosition.position + upOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
+        return headHitObject;
+    }
+
+    //足元から横方向にレイを飛ばす
+    private Vector2 FootGetForwardObject()
+    {
+        Debug.DrawRay((Vector2)rayPosition.position + downOffset, Vector2.right * rayRange, Color.green);
+        var footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
+        Vector2 a = Vector2.zero;
+        
+        while(footHitObject.collider != null)
+        {
+            jumpTime = true;
+            footHitObject= new RaycastHit2D();
+            a.y +=0.01f;
+            if(a.y >= 5.0f)
+            {
+                break;
+            }
+            footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset + a, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
+        }
+        return a + (Vector2)transform.position;
+
+    }
+
+
+
+    /*private Vector3 Jumpvalue(Vector3 a)
+    {
+       if(jumpFlag == false)
+       {
+           Vector3 v = new Vector3(a.x, a.y +7 ,a.z);
+           return a + v;
+       }
+       if(jumpFlag == true)
+       {
+            return a;
+       }
+    }*/
 
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
@@ -499,42 +570,4 @@ public class MoveObject : MonoBehaviour
     }*/
 
  
-    private IEnumerator jumpCoroutine()
-    {
-        Vector3 pos = this.transform.position;
-        pos.y += 0.1f;
-        while (true)
-        {
-            //var headGetObject = HeadGetForwardObject();
-            var footGetObject = FootGetForwardObject();
-
-            if(footHitObject)
-            {
-                this.transform.position += pos;
-                fallFlag = true;
-                Debug.Log("とびすぎ");
-                yield return null;
-            }
-            if (!footHitObject)
-            {
-               break;
-            }
-        }
-    }
-
-    //頭の上から横方向にレイを飛ばす
-    private RaycastHit2D HeadGetForwardObject()
-    {
-        Debug.DrawRay((Vector2)rayPosition.position + upOffset, Vector2.right * rayRange, Color.green);
-        headHitObject = Physics2D.Linecast((Vector2)rayPosition.position + upOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
-        return headHitObject;
-    }
-
-    //足元から横方向にレイを飛ばす
-    private RaycastHit2D FootGetForwardObject()
-    {
-        Debug.DrawRay((Vector2)rayPosition.position + downOffset, Vector2.right * rayRange, Color.green);
-        footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
-        return footHitObject;
-    }
 }
