@@ -139,6 +139,7 @@ public class LineDrawCon : MonoBehaviour
         //iceAnimationState = iceSkelton.AnimationState
         //fireAnimationState = fireSkelton.AnimationState;
 
+        Input.multiTouchEnabled = false;
 
         iceSkelton.AnimationName = "None";
         fireSkelton.AnimationName = "None";
