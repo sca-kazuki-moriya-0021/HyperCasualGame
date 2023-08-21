@@ -11,6 +11,7 @@ public class MoveObject : MonoBehaviour
     #region//プレイヤー関係
     //x方向に進むスピード(一般的)
     private float xMoveFloorSpeed = 6.0f;
+    private float yMoveSpead  = 0.01f;
     //x方向に進むスピード(氷)
     private float xMoveIceSpeed = 7.0f;
     //デフォルトの角度
@@ -82,6 +83,13 @@ public class MoveObject : MonoBehaviour
     //
     readonly Collider[] _result = new Collider[5];
 
+    //hitしたコライダー検知用
+    private Collider2D hitCollider;
+    private GameObject hitObject;
+    //hitしたコライダー長さ
+    private float xLen;
+    private float yLen;
+
     //スプリクト用
     private TotalGM gm;
 
@@ -101,9 +109,6 @@ public class MoveObject : MonoBehaviour
     [SerializeField]
     private float _graviry = 9.80655f;
     private Vector3 _moveVelocity;
-
-
-    private bool jumpTime = false;
 
     #region//効果音関係
     private AudioSource audios = null;
@@ -192,12 +197,11 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //坂をジャンプする処理
-        if(jumpTime == false)
+        //坂角度計算とジャンプ処理
+        if(jumpFlag == false)
         {
             SlopeUp();
         }
-
 
         //レイの角度計算
         RayAngleIns();
@@ -355,19 +359,24 @@ public class MoveObject : MonoBehaviour
             tan = 0f;
             var GetObject = ForwardObject();
 
-            if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
-            {
-                return_tan();
-            }
-            else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
-            {
-                return_tan();
-            }
+            hitCollider = GetObject.collider;
+            
+           
+           if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
+           {
+              return_tan();
+           }
+           else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
+           {
+                    return_tan();
+           }
 
-            if (GetObject.normal.x == 1f)
-            {
-                tan = 0f;
-            }
+           if (GetObject.normal.x == 1f)
+           {
+                    tan = 0f;
+           }
+            
+
       }
         return tan;
     }
@@ -377,10 +386,14 @@ public class MoveObject : MonoBehaviour
     {
         Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
         forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
-        return forwardHitObject;
+        /*if (forwardHitObject)
+        {
+            hitObject = forwardHitObject.collider.gameObject;
+        }*/
+        return (forwardHitObject);
     }
-
-    //タンジェント計算＆方向判別
+    
+    //タンジェント計算
     private void return_tan()
     {
         //タンジェント計算
@@ -393,49 +406,43 @@ public class MoveObject : MonoBehaviour
         //Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        //if(tan <= 0)
+        if(tan <= Mathf.PI / 2)
         {
-
-            Debug.Log("確かめ中");
-           
-
-            var footGetObject = FootGetForwardObject();
-            var headGetObject = HeadGetForwardObject();
-           
-            
-            //Vector3 a = footGetObject.transform.position;
-            //Jumpvalue(a);
-
-            //Debug.Log(footGetObject.transform.position);
-
-            while(transform.position.y <= footGetObject.y + 0.04f)
+            Debug.Log("タグ変更");
+            hitCollider.gameObject.tag = "Wall";
+            if(hitCollider.tag == "Wall")
             {
-                Debug.Log("ジャンプしているよ");
-                Vector3 pos = this.transform.position;
-                pos.y += 0.01f;
-                this.transform.position = pos;
-                jumpFlag = true;
-                fallFlag = true;
-                if (jumpFlag == true)
-                {
-                    transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.01f, 0, 0);
-                }
-
+                JumpCon();
             }
-            jumpTime = false;
         }
     }
+    
+    //ジャンプ操作
+    private void JumpCon()
+    {
+        Debug.Log("確かめ中");
+
+        xLen =hitCollider.bounds.max.x - hitCollider.bounds.min.x;
+        yLen =hitCollider.bounds.max.y - hitCollider.bounds.min.y;
+        while(transform.position.y <= yLen)
+        {
+            transform.Translate(0,yMoveSpead * Time.deltaTime * 0.01f,0);
+        }
+        jumpFlag = true;
+    }
+
+   
 
     //頭の上から横方向にレイを飛ばす
-    private RaycastHit2D HeadGetForwardObject()
+    /*private RaycastHit2D HeadGetForwardObject()
     {
         Debug.DrawRay((Vector2)rayPosition.position + upOffset, Vector2.right * rayRange, Color.green);
         headHitObject = Physics2D.Linecast((Vector2)rayPosition.position + upOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
         return headHitObject;
-    }
+    }*/
 
     //足元から横方向にレイを飛ばす
-    private Vector2 FootGetForwardObject()
+    /*private Vector2 FootGetForwardObject()
     {
         Debug.DrawRay((Vector2)rayPosition.position + downOffset, Vector2.right * rayRange, Color.green);
         var footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
@@ -454,22 +461,8 @@ public class MoveObject : MonoBehaviour
         }
         return a + (Vector2)transform.position;
 
-    }
-
-
-
-    /*private Vector3 Jumpvalue(Vector3 a)
-    {
-       if(jumpFlag == false)
-       {
-           Vector3 v = new Vector3(a.x, a.y +7 ,a.z);
-           return a + v;
-       }
-       if(jumpFlag == true)
-       {
-            return a;
-       }
     }*/
+
 
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
