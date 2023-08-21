@@ -29,6 +29,10 @@ public class PenDisplay : MonoBehaviour
     [SerializeField]
     private Sprite iceSprite;
 
+    //効果音用
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip sound1;
 
     private PenM penM;
 
@@ -38,8 +42,6 @@ public class PenDisplay : MonoBehaviour
         get { return this.penMenuFlag; }
         set { this.penMenuFlag = value; }
     }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -53,6 +55,8 @@ public class PenDisplay : MonoBehaviour
         penM = FindObjectOfType<PenM>();
 
         penMButton = penMButton.GetComponent<Button>();
+
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -91,7 +95,8 @@ public class PenDisplay : MonoBehaviour
         //ペンの選択画面出す
         if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
-            Debug.Log("a");
+            audioSource.PlayOneShot(sound1);
+
             penMCanvas.enabled = true;
             myCanvas.enabled = false;
 

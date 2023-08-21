@@ -5,10 +5,15 @@ using UnityEngine.SceneManagement;
 
 public class TitleNexrStage : MonoBehaviour
 {
+    //Œø‰Ê‰¹—p
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip sound1;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -19,11 +24,13 @@ public class TitleNexrStage : MonoBehaviour
 
     public void NextStage()
     {
-       SceneManager.LoadScene("Stage");
+        audioSource.PlayOneShot(sound1);
+        SceneManager.LoadScene("Stage");
     }
 
     public void StageSelect()
     {
+        audioSource.PlayOneShot(sound1);
         SceneManager.LoadScene("StageSelect");
     }
     

@@ -13,6 +13,12 @@ public class PenM : MonoBehaviour
     
     private Canvas myCanvas;
 
+    //効果音用
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip sound1;
+
+
     public enum PenCom
     {
         Unknown = 0,
@@ -34,6 +40,7 @@ public class PenM : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
 
+        audioSource = GetComponent<AudioSource>();
         myCanvas = this.GetComponent<Canvas>();
         penCanvas = penCanvas.GetComponent<Canvas>();
 
@@ -49,8 +56,8 @@ public class PenM : MonoBehaviour
     public void FirePen()
     {
         //ペンの入れ替え
+        audioSource.PlayOneShot(sound1);
 
-        /**/
         nowPen = PenCom.Fire;
 
         penDis.PenMenuFlag = false;
@@ -65,9 +72,9 @@ public class PenM : MonoBehaviour
     public void IcePen()
     {
         //ペンの入れ替え
+        audioSource.PlayOneShot(sound1);
 
         nowPen = PenCom.Ice;
-
 
         penDis.PenMenuFlag = false;
 
@@ -81,8 +88,7 @@ public class PenM : MonoBehaviour
     public void GeneralPen()
     {
         //ペンの入れ替え
-
-
+        audioSource.PlayOneShot(sound1);
 
         nowPen = PenCom.General;
 
@@ -97,7 +103,7 @@ public class PenM : MonoBehaviour
 
     public void GameBark()
     {
-
+        audioSource.PlayOneShot(sound1);
 
         //タイム戻す
         Time.timeScale = 1f;

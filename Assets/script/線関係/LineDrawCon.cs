@@ -206,7 +206,7 @@ public class LineDrawCon : MonoBehaviour
             if (Input.GetMouseButtonUp(0))
             {
                sEffectFlag =false;
-                linePoints = new List<Vector2>();
+               linePoints = new List<Vector2>();
             }
         }
 
