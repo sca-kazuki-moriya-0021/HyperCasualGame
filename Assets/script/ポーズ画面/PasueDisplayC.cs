@@ -23,6 +23,10 @@ public class PasueDisplayC : MonoBehaviour
     //一回だけ入るときのフラグ
     private bool onlyFlag = false;
 
+    [SerializeField]
+    private AudioClip sound1;
+    private AudioSource audioSource;
+
     //ゲッターセッター
     public bool MenuFlag
     {
@@ -46,6 +50,7 @@ public class PasueDisplayC : MonoBehaviour
 
         pauseCanvas = pauseCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -74,6 +79,8 @@ public class PasueDisplayC : MonoBehaviour
         //ポーズ画面出す
         if (menuFlag == false  && penDisplay.PenMenuFlag == false)
         {
+            audioSource.PlayOneShot(sound1);
+
             Debug.Log("ポーズ画面押されたよ");
            Time.timeScale = 0f;
 
