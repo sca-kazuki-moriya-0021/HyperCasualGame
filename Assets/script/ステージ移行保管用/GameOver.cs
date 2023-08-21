@@ -5,6 +5,11 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
+    //効果音用
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip sound1;
+
     //スプリクト用
     private TotalGM gm;
 
@@ -12,6 +17,7 @@ public class GameOver : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -22,6 +28,7 @@ public class GameOver : MonoBehaviour
 
     public void ReloadStage()
     {
+        audioSource.PlayOneShot(sound1);
         gm.ReloadClearSchene();
     }
 }
