@@ -198,6 +198,7 @@ public class MoveObject : MonoBehaviour
     private void FixedUpdate()
     {
         //坂角度計算とジャンプ処理
+        if(jumpFlag = false)
         SlopeUp();
 
         //レイの角度計算
@@ -408,8 +409,6 @@ public class MoveObject : MonoBehaviour
             {
                 JumpCon();
             }
-
-            jumpFlag = true;
         }
 
     }
