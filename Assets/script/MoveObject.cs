@@ -380,7 +380,7 @@ public class MoveObject : MonoBehaviour
     private RaycastHit2D ForwardObject()
     {
         Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 4f), LayerMask.GetMask("Ground"));
+        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 5f), LayerMask.GetMask("Ground"));
         /*if (forwardHitObject)
         {
             hitObject = forwardHitObject.collider.gameObject;
@@ -424,23 +424,21 @@ public class MoveObject : MonoBehaviour
         xLen = hitCollider.bounds.max.x - hitCollider.bounds.min.x;
         yLen = hitCollider.bounds.max.y - hitCollider.bounds.min.y;
         //pDis =hitCollider.bounds.min.x - transform.position.x;
-        pVDis = new Vector2((hitCollider.bounds.max.x - transform.position.x)*2, (hitCollider.bounds.max.y - hitCollider.bounds.min.y)*2);
+        pVDis = new Vector2((hitCollider.bounds.max.x - transform.position.x), (hitCollider.bounds.max.y - hitCollider.bounds.min.y));
         pVDis =  pVDis.normalized;
 
         if(transform.position.y <= hitCollider.bounds.max.y + 2f)
         {
-            rb.AddForce(pVDis * moveSpeed * 2 , ForceMode2D.Force);
+            rb.AddForce(pVDis * moveSpeed * 2f, ForceMode2D.Force);
             jumpFlag = true;
-
-
-            if (transform.position.y > hitCollider.bounds.max.y + 2f)
-            {
-                rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
-
-                jumpFlag = false;
-            }
         }
 
+        if (transform.position.y > hitCollider.bounds.max.y + 2f)
+        {
+            rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
+
+            jumpFlag = false;
+        }
 
     }
 

@@ -12,6 +12,10 @@ public class PasueC : MonoBehaviour
     private Canvas pDisplayCanvas;
 
     private Canvas myCanvas;
+
+    [SerializeField]
+    private AudioClip sound1;
+    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +24,7 @@ public class PasueC : MonoBehaviour
 
         myCanvas = this.GetComponent<Canvas>();
         pDisplayCanvas = pDisplayCanvas.GetComponent<Canvas>();
+        audioSource = GetComponent<AudioSource>();
 
         myCanvas.enabled = false;
     }

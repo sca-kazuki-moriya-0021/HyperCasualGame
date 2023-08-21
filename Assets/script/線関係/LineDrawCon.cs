@@ -14,7 +14,6 @@ public class LineDrawCon : MonoBehaviour
     private float iceDrawTime;
     private float fireDrawTime;
 
-
     //色
     [SerializeField]
     private Material iceTexture;
@@ -74,13 +73,18 @@ public class LineDrawCon : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private PenDisplay penDisplayC;
 
-
     private bool iceflag = false;
     private bool fireflag = false;
 
-
     //ペンのスプリクト
     private PenM penM;
+
+    //効果音用
+    private AudioSource audioSource;
+    [SerializeField]
+    private AudioClip sound1;
+
+    private bool sEffectFlag = false;
 
     /*public Color LineColor
     {
@@ -129,6 +133,7 @@ public class LineDrawCon : MonoBehaviour
 
         iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
         fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
+        audioSource = GetComponent<AudioSource>();
 
 
         //iceAnimationState = iceSkelton.AnimationState
@@ -182,17 +187,25 @@ public class LineDrawCon : MonoBehaviour
             //左クリックされたら
             if (Input.GetMouseButtonDown(0))
             {
+              
                 _addLineObject();
             }
 
             //クリック中（ストローク中）
             if (Input.GetMouseButton(0))
             {
+                if(sEffectFlag == false)
+                {
+                    audioSource.PlayOneShot(sound1);
+                    sEffectFlag = true;
+                }
                 _addPositionDataToLineRenderer();
+                
             }
 
             if (Input.GetMouseButtonUp(0))
             {
+               sEffectFlag =false;
                 linePoints = new List<Vector2>();
             }
         }
@@ -272,6 +285,7 @@ public class LineDrawCon : MonoBehaviour
         linePoints.Add(worldPos);
         //EdgeCollider2Dのポイントを設定
         lineObj.GetComponent<EdgeCollider2D>().SetPoints(linePoints);
+
 
     }
 
