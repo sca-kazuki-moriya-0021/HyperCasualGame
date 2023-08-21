@@ -14,6 +14,7 @@ TagManager:
   - OutSide
   - Flameline
   - FlameGround
+  - Wall
   layers:
   - Default
   - TransparentFX

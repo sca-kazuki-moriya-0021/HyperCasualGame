@@ -85,10 +85,11 @@ public class MoveObject : MonoBehaviour
 
     //hitしたコライダー検知用
     private Collider2D hitCollider;
-    private GameObject hitObject;
     //hitしたコライダー長さ
     private float xLen;
     private float yLen;
+    //キャラからhitしたオブジェクトの距離
+    private float pDis;
 
     //スプリクト用
     private TotalGM gm;
@@ -198,10 +199,7 @@ public class MoveObject : MonoBehaviour
     private void FixedUpdate()
     {
         //坂角度計算とジャンプ処理
-        if(jumpFlag == false)
-        {
-            SlopeUp();
-        }
+        SlopeUp();
 
         //レイの角度計算
         RayAngleIns();
@@ -414,7 +412,10 @@ public class MoveObject : MonoBehaviour
             {
                 JumpCon();
             }
+
+            jumpFlag = true;
         }
+
     }
     
     //ジャンプ操作
@@ -424,14 +425,12 @@ public class MoveObject : MonoBehaviour
 
         xLen =hitCollider.bounds.max.x - hitCollider.bounds.min.x;
         yLen =hitCollider.bounds.max.y - hitCollider.bounds.min.y;
-        while(transform.position.y <= yLen)
+        pDis =hitCollider.bounds.max.x - transform.position.x;
+        while (transform.position.y <= yLen || transform.position.x <= pDis)
         {
-            transform.Translate(0,yMoveSpead * Time.deltaTime * 0.01f,0);
+            transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.01f ,yMoveSpead * Time.deltaTime * 0.01f,0);
         }
-        jumpFlag = true;
     }
-
-   
 
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
