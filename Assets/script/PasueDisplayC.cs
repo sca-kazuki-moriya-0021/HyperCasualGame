@@ -53,7 +53,6 @@ public class PasueDisplayC : MonoBehaviour
     {
         if(menuFlag == false)
         {
-            Debug.Log("asiki");
             Time.timeScale = 1f;
         }
 

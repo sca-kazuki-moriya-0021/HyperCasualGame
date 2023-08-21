@@ -11,7 +11,7 @@ public class MoveObject : MonoBehaviour
     #region//プレイヤー関係
     //x方向に進むスピード(一般的)
     private float xMoveFloorSpeed = 6.0f;
-    private float yMoveSpead  = 0.01f;
+    private float yMoveSpead  =1.0f;
     //x方向に進むスピード(氷)
     private float xMoveIceSpeed = 7.0f;
     //デフォルトの角度
@@ -204,7 +204,6 @@ public class MoveObject : MonoBehaviour
         //レイの角度計算
         RayAngleIns();
         
-        Debug.Log(fallFlag);
 
         //コライダーがめり込んだ時
         //CollderMerging();
@@ -373,8 +372,6 @@ public class MoveObject : MonoBehaviour
            {
                     tan = 0f;
            }
-            
-
       }
         return tan;
     }
@@ -422,13 +419,15 @@ public class MoveObject : MonoBehaviour
     private void JumpCon()
     {
         Debug.Log("確かめ中");
+        Debug.Log("キャラ:"+transform.position.y);
+        Debug.Log("ヒットしたオブジェクト:"+hitCollider.bounds.max.y);
 
         xLen =hitCollider.bounds.max.x - hitCollider.bounds.min.x;
         yLen =hitCollider.bounds.max.y - hitCollider.bounds.min.y;
         pDis =hitCollider.bounds.max.x - transform.position.x;
-        while (transform.position.y <= yLen || transform.position.x <= pDis)
+        while (transform.position.y <= hitCollider.bounds.max.y + 2f)
         {
-            transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.01f ,yMoveSpead * Time.deltaTime * 0.01f,0);
+            
         }
     }
 
