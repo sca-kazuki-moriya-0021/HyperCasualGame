@@ -11,9 +11,10 @@ public class MoveObject : MonoBehaviour
     #region//プレイヤー関係
     //x方向に進むスピード(一般的)
     private float xMoveFloorSpeed = 6.0f;
-    private float yMoveSpead  =1.0f;
     //x方向に進むスピード(氷)
     private float xMoveIceSpeed = 7.0f;
+    //ジャンプ中に使う速度
+    private float moveSpeed = 1f;
     //デフォルトの角度
     private Quaternion defeltRotation;
     #endregion
@@ -58,6 +59,22 @@ public class MoveObject : MonoBehaviour
     //　どのぐらいの高さからダメージを与えるか
     //[SerializeField]
     //private float takeDamageDistance = 3f;
+
+    //ヒットしたオブジェクトの角度
+    private Quaternion hitObjectRotaion;
+
+    private RaycastHit2D headHitObject;
+    private RaycastHit2D footHitObject;
+    private RaycastHit2D forwardHitObject;
+
+    //hitしたコライダー長さ
+    private float xLen;
+    private float yLen;
+    private Vector2 xVLen;
+    private Vector2 yVLen;
+    //キャラからhitしたオブジェクトの距離
+    private float pDis;
+    private Vector2 pVDis;
     #endregion
 
     #region//状況に応じて使用するフラグ関係
@@ -85,26 +102,15 @@ public class MoveObject : MonoBehaviour
 
     //hitしたコライダー検知用
     private Collider2D hitCollider;
-    //hitしたコライダー長さ
-    private float xLen;
-    private float yLen;
-    //キャラからhitしたオブジェクトの距離
-    private float pDis;
 
     //スプリクト用
     private TotalGM gm;
-
-    //ヒットしたオブジェクトの角度
-    private Quaternion hitObjectRotaion;
 
     //方向判別
     private bool dirSwitchFlag = false;
 
     //タンジェント
     private float tan;
-    private RaycastHit2D headHitObject;
-    private RaycastHit2D footHitObject;
-    private RaycastHit2D forwardHitObject;
 
     //重力　使うかはわからん
     [SerializeField]
@@ -127,13 +133,6 @@ public class MoveObject : MonoBehaviour
 
     //コルーチン戻り値用
     private Coroutine lineCast;
-
-    SelectAngle selectAngle;
-
-    enum SelectAngle
-    {
-        
-    }
 
     public bool GameOverFlag
     {
@@ -422,13 +421,26 @@ public class MoveObject : MonoBehaviour
         Debug.Log("キャラ:"+transform.position.y);
         Debug.Log("ヒットしたオブジェクト:"+hitCollider.bounds.max.y);
 
-        xLen =hitCollider.bounds.max.x - hitCollider.bounds.min.x;
-        yLen =hitCollider.bounds.max.y - hitCollider.bounds.min.y;
-        pDis =hitCollider.bounds.max.x - transform.position.x;
-        while (transform.position.y <= hitCollider.bounds.max.y + 2f)
+
+        xLen = hitCollider.bounds.max.x - hitCollider.bounds.min.x;
+        yLen = hitCollider.bounds.max.y - hitCollider.bounds.min.y;
+        //pDis =hitCollider.bounds.min.x - transform.position.x;
+        pVDis = new Vector2(hitCollider.bounds.min.x - transform.position.x, hitCollider.bounds.max.y - hitCollider.bounds.min.y);
+
+        if(transform.position.y <= hitCollider.bounds.max.y + 2f)
         {
-            
+            rb.AddForce(pVDis * moveSpeed * Time.deltaTime, ForceMode2D.Force);
+
+            jumpFlag = true;
         }
+
+        if (transform.position.y >= hitCollider.bounds.max.y + 2f)
+        {
+            rb.AddForce(Vector2.down * moveSpeed, ForceMode2D.Force);
+
+            jumpFlag = false;
+        }
+
     }
 
     //頭の上から横方向にレイを飛ばす
