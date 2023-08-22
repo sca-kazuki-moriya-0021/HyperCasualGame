@@ -119,6 +119,8 @@ public class MoveObject : MonoBehaviour
 
     #region//å¯â âπä÷åW
     private AudioSource audios = null;
+    [SerializeField]
+    private AudioClip sound1;
     /*[SerializeField]
     private AudioClip runSE;//à⁄ìÆóp
     [SerializeField]
@@ -501,13 +503,20 @@ public class MoveObject : MonoBehaviour
         }
 
         //è·äQï®Ç…ìñÇΩÇ¡ÇΩÇÁ
-        if (other.gameObject.CompareTag("Obstacle")
-            || other.gameObject.CompareTag("PuddleFloor")
-            || other.gameObject.CompareTag("FlameFloor")
-            || other.gameObject.CompareTag("FlameGround"))
+        if (other.gameObject.CompareTag("Obstacle"))
         {
+            audios.PlayOneShot(sound1);
+
             GameOverFlag = true;
         }
+
+        if (other.gameObject.CompareTag("PuddleFloor")
+        ||other.gameObject.CompareTag("FlameFloor")
+        ||other.gameObject.CompareTag("FlameGround"))
+        {
+             GameOverFlag = true;
+        }
+
 
         
 
