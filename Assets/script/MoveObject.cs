@@ -480,8 +480,7 @@ public class MoveObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-
-           
+            iceWalkFlag = false;
         }
 
         if (other.gameObject.CompareTag("IceGround"))
@@ -510,6 +509,7 @@ public class MoveObject : MonoBehaviour
             GameOverFlag = true;
         }
 
+        //地形ギミックに触れたら
         if (other.gameObject.CompareTag("PuddleFloor")
         ||other.gameObject.CompareTag("FlameFloor")
         ||other.gameObject.CompareTag("FlameGround"))

@@ -9,6 +9,8 @@ public class PenDisplay : MonoBehaviour
     private TotalGM gm;
 
     private PasueDisplayC pasueDisplayC;
+    private LineDrawCon lineDrawCon;
+
 
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
@@ -29,6 +31,19 @@ public class PenDisplay : MonoBehaviour
     [SerializeField]
     private Sprite iceSprite;
 
+    //shader保管用
+    private Shader lineShader;
+    //shader用
+    [SerializeField]
+    private Shader iceShader;
+    [SerializeField]
+    private Shader generalShader;
+    [SerializeField]
+    private Shader fireShader;
+
+    //時間計測用
+    private float lineTime = 10.0f;
+
     //効果音用
     private AudioSource audioSource;
     [SerializeField]
@@ -48,6 +63,7 @@ public class PenDisplay : MonoBehaviour
     {
         gm = FindObjectOfType<TotalGM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
+        lineDrawCon = FindObjectOfType<LineDrawCon>();
 
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
@@ -88,6 +104,11 @@ public class PenDisplay : MonoBehaviour
                 penMButton.GetComponent<Image>().sprite = sprite;
                 break;
         }
+
+        if(lineDrawCon.LineFlag == true)
+        {
+            StartCoroutine(LineTime());
+        }
     }
 
     public void DisplayFlag()
@@ -103,5 +124,15 @@ public class PenDisplay : MonoBehaviour
             Time.timeScale = 0f;
             penMenuFlag = true;
         }
+    }
+
+    //線引く時に使うコルーチン
+    IEnumerator LineTime()
+    {
+        while(lineTime >0f)
+        {
+
+        }
+        yield return null;
     }
 }

@@ -14,17 +14,6 @@ public class LineDrawCon : MonoBehaviour
     private float iceDrawTime;
     private float fireDrawTime;
 
-    //色
-    [SerializeField]
-    private Material iceTexture;
-    [SerializeField]
-    private Material fierTexture;
-    [SerializeField]
-    private Material ironTexture;
-
-    private Material lineMaterial;
-    private Material _myMat;
-
     //線の太さ
     [Range(0.1f, 0.5f)]
     [SerializeField]
@@ -37,6 +26,18 @@ public class LineDrawCon : MonoBehaviour
     //コライダーのための座標を保持するリスト型の変数
     private List<Vector2> linePoints;
 
+
+    //色
+    [SerializeField]
+    private Material iceTexture;
+    [SerializeField]
+    private Material fierTexture;
+    [SerializeField]
+    private Material ironTexture;
+
+    private Material lineMaterial;
+    private Material _myMat;
+
     protected PhysicsMaterial2D sMaterial;
     protected Color lineColor;
     [SerializeField]
@@ -48,6 +49,7 @@ public class LineDrawCon : MonoBehaviour
     [SerializeField]
     private Color generalColor;
 
+    private bool lineFlag = false;
 
     [SerializeField]
     private GameObject nullObject;
@@ -83,8 +85,8 @@ public class LineDrawCon : MonoBehaviour
     private AudioSource audioSource;
     [SerializeField]
     private AudioClip sound1;
-
     private bool sEffectFlag = false;
+
 
     /*public Color LineColor
     {
@@ -123,6 +125,11 @@ public class LineDrawCon : MonoBehaviour
         set { this.iceflag = value; }
     }*/
 
+    public bool LineFlag
+    {
+        get { return this.lineFlag; }
+        set { this.lineFlag = value; }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -188,7 +195,7 @@ public class LineDrawCon : MonoBehaviour
             //左クリックされたら
             if (Input.GetMouseButtonDown(0))
             {
-              
+                lineFlag = true;
                 _addLineObject();
             }
 
@@ -200,12 +207,14 @@ public class LineDrawCon : MonoBehaviour
                     audioSource.PlayOneShot(sound1);
                     sEffectFlag = true;
                 }
+
                 _addPositionDataToLineRenderer();
                 
             }
 
             if (Input.GetMouseButtonUp(0))
             {
+               lineFlag = false;
                sEffectFlag =false;
                linePoints = new List<Vector2>();
             }
