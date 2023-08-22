@@ -5,7 +5,8 @@ using UnityEngine;
 public class BGMCon : MonoBehaviour
 {
     private AudioSource audioSource;
-    //
+    
+
     // Start is called before the first frame update
     void Start()
     {
