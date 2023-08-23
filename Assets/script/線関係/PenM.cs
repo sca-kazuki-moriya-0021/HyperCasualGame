@@ -26,18 +26,22 @@ public class PenM : MonoBehaviour
 
     //ボタン用
     [SerializeField]
-    private Button penMButton;
+    private Sprite[] penS;
     [SerializeField]
-    private Sprite generalSprite;
+    private Sprite[] inkS;
+
+    //取得するスプライト
     [SerializeField]
-    private Sprite fireSprite;
+    private Image bS;
     [SerializeField]
-    private Sprite iceSprite;
+    private Image iS;
+
 
     //ペンで描いている長さ
     private float iceDrawTime;
     private float fireDrawTime;
     private float generalDrawTime;
+
 
     public enum PenCom
     {
@@ -84,7 +88,8 @@ public class PenM : MonoBehaviour
         myCanvas = this.GetComponent<Canvas>();
         penCanvas = penCanvas.GetComponent<Canvas>();
 
-        penMButton = penMButton.GetComponent<Button>();
+        bS.sprite = penS[2];
+        iS.sprite = inkS[2];
 
         myCanvas.enabled = false;
     }
@@ -95,18 +100,16 @@ public class PenM : MonoBehaviour
         switch (nowPen)
         {
             case PenCom.Ice:
-                penMButton.GetComponent<Image>().sprite = iceSprite;
-                //LineCoolTime();
-                break;
-
+                bS.sprite = penS[0];
+                iS.sprite = inkS[0];
+            break;
             case PenCom.Fire:
-                penMButton.GetComponent<Image>().sprite = fireSprite;
-                //LineCoolTime();
+                bS.sprite = penS[1];
+                iS.sprite = inkS[1];
                 break;
-
             case PenCom.General:
-                penMButton.GetComponent<Image>().sprite = generalSprite;
-                //LineCoolTime();
+                bS.sprite = penS[2];
+                iS.sprite = inkS[2];
                 break;
         }
 
@@ -124,6 +127,7 @@ public class PenM : MonoBehaviour
             audioSource.PlayOneShot(sound1);
 
             nowPen = PenCom.Fire;
+
 
             penDis.PenMenuFlag = false;
             //タイム戻す
@@ -197,7 +201,7 @@ public class PenM : MonoBehaviour
                 switch (nowPen)
                 {
                     case PenCom.Ice:
-
+                        //bS.sprite = Image.Type.Filled
                         iceDrawTime += Time.deltaTime;
 
                     break;

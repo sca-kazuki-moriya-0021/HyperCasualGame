@@ -40,7 +40,6 @@ public class PenDisplay : MonoBehaviour
     [SerializeField]
     private AudioClip sound1;
 
-    private PenM penM;
 
     //ゲッターセッター
     public bool PenMenuFlag
@@ -55,7 +54,7 @@ public class PenDisplay : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
-        penM = FindObjectOfType<PenM>();
+
 
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
@@ -76,6 +75,7 @@ public class PenDisplay : MonoBehaviour
         {
             myCanvas.enabled = true;
         }
+
     }
 
     //ペンの選択画面出す
@@ -90,6 +90,7 @@ public class PenDisplay : MonoBehaviour
 
             Time.timeScale = 0f;
             penMenuFlag = true;
+
         }
     }
 
