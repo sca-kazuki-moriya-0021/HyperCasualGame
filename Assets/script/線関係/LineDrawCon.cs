@@ -9,10 +9,6 @@ using Spine.Unity;
 
 public class LineDrawCon : MonoBehaviour
 {
-    //ペンで描いている長さ
-    private float drawTime;
-    private float iceDrawTime;
-    private float fireDrawTime;
 
     //線の太さ
     [Range(0.1f, 0.5f)]
@@ -25,7 +21,6 @@ public class LineDrawCon : MonoBehaviour
     private LineRenderer lineRenderer;
     //コライダーのための座標を保持するリスト型の変数
     private List<Vector2> linePoints;
-
 
     //色
     [SerializeField]
@@ -49,10 +44,11 @@ public class LineDrawCon : MonoBehaviour
     [SerializeField]
     private Color generalColor;
 
+    //線を引いている時
     private bool lineFlag = false;
 
-    [SerializeField]
-    private GameObject nullObject;
+    //[SerializeField]
+    //private GameObject nullObject;
 
     [SerializeField]
     private GameObject instansIcePrefab;
@@ -163,6 +159,7 @@ public class LineDrawCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         //Debug.Log(sMaterial);
         switch (penM.NowPen)
         {
@@ -192,37 +189,58 @@ public class LineDrawCon : MonoBehaviour
 
         if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false )
         {
-            //左クリックされたら
-            if (Input.GetMouseButtonDown(0))
-            {
-                lineFlag = true;
-                _addLineObject();
-            }
-
-            //クリック中（ストローク中）
-            if (Input.GetMouseButton(0))
-            {
-                if(sEffectFlag == false)
+                //左クリックされたら
+                if (Input.GetMouseButtonDown(0))
                 {
-                    audioSource.PlayOneShot(sound1);
-                    sEffectFlag = true;
+                    switch (penM.NowPen)
+                    {
+                         case PenM.PenCom.Ice:
+                         if(penM.IceDrawFlag == true)
+                         {
+                            Debug.Log("asuke");
+                            lineFlag = true;
+
+                            Debug.Log(lineFlag);
+                            _addLineObject();
+                         }
+                         break;
+
+                         case PenM.PenCom.Fire:
+                         if(penM.FireDrawFlag == true)
+                         {
+                            lineFlag = true;
+                            _addLineObject();
+                         }
+                         break;
+
+                         case PenM.PenCom.General:
+                         if(penM.GeneralDrawFlag == true)
+                         {
+                            lineFlag = true;
+                            _addLineObject();
+                         }
+                         break;
+                    }
+                }
+                //クリック中（ストローク中）
+                if (Input.GetMouseButton(0) && lineFlag == true)
+                {
+                    if (sEffectFlag == false)
+                    {
+                        audioSource.PlayOneShot(sound1);
+                        sEffectFlag = true;
+                    }
+                    _addPositionDataToLineRenderer();
                 }
 
-                _addPositionDataToLineRenderer();
-                
-            }
-
-            if (Input.GetMouseButtonUp(0))
-            {
-               lineFlag = false;
-               sEffectFlag =false;
-               linePoints = new List<Vector2>();
-            }
+                if (Input.GetMouseButtonUp(0))
+                {
+                    lineFlag = false;
+                    sEffectFlag = false;
+                    linePoints = new List<Vector2>();
+                }
         }
-
-
     }
-
 
     //クリックしたら発動
     void _addLineObject()

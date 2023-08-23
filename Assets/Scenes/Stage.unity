@@ -547,9 +547,25 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 5ce4b02d707620440bb29f9a71e613b9, type: 3}
     - target: {fileID: 8837359070463945122, guid: c910398276395af4594feae6f1e18c31, type: 3}
+      propertyPath: iceSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 5edf0289732c84c469baa218c9ebe9f7, type: 3}
+    - target: {fileID: 8837359070463945122, guid: c910398276395af4594feae6f1e18c31, type: 3}
       propertyPath: penCanvas
       value: 
       objectReference: {fileID: 2130115052}
+    - target: {fileID: 8837359070463945122, guid: c910398276395af4594feae6f1e18c31, type: 3}
+      propertyPath: fireSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: a24607341562df641afe77135b5d4c18, type: 3}
+    - target: {fileID: 8837359070463945122, guid: c910398276395af4594feae6f1e18c31, type: 3}
+      propertyPath: penMButton
+      value: 
+      objectReference: {fileID: 1381977028}
+    - target: {fileID: 8837359070463945122, guid: c910398276395af4594feae6f1e18c31, type: 3}
+      propertyPath: generalSprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 3279164e84b79cc448195bb5302ef009, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c910398276395af4594feae6f1e18c31, type: 3}
 --- !u!1001 &253596516
@@ -969,6 +985,17 @@ Canvas:
   m_CorrespondingSourceObject: {fileID: 5391731856537602890, guid: c910398276395af4594feae6f1e18c31, type: 3}
   m_PrefabInstance: {fileID: 217417094}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1381977028 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3933352896368529276, guid: 8ed2b648fa8249e48a55e6888adbf063, type: 3}
+  m_PrefabInstance: {fileID: 207508305}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1442091175
 GameObject:
   m_ObjectHideFlags: 0

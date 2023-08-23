@@ -8,9 +8,14 @@ public class PenDisplay : MonoBehaviour
     //ゲーマネ呼び出し
     private TotalGM gm;
 
+    //コード呼び出し
     private PasueDisplayC pasueDisplayC;
     private LineDrawCon lineDrawCon;
 
+    //ペンで描いている長さ
+    //private float iceDrawTime;
+    //private float fireDrawTime;
+    //private float generalDrawTime;
 
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
@@ -18,31 +23,17 @@ public class PenDisplay : MonoBehaviour
 
     [SerializeField]
     private Canvas penMCanvas;
-
     private Canvas myCanvas;
 
-    //ボタン用
-    [SerializeField]
-    private Button penMButton;
-    [SerializeField]
-    private Sprite sprite;
-    [SerializeField]
-    private Sprite fireSprite;
-    [SerializeField]
-    private Sprite iceSprite;
-
     //shader保管用
-    private Shader lineShader;
+    /*private Shader lineShader;
     //shader用
     [SerializeField]
     private Shader iceShader;
     [SerializeField]
     private Shader generalShader;
     [SerializeField]
-    private Shader fireShader;
-
-    //時間計測用
-    private float lineTime = 10.0f;
+    private Shader fireShader;*/
 
     //効果音用
     private AudioSource audioSource;
@@ -64,13 +55,11 @@ public class PenDisplay : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
+        penM = FindObjectOfType<PenM>();
 
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
 
-        penM = FindObjectOfType<PenM>();
-
-        penMButton = penMButton.GetComponent<Button>();
 
         audioSource = GetComponent<AudioSource>();
     }
@@ -78,7 +67,7 @@ public class PenDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        //ポーズ画面が出ている時の処理
         if(pasueDisplayC.MenuFlag == true)
         {
             myCanvas.enabled = false;
@@ -87,33 +76,11 @@ public class PenDisplay : MonoBehaviour
         {
             myCanvas.enabled = true;
         }
-
-
-        switch (penM.NowPen)
-        {
-            case PenM.PenCom.Ice:
-                Debug.Log("oir");
-                penMButton.GetComponent<Image>().sprite = iceSprite;
-                break;
-
-            case PenM.PenCom.Fire:
-                penMButton.GetComponent<Image>().sprite = fireSprite;
-                break;
-
-            case PenM.PenCom.General:
-                penMButton.GetComponent<Image>().sprite = sprite;
-                break;
-        }
-
-        if(lineDrawCon.LineFlag == true)
-        {
-            StartCoroutine(LineTime());
-        }
     }
 
+    //ペンの選択画面出す
     public void DisplayFlag()
     {
-        //ペンの選択画面出す
         if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
             audioSource.PlayOneShot(sound1);
@@ -126,13 +93,44 @@ public class PenDisplay : MonoBehaviour
         }
     }
 
-    //線引く時に使うコルーチン
-    IEnumerator LineTime()
+    //ペンのクールタイム用関数
+    /*private void LineCoolTime()
     {
-        while(lineTime >0f)
+        switch (penM.NowPen)
         {
+            case PenM.PenCom.Ice:
+                if(fireDrawTime > 0)
+                {
+                    fireDrawTime -= Time.deltaTime;
+                }
+                if(generalTime > 0)
+                {
+                    generalTime -= Time.deltaTime;
+                }
+                break;
 
+            case PenM.PenCom.Fire:
+                if (iceDrawTime > 0)
+                {
+                    iceDrawTime -= Time.deltaTime;
+                }
+                if (generalTime > 0)
+                {
+                    generalTime -= Time.deltaTime;
+                }
+                break;
+
+            case PenM.PenCom.General:
+                if (fireDrawTime > 0)
+                {
+                    fireDrawTime -= Time.deltaTime;
+                }
+                if (iceDrawTime > 0)
+                {
+                    iceDrawTime -= Time.deltaTime;
+                }
+                break;
         }
-        yield return null;
-    }
+    }*/
+
 }
