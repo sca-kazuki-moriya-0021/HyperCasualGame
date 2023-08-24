@@ -197,7 +197,8 @@ public class MoveObject : MonoBehaviour
 
         //レイの角度計算
         RayAngleIns();
-        
+
+
 
         //コライダーがめり込んだ時
         //CollderMerging();
@@ -427,10 +428,11 @@ public class MoveObject : MonoBehaviour
             jumpFlag = true;
         }
 
+
         if (transform.position.y > hitCollider.bounds.max.y + 2f)
         {
             rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
-
+            hitCollider.CompareTag("Ground");
             jumpFlag = false;
         }
 
@@ -488,8 +490,16 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("GoalPoint"))
         {
             gm.BackScene = gm.MyGetScene();
-            gm.StageGoalCount++;
-            SceneManager.LoadScene("Goal");
+            //gm.StageGoalCount++;
+            //SceneManager.LoadScene("Goal");
+        }
+
+
+        if (other.gameObject.CompareTag("StageGoalPoint"))
+        {
+            gm.BackScene = gm.MyGetScene();
+            //gm.StageGoalCount++;
+            //SceneManager.LoadScene("Goal");
         }
 
         //障害物に当たったら

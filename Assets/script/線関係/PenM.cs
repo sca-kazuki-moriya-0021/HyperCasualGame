@@ -104,14 +104,17 @@ public class PenM : MonoBehaviour
             case PenCom.Ice:
                 getPenSprite.sprite = penSprites[0];
                 getInkSprite.sprite = inkSprites[0];
-            break;
+                InkDown(getInkSprite,iceDrawTime,5);
+                break;
             case PenCom.Fire:
                 getPenSprite.sprite = penSprites[1];
                 getInkSprite.sprite = inkSprites[1];
+                InkDown(getInkSprite, fireDrawTime, 5);
                 break;
             case PenCom.General:
                 getPenSprite.sprite = penSprites[2];
                 getInkSprite.sprite = inkSprites[2];
+                InkDown(getInkSprite,generalDrawTime,5);
                 break;
         }
 
@@ -211,19 +214,20 @@ public class PenM : MonoBehaviour
                 {
                     case PenCom.Ice:
                         iceDrawTime += Time.deltaTime;
-                        InkDown(getInkSprite,iceDrawTime,5);
+                        //InkDown(getInkSprite,iceDrawTime,5);
                     break;
 
                     case PenCom.Fire:
                         fireDrawTime += Time.deltaTime;
-                        InkDown(getInkSprite,fireDrawTime,5);
+                        //InkDown(getInkSprite,fireDrawTime,5);
 
-                   break;
+                        break;
 
                     case PenCom.General:
                         generalDrawTime += Time.deltaTime;
-                        InkDown(getInkSprite,generalDrawTime,5);
-                   break;
+                        //getInkSprite.fillAmount = 1 - generalDrawTime / 5;
+                        //InkDown(getInkSprite,generalDrawTime,5);
+                        break;
                 }
             }
         }
@@ -249,8 +253,8 @@ public class PenM : MonoBehaviour
     //à¯Ç¢ÇΩéûä‘Ç…Ç†ÇÌÇπÇƒÉCÉìÉNå∏è≠
     public void InkDown(Image image,float time,float maxTime)
     {
-       image.fillAmount = 1;
        image.fillAmount = 1-time/maxTime;
+       
     }
 
 }

@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class StageSelectCon : MonoBehaviour
 {
@@ -10,16 +11,28 @@ public class StageSelectCon : MonoBehaviour
     [SerializeField]
     private AudioClip sound1;
 
+    [SerializeField]
+    private GameObject food;
+
+    private TotalGM gm;
+
     // Start is called before the first frame update
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        gm = FindObjectOfType<TotalGM>();
+        food.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        Debug.Log(gm.StageClearFlag[0]);
+        if (gm.StageClearFlag[0] == true)
+        {
+
+            food.SetActive(true);
+        }
     }
 
 
