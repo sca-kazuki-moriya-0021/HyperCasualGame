@@ -20,7 +20,7 @@ public class PenDisplay : MonoBehaviour
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
 
-
+    //キャンパス取得
     [SerializeField]
     private Canvas penMCanvas;
     private Canvas myCanvas;

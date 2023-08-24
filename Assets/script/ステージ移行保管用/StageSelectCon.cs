@@ -29,6 +29,16 @@ public class StageSelectCon : MonoBehaviour
         SceneManager.LoadScene("Stage");
     }
 
+    public void Stage2_1()
+    {
+        audioSource.PlayOneShot(sound1);
+    }
+
+    public void Stage3_1()
+    {
+        audioSource.PlayOneShot(sound1);
+    }
+
     public void Title()
     {
         audioSource.PlayOneShot(sound1);

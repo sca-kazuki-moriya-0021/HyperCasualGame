@@ -30,9 +30,11 @@ public class LineDrawCon : MonoBehaviour
     [SerializeField]
     private Material ironTexture;
 
+    //色を保存しておく用変数
     private Material lineMaterial;
     private Material _myMat;
 
+    //PhysicsMaterial2DとColorをまとめておく用
     protected PhysicsMaterial2D sMaterial;
     protected Color lineColor;
     [SerializeField]
@@ -50,12 +52,14 @@ public class LineDrawCon : MonoBehaviour
     //[SerializeField]
     //private GameObject nullObject;
 
+    //氷のアニメーション
     [SerializeField]
     private GameObject instansIcePrefab;
     private SkeletonAnimation iceSkelton;
     private string ice;
 
 
+    //炎のアニメーション
     [SerializeField]
     private GameObject instansfirePrefab;
     private SkeletonAnimation fireSkelton;
@@ -68,11 +72,9 @@ public class LineDrawCon : MonoBehaviour
 
     //private SkeletonAnimation nowSkeletonAnima;
 
+    //スクリプト読み取り用
     private PasueDisplayC pasueDisplayC;
     private PenDisplay penDisplayC;
-
-    private bool iceflag = false;
-    private bool fireflag = false;
 
     //ペンのスプリクト
     private PenM penM;
@@ -130,6 +132,7 @@ public class LineDrawCon : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //初期化
         penM = FindObjectOfType<PenM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         penDisplayC = FindObjectOfType<PenDisplay>();
@@ -142,25 +145,24 @@ public class LineDrawCon : MonoBehaviour
         //iceAnimationState = iceSkelton.AnimationState
         //fireAnimationState = fireSkelton.AnimationState;
 
+        //ダブルタッチ無効
         Input.multiTouchEnabled = false;
 
+        //アニメーション初期化
         iceSkelton.AnimationName = "None";
         fireSkelton.AnimationName = "None";
 
-
-        sMaterial = generalMaterial;
-
+        //線のポイント初期化
         linePoints = new List<Vector2>();
 
-        penM.NowPen = PenM.PenCom.General;
-        lineColor = generalColor;
+
     }
 
     // Update is called once per frame
     void Update()
     {
 
-        //Debug.Log(sMaterial);
+        //ペンの種類によって切り替えるプラグラム
         switch (penM.NowPen)
         {
             case PenM.PenCom.Ice:
@@ -169,14 +171,13 @@ public class LineDrawCon : MonoBehaviour
                 lineColor = iceColor;
                 //nowSkeletonAnima = iceSkelton;
                 iceSkelton.AnimationName = "animetion";
-                iceflag = true;
+
                 //Debug.Log(lineColor);
                 break;
 
             case PenM.PenCom.Fire:
                 //nowSkeletonAnima = fireSkelton;
                 fireSkelton.AnimationName = "animetion";
-                fireflag = true;
                 break;
 
             case PenM.PenCom.General:
@@ -187,6 +188,7 @@ public class LineDrawCon : MonoBehaviour
                 break;
         }
 
+        //線が引ける時
         if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false )
         {
                 //左クリックされたら
@@ -233,6 +235,7 @@ public class LineDrawCon : MonoBehaviour
                     _addPositionDataToLineRenderer();
                 }
 
+                //クリック解除になったら
                 if (Input.GetMouseButtonUp(0))
                 {
                     lineFlag = false;

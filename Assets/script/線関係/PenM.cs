@@ -5,14 +5,15 @@ using UnityEngine.UI;
 
 public class PenM : MonoBehaviour
 {
-    //ゲーマネ呼び出し
+    //使うスクリプト呼び出し
     private TotalGM gm;
     private PenDisplay penDis;
     private LineDrawCon lineDrawCon;
 
-    [SerializeField]
+    [SerializeField,Header("ペンボタンを表示するキャンパス")]
     private Canvas penCanvas;
     
+    //自分のキャンパス
     private Canvas myCanvas;
 
     //効果音用
@@ -25,15 +26,15 @@ public class PenM : MonoBehaviour
     private bool generalDrawFlag = true;
 
     //ボタン用
-    [SerializeField]
+    [SerializeField,Header("ペンのイラスト")]
     private Sprite[] penS;
-    [SerializeField]
+    [SerializeField,Header("インクのイラスト")]
     private Sprite[] inkS;
 
     //取得するスプライト
-    [SerializeField]
+    [SerializeField,Header("取得したいペンのイラスト")]
     private Image bS;
-    [SerializeField]
+    [SerializeField,Header("取得したいペンのイラスト")]
     private Image iS;
 
 
@@ -42,7 +43,7 @@ public class PenM : MonoBehaviour
     private float fireDrawTime;
     private float generalDrawTime;
 
-
+    //ペンの種類判定
     public enum PenCom
     {
         Unknown = 0,
@@ -80,6 +81,8 @@ public class PenM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //取得・sprite宣言・自分のキャンパスを非表示
+
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
@@ -88,8 +91,7 @@ public class PenM : MonoBehaviour
         myCanvas = this.GetComponent<Canvas>();
         penCanvas = penCanvas.GetComponent<Canvas>();
 
-        bS.sprite = penS[2];
-        iS.sprite = inkS[2];
+        nowPen = PenM.PenCom.General;
 
         myCanvas.enabled = false;
     }
@@ -97,6 +99,7 @@ public class PenM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        //押されたペンボタンと同じイラストにする
         switch (nowPen)
         {
             case PenCom.Ice:
@@ -113,12 +116,16 @@ public class PenM : MonoBehaviour
                 break;
         }
 
+        
+
+        //線がひかれたら
         if (lineDrawCon.LineFlag == true)
         {
             LineTime();
         }
     }
-
+    
+    //炎のペンボタンが押された時の処理
     public void FirePen()
     {
         if(fireDrawFlag == true)
@@ -138,6 +145,7 @@ public class PenM : MonoBehaviour
         }
     }
 
+    //氷のペンボタンが押された時の処理
     public void IcePen()
     {
         if (IceDrawFlag ==  true)
@@ -158,6 +166,7 @@ public class PenM : MonoBehaviour
      
     }
 
+    //普通のペンボタンが押された時の処理
     public void GeneralPen()
     {
         if(generalDrawFlag == true)
@@ -178,6 +187,7 @@ public class PenM : MonoBehaviour
 
     }
 
+    //戻るボタンを押したときの処理
     public void GameBark()
     {
         audioSource.PlayOneShot(sound1);
@@ -201,25 +211,25 @@ public class PenM : MonoBehaviour
                 switch (nowPen)
                 {
                     case PenCom.Ice:
-                        //bS.sprite = Image.Type.Filled
                         iceDrawTime += Time.deltaTime;
-
+                        InkDown(iS,iceDrawTime,5);
                     break;
 
                     case PenCom.Fire:
-
                         fireDrawTime += Time.deltaTime;
+                        InkDown(iS,fireDrawTime,5);
 
                    break;
 
                     case PenCom.General:
                         generalDrawTime += Time.deltaTime;
-
+                        InkDown(iS,generalDrawTime,5);
                    break;
                 }
             }
         }
 
+        //線を引ける時間が過ぎたら選べなくする
         if (nowPen == PenCom.General&& generalDrawTime > 5f)
         {
             lineDrawCon.LineFlag =false;
@@ -235,6 +245,13 @@ public class PenM : MonoBehaviour
             lineDrawCon.LineFlag = false;
             fireDrawFlag = false;
         }
+    }
+
+    //引いた時間にあわせてインク減少
+    public void InkDown(Image image,float time,float maxTime)
+    {
+       image.fillAmount = 1;
+       image.fillAmount = 1-time/maxTime;
     }
 
 }
