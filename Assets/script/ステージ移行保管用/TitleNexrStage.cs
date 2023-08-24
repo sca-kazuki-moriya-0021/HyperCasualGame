@@ -30,8 +30,9 @@ public class TitleNexrStage : MonoBehaviour
 
     public void StageSelect()
     {
+        Debug.Log("‘I‚ñ‚¾‚æ");
         audioSource.PlayOneShot(sound1);
-        SceneManager.LoadScene("StageSelect");
+        SceneManager.LoadScene("StageSelect",LoadSceneMode.Single);
     }
     
 }

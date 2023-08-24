@@ -27,15 +27,15 @@ public class PenM : MonoBehaviour
 
     //ボタン用
     [SerializeField,Header("ペンのイラスト")]
-    private Sprite[] penS;
+    private Sprite[] penSprites;
     [SerializeField,Header("インクのイラスト")]
-    private Sprite[] inkS;
+    private Sprite[] inkSprites;
 
     //取得するスプライト
     [SerializeField,Header("取得したいペンのイラスト")]
-    private Image bS;
+    private Image getPenSprite;
     [SerializeField,Header("取得したいペンのイラスト")]
-    private Image iS;
+    private Image getInkSprite;
 
 
     //ペンで描いている長さ
@@ -103,16 +103,16 @@ public class PenM : MonoBehaviour
         switch (nowPen)
         {
             case PenCom.Ice:
-                bS.sprite = penS[0];
-                iS.sprite = inkS[0];
+                getPenSprite.sprite = penSprites[0];
+                getInkSprite.sprite = inkSprites[0];
             break;
             case PenCom.Fire:
-                bS.sprite = penS[1];
-                iS.sprite = inkS[1];
+                getPenSprite.sprite = penSprites[1];
+                getInkSprite.sprite = inkSprites[1];
                 break;
             case PenCom.General:
-                bS.sprite = penS[2];
-                iS.sprite = inkS[2];
+                getPenSprite.sprite = penSprites[2];
+                getInkSprite.sprite = inkSprites[2];
                 break;
         }
 
@@ -212,18 +212,18 @@ public class PenM : MonoBehaviour
                 {
                     case PenCom.Ice:
                         iceDrawTime += Time.deltaTime;
-                        InkDown(iS,iceDrawTime,5);
+                        InkDown(getInkSprite,iceDrawTime,5);
                     break;
 
                     case PenCom.Fire:
                         fireDrawTime += Time.deltaTime;
-                        InkDown(iS,fireDrawTime,5);
+                        InkDown(getInkSprite,fireDrawTime,5);
 
                    break;
 
                     case PenCom.General:
                         generalDrawTime += Time.deltaTime;
-                        InkDown(iS,generalDrawTime,5);
+                        InkDown(getInkSprite,generalDrawTime,5);
                    break;
                 }
             }
