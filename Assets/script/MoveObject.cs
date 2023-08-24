@@ -10,13 +10,13 @@ public class MoveObject : MonoBehaviour
 {
     #region//プレイヤー関係
     //x方向に進むスピード(一般的)
-    private float xMoveFloorSpeed = 6.0f;
+    private float xMoveFloorSpeed = -6.0f;
     //x方向に進むスピード(氷)
-    private float xMoveIceSpeed = 7.0f;
+    private float xMoveIceSpeed = -7.0f;
     //ジャンプ中に使う速度
-    private float moveSpeed = 1f;
+    private float moveSpeed = -1f;
     //デフォルトの角度
-    private Quaternion defeltRotation;
+    //private Quaternion defeltRotation;
     #endregion
 
     private float time = 400f;
@@ -33,10 +33,10 @@ public class MoveObject : MonoBehaviour
     //　レイを飛ばす場所
     [SerializeField]
     private Transform rayPosition;
-    [SerializeField]
+    /*[SerializeField]
     private Vector2 upOffset;
     [SerializeField]
-    private Vector2 downOffset;
+    private Vector2 downOffset;*/
     //　レイを飛ばす距離
     [SerializeField]
     private float rayRange;
@@ -105,7 +105,7 @@ public class MoveObject : MonoBehaviour
     private TotalGM gm;
 
     //方向判別
-    private bool dirSwitchFlag = false;
+    //private bool dirSwitchFlag = false;
 
     //タンジェント
     private float tan;
@@ -158,8 +158,6 @@ public class MoveObject : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag = false;
-
-        defeltRotation = this.transform.rotation;
     }
 
     // Update is called once per frame
