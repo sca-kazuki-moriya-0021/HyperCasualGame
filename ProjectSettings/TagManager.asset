@@ -15,6 +15,7 @@ TagManager:
   - Flameline
   - FlameGround
   - Wall
+  - StageGoalPoint
   layers:
   - Default
   - TransparentFX

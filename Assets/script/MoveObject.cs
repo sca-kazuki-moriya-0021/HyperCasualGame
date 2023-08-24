@@ -86,8 +86,6 @@ public class MoveObject : MonoBehaviour
     private bool landFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
-    //クリア
-    private bool clearFlag = false;
     //ジャンプ
     private bool jumpFlag = false;
 
@@ -140,12 +138,6 @@ public class MoveObject : MonoBehaviour
     {
         get { return this.gameOverFlag; }
         set { this.gameOverFlag = value; }
-    }
-
-    public bool ClearFlag
-    {
-        get { return this.clearFlag; }
-        set { this.clearFlag = value; }
     }
 
     private void Awake()
@@ -496,9 +488,8 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("GoalPoint"))
         {
             gm.BackScene = gm.MyGetScene();
-            clearFlag = true;
+            gm.StageGoalCount++;
             SceneManager.LoadScene("Goal");
-            
         }
 
         //障害物に当たったら
@@ -516,10 +507,6 @@ public class MoveObject : MonoBehaviour
         {
              GameOverFlag = true;
         }
-
-
-        
-
     }
 
     void OnCollisionStay2D(Collision2D collision)

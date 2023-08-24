@@ -7,6 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class TotalGM : MonoBehaviour
 {
+    //ゴールカウント
+    private int stageGoalCount = 0;
+    private int maxClearCount = 3;
+
+    private bool[] stageClearFlag = {false,false,false};
+
+
     #region//ステージ管理
     //ステージ管理
     public enum StageCon
@@ -38,8 +45,6 @@ public class TotalGM : MonoBehaviour
     };
     #endregion
 
-
-
     public StageCon Scene
     {
         get { return this.scene; }
@@ -58,6 +63,24 @@ public class TotalGM : MonoBehaviour
         set { this.sceneDic = value; }
     }
 
+    public int StageGoalCount
+    {
+        get { return this.stageGoalCount; }
+        set { this.stageGoalCount = value; }
+    }
+
+    public int MaxClearCount
+    {
+        get { return this.maxClearCount; }
+        set { this.maxClearCount = value; }
+    }
+
+    public bool[] StageClearFlag
+    {
+        get { return this.stageClearFlag; }
+        set { this.stageClearFlag = value; }
+    }
+
 
     //シングルトン
     private void Awake()
@@ -65,10 +88,12 @@ public class TotalGM : MonoBehaviour
         DontDestroyOnLoad(this.gameObject);
     }
 
+   
+
     // Start is called before the first frame update
     void Start()
     {
-
+        
     }
 
     // Update is called once per frame

@@ -19,13 +19,10 @@ public class TitleNexrStage : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-    }
-
-    public void NextStage()
-    {
-        audioSource.PlayOneShot(sound1);
-        SceneManager.LoadScene("Stage");
+        if (Input.GetMouseButtonDown(0))
+        {
+            StageSelect();
+        }
     }
 
     public void StageSelect()

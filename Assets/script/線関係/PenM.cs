@@ -46,8 +46,7 @@ public class PenM : MonoBehaviour
     //ƒyƒ“‚ÌŽí—Þ”»’è
     public enum PenCom
     {
-        Unknown = 0,
-        Ice,
+        Ice = 0,
         Fire,
         General,
     }

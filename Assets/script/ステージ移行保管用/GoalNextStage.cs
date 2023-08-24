@@ -30,7 +30,7 @@ public class GoalNextStage : MonoBehaviour
     public void NextStage()
     {
         audioSource.PlayOneShot(sound1);
-        SceneManager.LoadScene("Title");
+        SceneManager.LoadScene("StageSelect");
     }
 
     public void StageSlect()
