@@ -16,14 +16,14 @@ public class goalPSliderCon : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
-        slider.value = 0;
+        slider.value =gm.StageGoalCount/gm.MaxClearCount;
         
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(a);
-        slider.value = (float)a/(float)gm.MaxClearCount;
+        Debug.Log(slider.value);
+        slider.value = (float)gm.StageGoalCount / (float)gm.MaxClearCount;
     }
 }
