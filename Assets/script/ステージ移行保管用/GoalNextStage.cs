@@ -12,6 +12,9 @@ public class GoalNextStage : MonoBehaviour
     [SerializeField]
     private AudioClip sound1;
 
+    [SerializeField]
+    private GameObject[] images;
+
     //スプリクト用
     private TotalGM gm;
 
@@ -19,12 +22,27 @@ public class GoalNextStage : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        audioSource = GetComponent<AudioSource>();
+
+        if(gm.TmpGetFlag[0] == true)
+        {
+            Debug.Log("はいってるよ");
+            images[0].SetActive(true);
+        }
+        if (gm.TmpGetFlag[1] == true)
+        {
+            images[1].SetActive(true);
+        }
+        if(gm.TmpGetFlag[2] == true)
+        {
+            images[2].SetActive(true);
+        }
+        
     }
 
     public void NextStage()

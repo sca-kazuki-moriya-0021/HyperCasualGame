@@ -105,6 +105,7 @@ public class PenM : MonoBehaviour
                 getPenSprite.sprite = penSprites[0];
                 getInkSprite.sprite = inkSprites[0];
                 InkDown(getInkSprite,iceDrawTime,5);
+                Debug.Log("si");
                 break;
             case PenCom.Fire:
                 getPenSprite.sprite = penSprites[1];

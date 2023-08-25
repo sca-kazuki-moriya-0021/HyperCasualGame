@@ -12,7 +12,8 @@ public class StageSelectCon : MonoBehaviour
     private AudioClip sound1;
 
     [SerializeField]
-    private GameObject food;
+    private GameObject[] images;
+
 
     private TotalGM gm;
 
@@ -21,7 +22,7 @@ public class StageSelectCon : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         gm = FindObjectOfType<TotalGM>();
-        food.SetActive(false);
+        
     }
 
     // Update is called once per frame
@@ -29,9 +30,16 @@ public class StageSelectCon : MonoBehaviour
     {
         Debug.Log(gm.LeafGetFlag[0]);
         if (gm.LeafGetFlag[0] == true)
+        { 
+            images[0].SetActive(true);
+        }
+        if (gm.LeafGetFlag[1] == true)
         {
-
-            food.SetActive(true);
+            images[1].SetActive(true);
+        }
+        if (gm.LeafGetFlag[2] == true)
+        {
+            images[2].SetActive(true);
         }
     }
 

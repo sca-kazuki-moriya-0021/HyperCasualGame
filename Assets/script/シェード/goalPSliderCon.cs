@@ -12,6 +12,7 @@ public class goalPSliderCon : MonoBehaviour
 
     private TotalGM gm;
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,5 +26,7 @@ public class goalPSliderCon : MonoBehaviour
     {
         Debug.Log(slider.value);
         slider.value = (float)gm.StageLeafCount / (float)gm.MaxLeafCount;
+
+
     }
 }
