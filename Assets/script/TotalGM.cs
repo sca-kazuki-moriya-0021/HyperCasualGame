@@ -8,17 +8,14 @@ using UnityEngine.SceneManagement;
 public class TotalGM : MonoBehaviour
 {
     //ゴールカウント
-    private int stageGoalCount = 0;
-    private int maxClearCount = 3;
-
-    private bool[] stageClearFlag = {false,false,false};
-
+    private int stageLeafCount = 0;
+    private int maxLeafCount = 9;
 
     #region//ステージ管理
     //ステージ管理
     public enum StageCon
     { 
-        Unknown,
+        Unknown=0,
         Title,
         StageSelect,
         Fiast,
@@ -27,7 +24,6 @@ public class TotalGM : MonoBehaviour
         Fouthe,
         GameOver,
         Clear,
-        NO,
     }
 
     private StageCon scene;
@@ -38,17 +34,21 @@ public class TotalGM : MonoBehaviour
         {"Title",StageCon.Title },
         {"StageSelect",StageCon.StageSelect },
         {"Stage",StageCon.Fiast },
-        {"SecondStage",StageCon.Second },
+        {"Stage1-2",StageCon.Second },
+        {"Stage1-3",StageCon.Therd },
         {"GameOver",StageCon.GameOver },
         {"Gaol",StageCon.Clear },
 
     };
     #endregion
 
+    private bool[] leafGetFlag = { false, false, false };
+
+    private bool[] tmpGetFlag  = {false,false,false};
+
     public StageCon Scene
     {
         get { return this.scene; }
-        set { this.scene = value; }
     }
 
     public StageCon BackScene
@@ -63,24 +63,29 @@ public class TotalGM : MonoBehaviour
         set { this.sceneDic = value; }
     }
 
-    public int StageGoalCount
+    public int StageLeafCount
     {
-        get { return this.stageGoalCount; }
-        set { this.stageGoalCount = value; }
+        get { return this.stageLeafCount; }
+        set { this.stageLeafCount = value; }
     }
 
-    public int MaxClearCount
+    public int MaxLeafCount
     {
-        get { return this.maxClearCount; }
-        set { this.maxClearCount = value; }
+        get { return this.maxLeafCount; }
+        set { this.maxLeafCount = value; }
     }
 
-    public bool[] StageClearFlag
+    public bool[] LeafGetFlag
     {
-        get { return this.stageClearFlag; }
-        set { this.stageClearFlag = value; }
+        get { return this.leafGetFlag; }
+        set { this.leafGetFlag = value; }
     }
 
+    public bool[] TmpGetFlag
+    {
+        get { return this.tmpGetFlag; }
+        set { this.tmpGetFlag = value; }
+    }
 
     //シングルトン
     private void Awake()

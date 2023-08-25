@@ -26,7 +26,7 @@ public class goalCountDis : MonoBehaviour
     }
 
     private void Display()
-    {
-        scoreText.text = gm.StageGoalCount + "/" + gm.MaxClearCount;
+    { 
+        scoreText.text = gm.StageLeafCount + "/" + gm.MaxLeafCount;
     }
 }

@@ -16,7 +16,7 @@ public class goalPSliderCon : MonoBehaviour
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
-        slider.value =gm.StageGoalCount/gm.MaxClearCount;
+        slider.value =gm.StageLeafCount/gm.MaxLeafCount;
         
     }
 
@@ -24,6 +24,6 @@ public class goalPSliderCon : MonoBehaviour
     void Update()
     {
         Debug.Log(slider.value);
-        slider.value = (float)gm.StageGoalCount / (float)gm.MaxClearCount;
+        slider.value = (float)gm.StageLeafCount / (float)gm.MaxLeafCount;
     }
 }

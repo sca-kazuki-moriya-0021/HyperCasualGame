@@ -3,21 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ClearObjectCon : MonoBehaviour
+public class AreaMoveCon : MonoBehaviour
 {
     private TotalGM gm;
-    private 
 
     // Start is called before the first frame update
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
-        
     }
 
     // Update is called once per frame
     void Update()
     {
+
 
     }
 
@@ -27,15 +26,27 @@ public class ClearObjectCon : MonoBehaviour
         {
             Debug.Log("haitteru");
             var scene = gm.MyGetScene();
-            if (scene == TotalGM.StageCon.Fiast)
+            switch (scene)
             {
-                if (gm.StageClearFlag[0] == false)
-                {
-                    gm.StageGoalCount++;
-                    gm.StageClearFlag[0] = true;
-                }
+                case TotalGM.StageCon.Fiast:
+
+                gm.BackScene = scene;
+                SceneManager.LoadScene("Stage1-2");
+
+                break;
+                
+                case TotalGM.StageCon.Second:
+
+                SceneManager.LoadScene("Stage1-3");
+
+                break;
+
+                case TotalGM.StageCon.Therd:
+                
+                SceneManager.LoadScene("Goal");
+
+                break;
             }
-            SceneManager.LoadScene("Goal");
         }
     }
 }

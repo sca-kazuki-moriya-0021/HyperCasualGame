@@ -10,11 +10,13 @@ public class MoveObject : MonoBehaviour
 {
     #region//プレイヤー関係
     //x方向に進むスピード(一般的)
-    private float xMoveFloorSpeed = -6.0f;
+    [SerializeField]
+    private float xMoveFloorSpeed = 6.0f;
     //x方向に進むスピード(氷)
-    private float xMoveIceSpeed = -7.0f;
+    [SerializeField]
+    private float xMoveIceSpeed = 7.0f;
     //ジャンプ中に使う速度
-    private float moveSpeed = -1f;
+    private float moveSpeed = 1f;
     //デフォルトの角度
     //private Quaternion defeltRotation;
     #endregion
@@ -163,6 +165,8 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(jumpFlag);
+
         if(gameOverFlag == true)
         {
             gm.BackScene = gm.MyGetScene();
@@ -176,11 +180,11 @@ public class MoveObject : MonoBehaviour
 
             if (iceWalkFlag == false)
             {
-                transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(-xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
             if (iceWalkFlag == true)
             {
-                transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(-xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
         }
 
@@ -483,21 +487,6 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("Ground"))
         {
             iceWalkFlag = true;
-        }
-
-        if (other.gameObject.CompareTag("GoalPoint"))
-        {
-            gm.BackScene = gm.MyGetScene();
-            //gm.StageGoalCount++;
-            //SceneManager.LoadScene("Goal");
-        }
-
-
-        if (other.gameObject.CompareTag("StageGoalPoint"))
-        {
-            gm.BackScene = gm.MyGetScene();
-            //gm.StageGoalCount++;
-            //SceneManager.LoadScene("Goal");
         }
 
         //障害物に当たったら

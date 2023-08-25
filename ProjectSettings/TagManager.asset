@@ -16,6 +16,8 @@ TagManager:
   - FlameGround
   - Wall
   - StageGoalPoint
+  - Catnip
+  - 'AreaMoveP '
   layers:
   - Default
   - TransparentFX

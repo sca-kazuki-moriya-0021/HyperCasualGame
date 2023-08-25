@@ -27,8 +27,8 @@ public class StageSelectCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(gm.StageClearFlag[0]);
-        if (gm.StageClearFlag[0] == true)
+        Debug.Log(gm.LeafGetFlag[0]);
+        if (gm.LeafGetFlag[0] == true)
         {
 
             food.SetActive(true);
@@ -39,6 +39,10 @@ public class StageSelectCon : MonoBehaviour
     public void Stage1_1()
     {
         audioSource.PlayOneShot(sound1);
+        for(int i = 0; gm.TmpGetFlag[2]; i++)
+        {
+            gm.TmpGetFlag[i] = false;
+        }
         SceneManager.LoadScene("Stage");
     }
 
