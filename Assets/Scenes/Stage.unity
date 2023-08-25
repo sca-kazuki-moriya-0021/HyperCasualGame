@@ -817,6 +817,14 @@ PrefabInstance:
       propertyPath: pauseCanvas
       value: 
       objectReference: {fileID: 1896391358767300547}
+    - target: {fileID: 7422125455370412059, guid: 1cd16ca1f0ae42c4586a3097343652ca, type: 3}
+      propertyPath: m_Camera
+      value: 
+      objectReference: {fileID: 2132186332}
+    - target: {fileID: 7422125455370412059, guid: 1cd16ca1f0ae42c4586a3097343652ca, type: 3}
+      propertyPath: m_RenderMode
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cd16ca1f0ae42c4586a3097343652ca, type: 3}
 --- !u!1001 &2949637791111917952
