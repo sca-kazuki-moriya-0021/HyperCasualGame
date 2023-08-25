@@ -261,6 +261,31 @@ public class LineDrawCon : MonoBehaviour
         //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
+        //レイヤーをGroundにする
+        lineObj.layer = 6;
+
+        switch (penM.NowPen)
+        {
+            case PenM.PenCom.Ice:
+
+                lineObj.tag = "IceGround";
+
+                break;
+
+            case PenM.PenCom.Fire:
+
+                lineObj.tag = "FlameGround";
+
+                break;
+
+            case PenM.PenCom.General:
+
+                lineObj.tag = "Ground";
+
+                break;
+        }
+
+
 
         _initRenderer();
     }
@@ -273,12 +298,14 @@ public class LineDrawCon : MonoBehaviour
         lineRenderer = lineObj.GetComponent<LineRenderer>();
         _myMat = new Material(lineMaterial);
         lineRenderer.material = _myMat;
+
         
         //マテリアルの色を設定
         //lineRenderer.material.color = lineDrawCon.LineColor;
         //Debug.Log(lineRenderer.material.color);
         lineMaterial.SetColor("_Color",lineColor);
         lineRenderer.textureMode = LineTextureMode.Tile;
+
 
         //ポジションカウントをリセット
         lineRenderer.positionCount = 0;
@@ -289,29 +316,27 @@ public class LineDrawCon : MonoBehaviour
         lineRenderer.endWidth = lineWidth;
         //レイヤー指定
         lineRenderer.renderingLayerMask = 2;
-        //レイヤーをGroundにする
-        lineObj.layer = 6;
 
         //ペンの種類によって切り替えるプラグラム
         switch (penM.NowPen)
         {
             case PenM.PenCom.Ice:
 
-               lineObj.tag = "IceGround";
+                lineRenderer.tag = "IceGround";
 
-            break;
+                break;
 
             case PenM.PenCom.Fire:
 
-                lineObj.tag = "FlameGround";
+                lineRenderer.tag = "FlameGround";
 
-           break;
+                break;
 
             case PenM.PenCom.General:
 
-                lineObj.tag = "Ground";
+                lineRenderer.tag = "Ground";
 
-            break;
+                break;
         }
 
     }

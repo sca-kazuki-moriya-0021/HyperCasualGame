@@ -16,7 +16,7 @@ public class MoveObject : MonoBehaviour
     [SerializeField]
     private float xMoveIceSpeed = 7.0f;
     //ジャンプ中に使う速度
-    private float moveSpeed = 1f;
+    private float moveSpeed = 10f;
     //デフォルトの角度
     //private Quaternion defeltRotation;
     #endregion
@@ -166,7 +166,6 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(fallFlag);
 
         if(gameOverFlag == true)
         {
@@ -196,7 +195,11 @@ public class MoveObject : MonoBehaviour
     {
         //坂角度計算とジャンプ処理
         if(jumpFlag == false)
-        SlopeUp();
+        {
+            SlopeUp();
+
+        }
+
 
         //レイの角度計算
         RayAngleIns();
@@ -204,10 +207,11 @@ public class MoveObject : MonoBehaviour
         //ジャンプの急降下
         if(hitCollider != null)
         {
-            if (transform.position.y > hitCollider.bounds.max.y + 2f)
+            
+            if (jumpFlag == true &&transform.position.y > hitCollider.bounds.max.y + 2f)
             {
                 rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
-                hitCollider.CompareTag("Ground");
+                hitCollider.tag = hitBackCollider.tag;
                 jumpFlag = false;
             }
         }
@@ -317,7 +321,6 @@ public class MoveObject : MonoBehaviour
                 //フラグを立てる
                 fallFlag = true;
                 iceWalkFlag = false;
-                Debug.Log("地面から離れたよ");
             }
 
         }
@@ -360,15 +363,16 @@ public class MoveObject : MonoBehaviour
     {
       //if(fallFlag == false||)
       {
+
             tan = 0f;
             var GetObject = ForwardObject();
 
             hitCollider = GetObject.collider;
-            
            
            if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
            {
               return_tan();
+
            }
            else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
            {
@@ -387,12 +391,9 @@ public class MoveObject : MonoBehaviour
     private RaycastHit2D ForwardObject()
     {
         Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * (rayRange * 5f), LayerMask.GetMask("Ground"));
-        /*if (forwardHitObject)
-        {
-            hitObject = forwardHitObject.collider.gameObject;
-        }*/
-        return (forwardHitObject);
+        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
+        Debug.Log(forwardHitObject);
+        return forwardHitObject;
     }
     
     //タンジェント計算
@@ -408,10 +409,10 @@ public class MoveObject : MonoBehaviour
         //Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        if(tan <= Mathf.PI / 2)
+        //if(tan <= Mathf.PI / )
         {
             Debug.Log("タグ変更");
-            hitBackCollider.gameObject.tag = hitCollider.gameObject.tag;
+            hitBackCollider = hitCollider;
             hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
@@ -434,16 +435,13 @@ public class MoveObject : MonoBehaviour
         //pDis =hitCollider.bounds.min.x - transform.position.x;
         pVDis = new Vector2((hitCollider.bounds.max.x - transform.position.x), (hitCollider.bounds.max.y - hitCollider.bounds.min.y));
         pVDis =  pVDis.normalized;
+        Debug.Log(pVDis);
 
-        if(transform.position.y <= hitCollider.bounds.max.y + 2f)
+        if(transform.position.y < hitCollider.bounds.max.y + 2f)
         {
-            rb.AddForce(pVDis * moveSpeed * 2f, ForceMode2D.Force);
+            rb.AddForce(pVDis * moveSpeed );
             jumpFlag = true;
         }
-
-
-       
-
     }
 
     //頭の上から横方向にレイを飛ばす
