@@ -15,7 +15,7 @@ public class TotalGM : MonoBehaviour
     //ステージ管理
     public enum StageCon
     { 
-        Unknown=0,
+        Start=0,
         Title,
         StageSelect,
         Fiast,
@@ -31,6 +31,7 @@ public class TotalGM : MonoBehaviour
     
     private Dictionary<string,StageCon> sceneDic = new Dictionary<string, StageCon>()
     {
+        {"StartScene",StageCon.Start },
         {"Title",StageCon.Title },
         {"StageSelect",StageCon.StageSelect },
         {"Stage",StageCon.Fiast },

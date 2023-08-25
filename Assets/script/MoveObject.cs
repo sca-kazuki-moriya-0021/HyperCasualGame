@@ -102,6 +102,7 @@ public class MoveObject : MonoBehaviour
 
     //hitしたコライダー検知用
     private Collider2D hitCollider;
+    private Collider2D hitBackCollider;
 
     //スプリクト用
     private TotalGM gm;
@@ -150,7 +151,7 @@ public class MoveObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Time.timeScale = 0.1f;
+
         gm = FindObjectOfType<TotalGM>();
         col2D = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -165,7 +166,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(jumpFlag);
+        Debug.Log(fallFlag);
 
         if(gameOverFlag == true)
         {
@@ -180,11 +181,11 @@ public class MoveObject : MonoBehaviour
 
             if (iceWalkFlag == false)
             {
-                transform.Translate(-xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
             if (iceWalkFlag == true)
             {
-                transform.Translate(-xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
             }
         }
 
@@ -200,7 +201,16 @@ public class MoveObject : MonoBehaviour
         //レイの角度計算
         RayAngleIns();
 
-
+        //ジャンプの急降下
+        if(hitCollider != null)
+        {
+            if (transform.position.y > hitCollider.bounds.max.y + 2f)
+            {
+                rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
+                hitCollider.CompareTag("Ground");
+                jumpFlag = false;
+            }
+        }
 
         //コライダーがめり込んだ時
         //CollderMerging();
@@ -362,7 +372,7 @@ public class MoveObject : MonoBehaviour
            }
            else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
            {
-                    return_tan();
+              return_tan();
            }
 
            if (GetObject.normal.x == 1f)
@@ -401,6 +411,7 @@ public class MoveObject : MonoBehaviour
         if(tan <= Mathf.PI / 2)
         {
             Debug.Log("タグ変更");
+            hitBackCollider.gameObject.tag = hitCollider.gameObject.tag;
             hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
@@ -431,12 +442,7 @@ public class MoveObject : MonoBehaviour
         }
 
 
-        if (transform.position.y > hitCollider.bounds.max.y + 2f)
-        {
-            rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
-            hitCollider.CompareTag("Ground");
-            jumpFlag = false;
-        }
+       
 
     }
 

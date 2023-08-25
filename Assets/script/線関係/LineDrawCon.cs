@@ -291,9 +291,29 @@ public class LineDrawCon : MonoBehaviour
         lineRenderer.renderingLayerMask = 2;
         //レイヤーをGroundにする
         lineObj.layer = 6;
-        //タグ変更
-        lineObj.tag = "Ground";
-        //Material変更
+
+        //ペンの種類によって切り替えるプラグラム
+        switch (penM.NowPen)
+        {
+            case PenM.PenCom.Ice:
+
+               lineObj.tag = "IceGround";
+
+            break;
+
+            case PenM.PenCom.Fire:
+
+                lineObj.tag = "FlameGround";
+
+           break;
+
+            case PenM.PenCom.General:
+
+                lineObj.tag = "Ground";
+
+            break;
+        }
+
     }
 
 
