@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 1514631512930554393}
   - component: {fileID: 1514631512930554394}
   - component: {fileID: 1514631512930554395}
+  - component: {fileID: 2224465389033718706}
+  - component: {fileID: 6182504696082227982}
   m_Layer: 0
   m_Name: Spine GameObject (catP)
   m_TagString: MoveObject
@@ -119,6 +121,40 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: tyakuti
+  _animationName: hokou
   loop: 1
   timeScale: 1
+--- !u!50 &2224465389033718706
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514631512930554372}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!114 &6182504696082227982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1514631512930554372}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc115d3e8c0e1649a8afa5eb14f47b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  testAnimationName: janken/hokou

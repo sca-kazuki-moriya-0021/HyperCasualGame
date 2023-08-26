@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UnityEditor;
 using System.Linq;
+using Spine.Unity;
 
 public class MoveObject : MonoBehaviour
 {
@@ -211,12 +212,11 @@ public class MoveObject : MonoBehaviour
         //ƒWƒƒƒ“ƒv‚Ì‹}~‰º
         if(hitCollider != null)
         {
-
             if (jumpFlag == true && transform.position.x < hitCollider.bounds.max.x &&
             transform.position.y < hitCollider.bounds.max.y + 2f)
             {
-                Debug.Log("suka");
-                rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
+                //Debug.Log("suka");
+                rb.AddForce(Vector2.down * moveSpeed * 10, ForceMode2D.Force);
                 hitCollider.tag = hitBackCollider.tag;
                 jumpFlag = false;
             }
@@ -440,7 +440,7 @@ public class MoveObject : MonoBehaviour
         yLen = hitCollider.bounds.max.y - hitCollider.bounds.min.y;
         //pDis =hitCollider.bounds.min.x - transform.position.x;
         pVDis = new Vector2((hitCollider.bounds.max.x - transform.position.x), (hitCollider.bounds.max.y - hitCollider.bounds.min.y));
-        pVDis =  pVDis.normalized;
+        //pVDis =  pVDis.normalized;
         Debug.Log(pVDis);
 
         if(transform.position.x< hitCollider.bounds.max.x &&
