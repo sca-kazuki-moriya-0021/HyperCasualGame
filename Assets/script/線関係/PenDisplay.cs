@@ -66,8 +66,13 @@ public class PenDisplay : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (penMenuFlag == true)
+        {
+            Time.timeScale = 0f;
+        }
+
         //ポーズ画面が出ている時の処理
-        if(pasueDisplayC.MenuFlag == true)
+        if (pasueDisplayC.MenuFlag == true)
         {
             myCanvas.enabled = false;
         }
@@ -84,11 +89,12 @@ public class PenDisplay : MonoBehaviour
         if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
             audioSource.PlayOneShot(sound1);
+            //Time.timeScale = 0f;
 
             penMCanvas.enabled = true;
             myCanvas.enabled = false;
 
-            Time.timeScale = 0f;
+
             penMenuFlag = true;
 
         }

@@ -166,6 +166,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         Debug.Log(jumpFlag);
 
         if(gameOverFlag == true)
@@ -180,6 +181,8 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+
         //ˆÚ“®
         //true‚È‚ç‰E
         if (jumpFlag == false)

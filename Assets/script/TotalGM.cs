@@ -38,7 +38,7 @@ public class TotalGM : MonoBehaviour
         {"Stage1-2",StageCon.Second },
         {"Stage1-3",StageCon.Therd },
         {"GameOver",StageCon.GameOver },
-        {"Gaol",StageCon.Clear },
+        {"Goal",StageCon.Clear },
 
     };
     #endregion

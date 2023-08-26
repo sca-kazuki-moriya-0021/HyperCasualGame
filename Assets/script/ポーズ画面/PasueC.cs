@@ -60,6 +60,8 @@ public class PasueC : MonoBehaviour
         SceneManager.LoadScene("StageSelect");
         pDisplayCanvas.enabled = true;
 
+        Time.timeScale = 1f;
+
         myCanvas.enabled = false;
         pDisplayC.MenuFlag = false;
     }
@@ -67,6 +69,8 @@ public class PasueC : MonoBehaviour
     public void StageReload()
     {
         audioSource.PlayOneShot(sound1);
+
+        Time.timeScale = 1f;
 
         gm.ReloadCurrentSchene();
 
@@ -79,6 +83,8 @@ public class PasueC : MonoBehaviour
     public void BackButton()
     {
         audioSource.PlayOneShot(sound1);
+
+        Time.timeScale = 1f;
 
         pDisplayCanvas.enabled = true;
         myCanvas.enabled = false;

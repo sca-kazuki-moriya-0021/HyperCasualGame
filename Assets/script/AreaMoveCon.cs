@@ -20,17 +20,19 @@ public class AreaMoveCon : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter2D(Collision2D other)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (other.gameObject.CompareTag("MoveObject"))
+        
+
+        if (collision.gameObject.CompareTag("MoveObject"))
         {
-            Debug.Log("haitteru");
+
             var scene = gm.MyGetScene();
             switch (scene)
             {
                 case TotalGM.StageCon.Fiast:
-
-                gm.BackScene = scene;
+                    Debug.Log("haitteru");
+                    gm.BackScene = scene;
                 SceneManager.LoadScene("Stage1-2");
 
                 break;

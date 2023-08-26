@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
 public class PasueDisplayC : MonoBehaviour
 {
     [SerializeField]
@@ -56,9 +57,10 @@ public class PasueDisplayC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(menuFlag == false)
+        
+        if(menuFlag == true)
         {
-            Time.timeScale = 1f;
+            Time.timeScale = 0f;
         }
 
         if(penDisplay.PenMenuFlag == true)
@@ -66,11 +68,11 @@ public class PasueDisplayC : MonoBehaviour
             myCanvas.enabled = false;
         }
 
-        if(penDisplay.PenMenuFlag == false)
+        if(penDisplay.PenMenuFlag == false && menuFlag == false)
         {
             myCanvas.enabled = true;
         }
-
+        
     }
 
     public void PauseButton()
@@ -81,8 +83,8 @@ public class PasueDisplayC : MonoBehaviour
         {
             audioSource.PlayOneShot(sound1);
 
+
             Debug.Log("É|Å[ÉYâÊñ âüÇ≥ÇÍÇΩÇÊ");
-           Time.timeScale = 0f;
 
             pauseCanvas.enabled = true;
             myCanvas.enabled = false;
