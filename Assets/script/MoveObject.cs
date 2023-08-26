@@ -166,6 +166,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(jumpFlag);
 
         if(gameOverFlag == true)
         {
@@ -173,6 +174,12 @@ public class MoveObject : MonoBehaviour
             gameOverFlag = false;
             SceneManager.LoadScene("GameOver");
         }
+   
+    
+    }
+
+    private void FixedUpdate()
+    {
         //ˆÚ“®
         //true‚È‚ç‰E
         if (jumpFlag == false)
@@ -188,18 +195,12 @@ public class MoveObject : MonoBehaviour
             }
         }
 
-    
-    }
-
-    private void FixedUpdate()
-    {
         //âŠp“xŒvŽZ‚ÆƒWƒƒƒ“ƒvˆ—
-        if(jumpFlag == false)
+        if (jumpFlag == false)
         {
             SlopeUp();
 
         }
-
 
         //ƒŒƒC‚ÌŠp“xŒvŽZ
         RayAngleIns();
@@ -207,9 +208,10 @@ public class MoveObject : MonoBehaviour
         //ƒWƒƒƒ“ƒv‚Ì‹}~‰º
         if(hitCollider != null)
         {
-            
+
             if (jumpFlag == true &&transform.position.y > hitCollider.bounds.max.y + 2f)
             {
+                Debug.Log("suka");
                 rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
                 hitCollider.tag = hitBackCollider.tag;
                 jumpFlag = false;
@@ -439,7 +441,8 @@ public class MoveObject : MonoBehaviour
 
         if(transform.position.y < hitCollider.bounds.max.y + 2f)
         {
-            rb.AddForce(pVDis * moveSpeed );
+            Debug.Log("“ü‚Á‚Ä‚é");
+            rb.AddForce(pVDis * moveSpeed * 100 );
             jumpFlag = true;
         }
     }
