@@ -209,7 +209,8 @@ public class MoveObject : MonoBehaviour
         if(hitCollider != null)
         {
 
-            if (jumpFlag == true &&transform.position.y > hitCollider.bounds.max.y + 2f)
+            if (jumpFlag == true && transform.position.x < hitCollider.bounds.max.x &&
+            transform.position.y < hitCollider.bounds.max.y + 2f)
             {
                 Debug.Log("suka");
                 rb.AddForce(Vector2.down * moveSpeed * 100, ForceMode2D.Force);
@@ -439,10 +440,11 @@ public class MoveObject : MonoBehaviour
         pVDis =  pVDis.normalized;
         Debug.Log(pVDis);
 
-        if(transform.position.y < hitCollider.bounds.max.y + 2f)
+        if(transform.position.x< hitCollider.bounds.max.x &&
+            transform.position.y < hitCollider.bounds.max.y +2f)
         {
             Debug.Log("“ü‚Á‚Ä‚é");
-            rb.AddForce(pVDis * moveSpeed * 100 );
+            rb.AddForce(pVDis * moveSpeed * 100);
             jumpFlag = true;
         }
     }
