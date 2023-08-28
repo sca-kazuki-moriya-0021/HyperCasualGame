@@ -6,6 +6,7 @@ using UnityEngine.UI;
 using UnityEditor;
 using System.Linq;
 using Spine.Unity;
+using Spine;
 
 public class MoveObject : MonoBehaviour
 {
@@ -20,14 +21,31 @@ public class MoveObject : MonoBehaviour
     private float moveSpeed = 10f;
     //デフォルトの角度
     //private Quaternion defeltRotation;
+
+    //再生するアニメーション名
+    [SerializeField,Header("歩行アニメーション")]
+    private string moveAnimation;
+    [SerializeField, Header("落下アニメーション")]
+    private string fallAnimation;
+    [SerializeField, Header("飛び降りアニメーション")]
+    private string offJumpAnimation;
+    [SerializeField,Header("着地モーション")]
+    private string lindingAnimation;
+
+    //オブジェクトに設定されているアニメーション
+    private SkeletonAnimation skeletonAnimation = default;
+    //Spineアニメーションを艇起用するために必要なState
+    private Spine.AnimationState animationState = default;
+    //歩くアニメーション制御
+    private bool moveAnimaFlag = false;
+    //落下アニメーション制御
+    private bool fallAnimaFlag = false;
+    //飛び降りアニメーション制御
+    private bool offJumpAnimaFlag = false;
+    //着地アニメーション制御
+    private bool lindingAnimaFlag = false;
     #endregion
 
-    private float time = 400f;
-    private float countTime;
-
-    //プレイヤーアニメーション用変数
-    //[SerializeField]
-    //private Animator anime = null;
 
     //氷の上に乗っているかどうか
     private bool iceWalkFlag = false;
@@ -136,7 +154,7 @@ public class MoveObject : MonoBehaviour
     #endregion
 
     //コルーチン戻り値用
-    private Coroutine lineCast;
+    private Coroutine lineCastF;
 
     public bool GameOverFlag
     {
@@ -152,11 +170,16 @@ public class MoveObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         gm = FindObjectOfType<TotalGM>();
         col2D = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        //this.anime = GetComponent<Animator>();;
+
+        // ゲームオブジェクトのSkeletonAnimationを取得
+        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        // SkeletonAnimationからAnimationStateを取得
+        animationState = skeletonAnimation.AnimationState;
+
+        lineCastF = StartCoroutine(StartLineCast());
 
         //落ちた時に使う数値リセット
         fallenDistance = 0f;
@@ -176,13 +199,12 @@ public class MoveObject : MonoBehaviour
             gameOverFlag = false;
             SceneManager.LoadScene("GameOver");
         }
-   
-    
+  
     }
 
     private void FixedUpdate()
     {
-
+        Debug.Log("飛び降り:" +offJumpAnimaFlag);
 
         //移動
         //trueなら右
@@ -192,10 +214,19 @@ public class MoveObject : MonoBehaviour
             if (iceWalkFlag == false)
             {
                 transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                if(moveAnimaFlag == false)
+                {
+                    OnCompleteAnimation();
+                }
+
             }
             if (iceWalkFlag == true)
             {
                 transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                if (moveAnimaFlag == false)
+                {
+                    OnCompleteAnimation();
+                }
             }
         }
 
@@ -207,7 +238,12 @@ public class MoveObject : MonoBehaviour
         }
 
         //レイの角度計算
-        RayAngleIns();
+        if(lineCastF != null)
+        {
+            RayAngleIns();
+            Debug.Log("確かめよう");
+        }
+
 
         //ジャンプの急降下
         if(hitCollider != null)
@@ -221,91 +257,39 @@ public class MoveObject : MonoBehaviour
                 jumpFlag = false;
             }
         }
-
-        //コライダーがめり込んだ時
-        //CollderMerging();
-
-        //自由落下
-        { 
-            /*moveVelocity.y += -_graviry *Time.fixedDeltaTime;
-
-            var p = transform.position;
-
-            p+= _moveVelocity *Time.fixedDeltaTime;
-            transform.position =p;*/
-        }
-
-        //どちらにいくかの判定
-        {
-           /* if (dirSwitchFlag == true)
-            {
-                Debug.Log("aik");
-                countTime++;
-                if (countTime >= time && rightLine == true)
-                {
-                    transform.Rotate(0,180f,0);
-                    rightLine = false;
-                    countTime = 0;
-                }
-                if (countTime >= time && rightLine == false)
-                {
-                    transform.Rotate(0, 0f, 0);
-                    rightLine = true;
-                    countTime = 0;
-                }
-                dirSwitchFlag = false;
-            }*/
-        }
-
-        //コライダー同士がめりこんだとき
-        //Physics2D.OverlapPointAll()
-        
     }
 
     //下方向レイの角度計算用
     public void RayAngleIns()
     {
-        { 
-        /*for (int i = 0; i <= (angle_Split - 1); i++)
-            {
-                //レイの端から端までの角度
-                float AngleRange = PI * (degree / 180);
-
-                //レイに渡す角度の計算
-                if (angle_Split > 1) _theta = (AngleRange / (angle_Split - 1)) * i + 0.5f * (PI - AngleRange);
-                else _theta = 0.5f * PI;
-
-                //取得した角度を保存
-                rayVector2.x = _Velocity_0 * Mathf.Cos(_theta);
-                rayVector2.y = _Velocity_0 * Mathf.Sin(_theta);
-            }*/
-        }
-        
         var downObject = GetDownObject();
-
         if (fallFlag == true)
         {
             //レイを出す
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
+            
+            //アニメーション制御
+            if (fallAnimaFlag == false)
+            {
+                fallAnimaFlag = true;
+                skeletonAnimation.state.ClearTrack(0);
+                TrackEntry trackEntry = animationState.SetAnimation(0, fallAnimation, true);
+                skeletonAnimation.skeleton.SetToSetupPose();
+            }
+
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
             {
-                { 
-                /*hitObjectRotaion = hit2D.transform.rotation;
-                    transform.rotation = new Quaternion(0, 0, 0, 0);
-                    transform.rotation = hitObjectRotaion;
-                    objectRotaion = hitObjectRotaion;*/
-                }
-                //Debug.Log("ki");
+                skeletonAnimation.state.ClearTrack(0);
+                TrackEntry trackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+                skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 jumpFlag = false;
             }
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
-                { 
-                    /*hitObjectRotaion = hit2D.transform.rotation;
-                    objectRotaion = hitObjectRotaion;*/
-                }
-                //Debug.Log("ari");
+                skeletonAnimation.state.ClearTrack(0);
+                TrackEntry trackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+                skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 iceWalkFlag = true;
                 jumpFlag = false;
@@ -313,22 +297,27 @@ public class MoveObject : MonoBehaviour
         }
         else
         {
-            Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.blue);
+                Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.blue);
 
-            //地面から空中にいった時(fallFlag == false　から　true　になる時)
-            if (!IsOnGrounds(downObject))
-            {
+                //地面から空中にいった時(fallFlag == false　から　true　になる時)
+                if (!IsOnGrounds(downObject))
+                {
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
                 //最初の落下地点を設定
-                fallenPosition = transform.position.y;
-                fallenDistance = 0;
-                //hitObjectRotaion = default;
-                //フラグを立てる
-                fallFlag = true;
-                iceWalkFlag = false;
-            }
 
+                    fallenPosition = transform.position.y;
+                    fallenDistance = 0;
+
+                    fallFlag = true;
+                    iceWalkFlag = false;
+
+
+
+                    //アニメーション
+                    StartCoroutine(StartoffJump());
+                }
+            
         }
         //レイが何にも当たっていないときは強制リターン
         if (!downObject)
@@ -340,9 +329,11 @@ public class MoveObject : MonoBehaviour
     //下にオブジェクトがあったときhit2Dを返す
     private RaycastHit2D GetDownObject()
     {
-        RaycastHit2D hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
-
+        RaycastHit2D hit2D;
+        
+        hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
         return hit2D;
+       
     }
 
     //下方向にヒットした時の場合分け
@@ -488,11 +479,15 @@ public class MoveObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            offJumpAnimaFlag = false;
+            fallAnimaFlag = false;
             iceWalkFlag = false;
         }
 
         if (other.gameObject.CompareTag("IceGround"))
         {
+            offJumpAnimaFlag = false;
+            fallAnimaFlag = false;
             iceWalkFlag = true;
         }
 
@@ -538,7 +533,7 @@ public class MoveObject : MonoBehaviour
         var merging = Physics2D.OverlapCapsule(point0, point1, (CapsuleDirection2D)radius, LayerMask.GetMask("Ground"));
         Debug.Log(collision.gameObject.name);*/
         {
-             Vector3 a =  collision.collider.ClosestPoint(transform.position);
+             /*Vector3 a =  collision.collider.ClosestPoint(transform.position);
              Vector3 b = (a - transform.position);
              Vector3 c = b.normalized;
              float returnDistance = col2D.size.y * transform.localScale.y / 2 - b.magnitude;
@@ -547,9 +542,21 @@ public class MoveObject : MonoBehaviour
             //Debug.Log(b.magnitude);
             //Debug.Log(returnDistance);
 
-            transform.position = (transform.position - returnDistance * c);
+            transform.position = (transform.position - returnDistance * c);*/
         }
     }
+
+
+    //移動のアニメーション処理
+    private void OnCompleteAnimation()
+    {
+       moveAnimaFlag = true;
+       skeletonAnimation.state.ClearTrack(0);
+       TrackEntry trackEntry = animationState.SetAnimation(0, moveAnimation, true);
+       Debug.Log("アニメーション");
+       skeletonAnimation.skeleton.SetToSetupPose();
+    }
+
 
     //効果音を流す処理
     public void PlaySE(AudioClip clip)
@@ -564,17 +571,35 @@ public class MoveObject : MonoBehaviour
         }
     }
 
-    /*public void WalkSE()
+    private IEnumerator StartLineCast()
     {
-        if(iceWalkFlag == true)
+        while (true)
         {
-            PlaySE(iceRunSE);
+          yield return null;
         }
-        if(iceWalkFlag == false)
-        {
-            PlaySE(runSE);
-        }
-    }*/
+    }
 
- 
+    private IEnumerator StartoffJump()
+    {
+        if (offJumpAnimaFlag == false)
+        {
+                offJumpAnimaFlag = true;
+                skeletonAnimation.state.ClearTrack(0);
+                TrackEntry trackEntry = animationState.SetAnimation(0, offJumpAnimation, false);
+                skeletonAnimation.skeleton.SetToSetupPose();
+        }
+
+        lineCastF = null;
+
+        yield return new WaitForSeconds(1f);
+
+        moveAnimaFlag = false;
+
+        lineCastF = StartCoroutine(StartLineCast());
+        Debug.Log("aiu");
+
+        StopCoroutine(StartoffJump());
+
+    }
+
 }
