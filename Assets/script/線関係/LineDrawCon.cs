@@ -10,8 +10,7 @@ using UnityEngine.EventSystems;
 public class LineDrawCon : MonoBehaviour
 {
     [SerializeField,Header("UI保存用")]
-    private Button[]  botton;
-
+    private GameObject range;
     //線の太さ
     [Range(0.1f, 0.5f)]
     [SerializeField,Header("線の太さ")]
@@ -123,11 +122,22 @@ public class LineDrawCon : MonoBehaviour
         //線のポイント初期化
         linePoints = new List<Vector2>();
 
+ 
+
     }
 
     // Update is called once per frame
     void Update()
     {
+        /*座標に関する処理*/
+        //マウス座標取得
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
+        //ワールド座標へ変換
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        Vector3 u = range.transform.position;
+        //Vector3 v = transform.TransformPoint(u);
+        //Debug.Log(v.y);
+
 
         //ペンの種類によって切り替えるプラグラム
         switch (penM.NowPen)
@@ -159,13 +169,7 @@ public class LineDrawCon : MonoBehaviour
         if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false )
         {
 
-            //マウス座標取得
-            Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
-            //ワールド座標へ変換
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            if (worldPos != botton[0].transform.localPosition ||
-               worldPos != botton[1].transform.localPosition)
+            if (u.y > worldPos.y)
             {
 
                 //左クリックされたら
@@ -176,9 +180,7 @@ public class LineDrawCon : MonoBehaviour
                             case PenM.PenCom.Ice:
                             if (penM.IceDrawFlag == true)
                             {
-                                lineFlag = true;
-
-                                Debug.Log(lineFlag);
+                               lineFlag = true;
                                 _addLineObject();
                             }
                             break;
@@ -199,9 +201,7 @@ public class LineDrawCon : MonoBehaviour
                             }
                             break;
                         }
-                    
                 }
-            }
                 //クリック中（ストローク中）
                 if (Input.GetMouseButton(0) && lineFlag == true)
                 {
@@ -212,14 +212,14 @@ public class LineDrawCon : MonoBehaviour
                     }
                     _addPositionDataToLineRenderer();
                 }
-
+            }
                 //クリック解除になったら
-                if (Input.GetMouseButtonUp(0))
-                {
-                        lineFlag = false;
-                        sEffectFlag = false;
-                        linePoints = new List<Vector2>();
-                }
+           if (Input.GetMouseButtonUp(0))
+           {
+              lineFlag = false;
+              sEffectFlag = false;
+              linePoints = new List<Vector2>();
+           }
         }
     }
 
