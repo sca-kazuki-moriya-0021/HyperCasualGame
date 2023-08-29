@@ -6,9 +6,23 @@ using UnityEditor;
 using UnityEngine.Video;
 using System.Linq;
 using Spine.Unity;
+using UnityEngine.EventSystems;
 
 public class LineDrawCon : MonoBehaviour
 {
+    private Camera mainCamera;
+    RaycastHit[] checkTouchResults = new RaycastHit[1];
+    //カメラからタッチ判定を飛ばす最大の距離
+    float checkTouchMaxDistance = 100f;
+    //選択対象のレイヤー
+    LayerMask targetLayer;
+    //タッチ位置
+    Vector3 touchPoint;
+    //カメラからタッチ位置へのRay
+    Ray checkTouchRay;
+    //タッチ位置のUI要素が返されるList
+    List<RaycastResult> isPointerOverUIResults = new List<RaycastResult>(10);
+    
 
     //線の太さ
     [Range(0.1f, 0.5f)]
@@ -85,49 +99,20 @@ public class LineDrawCon : MonoBehaviour
     private AudioClip sound1;
     private bool sEffectFlag = false;
 
-
-    /*public Color LineColor
-    {
-        get { return this.lineColor; }
-        set { this.lineColor = value; }
-    }
-
-    public PhysicsMaterial2D SMaterial
-    {
-        get { return this.sMaterial; }
-        set { this.sMaterial = value; }
-    }
-
-    public SkeletonAnimation NowSkeletonAnima
-    {
-        get { return this.nowSkeletonAnima; }
-        set { this.nowSkeletonAnima = value; }
-    }
-
-    /*public string Name
-    {
-        get { return this.name; }
-        set { this.name = value; }
-    }
-
-    public Sprite NowSprite
-    {
-        get { return this.nowSprite; }
-        set { this.nowSprite = value; }
-    }
-
-
-    public bool IceFlag
-    {
-        get { return this.iceflag; }
-        set { this.iceflag = value; }
-    }*/
-
     public bool LineFlag
     {
         get { return this.lineFlag; }
         set { this.lineFlag = value; }
     }
+
+    private void Awake()
+    {
+        mainCamera = Camera.main;
+        //対象のレイヤーを指定。複数を設定する場合は「1 << LayerMask.NameToLayer("Enemy") | 1 << LayerMask.NameToLayer("Ground")」みたいに「|」で区切る。
+        targetLayer = LayerMask.NameToLayer("UI");
+        //eventSystem = EventSystem.current;
+    }
+
 
     // Start is called before the first frame update
     void Start()
@@ -154,7 +139,6 @@ public class LineDrawCon : MonoBehaviour
 
         //線のポイント初期化
         linePoints = new List<Vector2>();
-
 
     }
 
@@ -194,34 +178,40 @@ public class LineDrawCon : MonoBehaviour
                 //左クリックされたら
                 if (Input.GetMouseButtonDown(0))
                 {
-                    switch (penM.NowPen)
+                    touchPoint = Input.mousePosition;
+                    checkTouchRay = mainCamera.ScreenPointToRay(touchPoint);
+                    
+                    //if(checkTouchRay)
                     {
-                         case PenM.PenCom.Ice:
-                         if(penM.IceDrawFlag == true)
-                         {
-                            Debug.Log("asuke");
-                            lineFlag = true;
 
-                            Debug.Log(lineFlag);
-                            _addLineObject();
-                         }
-                         break;
+                        switch (penM.NowPen)
+                        {
+                            case PenM.PenCom.Ice:
+                            if (penM.IceDrawFlag == true)
+                            {
+                                lineFlag = true;
 
-                         case PenM.PenCom.Fire:
-                         if(penM.FireDrawFlag == true)
-                         {
-                            lineFlag = true;
-                            _addLineObject();
-                         }
-                         break;
+                                Debug.Log(lineFlag);
+                                _addLineObject();
+                            }
+                            break;
 
-                         case PenM.PenCom.General:
-                         if(penM.GeneralDrawFlag == true)
-                         {
-                            lineFlag = true;
-                            _addLineObject();
-                         }
-                         break;
+                            case PenM.PenCom.Fire:
+                            if (penM.FireDrawFlag == true)
+                            {
+                                lineFlag = true;
+                                _addLineObject();
+                            }
+                            break;
+
+                            case PenM.PenCom.General:
+                            if (penM.GeneralDrawFlag == true)
+                            {
+                                lineFlag = true;
+                                _addLineObject();
+                            }
+                            break;
+                        }
                     }
                 }
                 //クリック中（ストローク中）
@@ -238,9 +228,9 @@ public class LineDrawCon : MonoBehaviour
                 //クリック解除になったら
                 if (Input.GetMouseButtonUp(0))
                 {
-                    lineFlag = false;
-                    sEffectFlag = false;
-                    linePoints = new List<Vector2>();
+                        lineFlag = false;
+                        sEffectFlag = false;
+                        linePoints = new List<Vector2>();
                 }
         }
     }
@@ -284,8 +274,6 @@ public class LineDrawCon : MonoBehaviour
 
                 break;
         }
-
-
 
         _initRenderer();
     }

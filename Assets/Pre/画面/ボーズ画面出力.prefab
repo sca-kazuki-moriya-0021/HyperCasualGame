@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1939956650620790034}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: "\u30DC\u30FC\u30BA\u753B\u9762\u51FA\u529B"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 3928714431402001404}
   - component: {fileID: 6692308799346756157}
   - component: {fileID: 3320909042080492286}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 7876424375278347128}
   - component: {fileID: 7327923780745236522}
   - component: {fileID: 2657800102697926627}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
