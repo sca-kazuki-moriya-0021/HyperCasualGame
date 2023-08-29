@@ -134,10 +134,8 @@ public class LineDrawCon : MonoBehaviour
         Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
         //ワールド座標へ変換
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+        //線引ける線の上限
         Vector3 u = range.transform.position;
-        //Vector3 v = transform.TransformPoint(u);
-        //Debug.Log(v.y);
-
 
         //ペンの種類によって切り替えるプラグラム
         switch (penM.NowPen)

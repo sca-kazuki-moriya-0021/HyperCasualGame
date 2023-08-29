@@ -18,7 +18,7 @@ public class MoveObject : MonoBehaviour
     [SerializeField,Header("氷の床で進むスピード")]
     private float xMoveIceSpeed = 7.0f;
     //ジャンプ中に使う速度
-    private float moveSpeed = 10f;
+    private float moveSpeed = 2f;
     //デフォルトの角度
     //private Quaternion defeltRotation;
 
@@ -164,6 +164,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(jumpFlag);
 
         //ゲームオーバーシーンにいく処理
         if(gameOverFlag == true)
@@ -215,7 +216,7 @@ public class MoveObject : MonoBehaviour
 
 
         //ジャンプの急降下
-        if(hitCollider != null)
+        /*if(hitCollider != null)
         {
             if (jumpFlag == true && transform.position.x < hitCollider.bounds.max.x &&
             transform.position.y < hitCollider.bounds.max.y + 2f)
@@ -225,7 +226,7 @@ public class MoveObject : MonoBehaviour
                 hitCollider.tag = hitBackCollider.tag;
                 jumpFlag = false;
             }
-        }
+        }*/
     }
 
     //移動のアニメーション処理
@@ -335,6 +336,46 @@ public class MoveObject : MonoBehaviour
     }
 
 
+    //レイを飛ばすコルーチン
+    private IEnumerator StartLineCast()
+    {
+        while (true)
+        {
+            yield return null;
+        }
+    }
+
+    //飛び降りのアニメーション制御
+    private IEnumerator StartoffJump()
+    {
+        //飛び降りのアニメーション流し、その後落下中のアニメーションを流す
+        skeletonAnimation.state.ClearTrack(0);
+        TrackEntry fallTrackEntry = animationState.SetAnimation(0, offJumpAnimation, false);
+        fallTrackEntry.Complete += FallSpineComplete;
+        skeletonAnimation.skeleton.SetToSetupPose();
+
+        //一旦レイを無くす
+        lineCastF = null;
+
+        yield return new WaitForSeconds(1f);
+
+        //レイを復活
+        lineCastF = StartCoroutine(StartLineCast());
+
+        //コルーチンストップ
+        StopCoroutine(StartoffJump());
+
+    }
+
+    //落下中のアニメーションを流す
+    private void FallSpineComplete(TrackEntry trackEntry)
+    {
+        skeletonAnimation.state.ClearTrack(0);
+        animationState.SetAnimation(0, fallAnimation, true);
+        skeletonAnimation.skeleton.SetToSetupPose();
+    }
+
+
     //坂をジャンプするときに使う関数
     private float SlopeUp()
     {
@@ -360,7 +401,6 @@ public class MoveObject : MonoBehaviour
           tan = 0f;
         }
 
-      
         return tan;
     }
 
@@ -393,37 +433,32 @@ public class MoveObject : MonoBehaviour
             hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
-                JumpCon();
+                jumpFlag = true;
+                StartCoroutine(JumpStart());
             }
         }
     }
-    
-    //ジャンプ操作
-    private void JumpCon()
+
+    private IEnumerator JumpStart()
     {
-        Debug.Log("確かめ中");
-        Debug.Log("キャラ:"+transform.position.y);
-        Debug.Log("ヒットしたオブジェクト:"+hitCollider.bounds.max.y);
-
-        //ジャンプに使う計算
-        xLen = hitCollider.bounds.max.x - hitCollider.bounds.min.x;
-        yLen = hitCollider.bounds.max.y - hitCollider.bounds.min.y;
-        //pDis =hitCollider.bounds.min.x - transform.position.x;
-        pVDis = new Vector2((hitCollider.bounds.max.x - transform.position.x), (hitCollider.bounds.max.y - hitCollider.bounds.min.y));
-        //pVDis =  pVDis.normalized;
-        Debug.Log(pVDis);
-
-        //ジャンプ処理
-        if(transform.position.x< hitCollider.bounds.max.x &&
-            transform.position.y < hitCollider.bounds.max.y +2f)
+        Vector2 d = transform.position;
+        xLen = hitCollider.bounds.max.x +10f;
+        yLen = hitCollider.bounds.max.y + 15F;
+        Vector2 t = new Vector2(xLen,yLen);
+        float distance = Vector2.Distance(transform.position,t);
+        while (d != t)
         {
-            Debug.Log("入ってる");
-            rb.AddForce(pVDis * moveSpeed * 100);
-            jumpFlag = true;
+            float p = (Time.time * moveSpeed * 0.9f) / distance;
+            yield return null;
+            transform.position = Vector3.Slerp(d, hitCollider.transform.position, p);
         }
+     
+       fallFlag = false;
+       yield return fallFlag;
+        
+       //StopCoroutine(JumpStart());
     }
-
-
+    
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
     {
@@ -453,7 +488,6 @@ public class MoveObject : MonoBehaviour
         return a + (Vector2)transform.position;
 
     }*/
-    
 
 
     //何かしらに当たった時
@@ -538,43 +572,5 @@ public class MoveObject : MonoBehaviour
         }
     }
 
-    //レイを飛ばすコルーチン
-    private IEnumerator StartLineCast()
-    {
-        while (true)
-        {
-          yield return null;
-        }
-    }
-
-    //飛び降りのアニメーション制御
-    private IEnumerator StartoffJump()
-    {
-        //飛び降りのアニメーション流し、その後落下中のアニメーションを流す
-        skeletonAnimation.state.ClearTrack(0);
-        TrackEntry fallTrackEntry =  animationState.SetAnimation(0, offJumpAnimation, false);
-        fallTrackEntry.Complete += FallSpineComplete;
-        skeletonAnimation.skeleton.SetToSetupPose();
-
-        //一旦レイを無くす
-        lineCastF = null;
-
-        yield return new WaitForSeconds(1f);
-        
-        //レイを復活
-        lineCastF = StartCoroutine(StartLineCast());
-
-        //コルーチンストップ
-        StopCoroutine(StartoffJump());
-
-    }
-
-    //落下中のアニメーションを流す
-    private void FallSpineComplete(TrackEntry trackEntry)
-    {
-        skeletonAnimation.state.ClearTrack(0);
-        animationState.SetAnimation(0, fallAnimation, true);
-        skeletonAnimation.skeleton.SetToSetupPose();
-    }
 
 }
