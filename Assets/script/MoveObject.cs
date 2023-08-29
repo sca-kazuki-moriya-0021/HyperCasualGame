@@ -10,12 +10,12 @@ using Spine;
 
 public class MoveObject : MonoBehaviour
 {
-    #region//プレイヤー関係
+    #region//プレイヤー関係とアニメーション
     //x方向に進むスピード(一般的)
-    [SerializeField]
+    [SerializeField,Header("普通の床で進むスピード")]
     private float xMoveFloorSpeed = 6.0f;
     //x方向に進むスピード(氷)
-    [SerializeField]
+    [SerializeField,Header("氷の床で進むスピード")]
     private float xMoveIceSpeed = 7.0f;
     //ジャンプ中に使う速度
     private float moveSpeed = 10f;
@@ -38,24 +38,18 @@ public class MoveObject : MonoBehaviour
     private Spine.AnimationState animationState = default;
     //歩くアニメーション制御
     private bool moveAnimaFlag = false;
-    //飛び降りアニメーション制御
-    private bool offJumpAnimaFlag = false;
     #endregion
-
-
-    //氷の上に乗っているかどうか
-    private bool iceWalkFlag = false;
 
     #region//レイ関係
     //　レイを飛ばす場所
-    [SerializeField]
+    [SerializeField,Header("レイを飛ばす位置")]
     private Transform rayPosition;
     /*[SerializeField]
     private Vector2 upOffset;
     [SerializeField]
     private Vector2 downOffset;*/
     //　レイを飛ばす距離
-    [SerializeField]
+    [SerializeField,Header("レイの長さ")]
     private float rayRange;
     //レイを飛ばす角度計算
     /*[SerializeField]
@@ -79,7 +73,7 @@ public class MoveObject : MonoBehaviour
 
     //ヒットしたオブジェクトの角度
     private Quaternion hitObjectRotaion;
-
+    //ヒットしたオブジェクト保存用
     private RaycastHit2D headHitObject;
     private RaycastHit2D footHitObject;
     private RaycastHit2D forwardHitObject;
@@ -95,25 +89,21 @@ public class MoveObject : MonoBehaviour
     #endregion
 
     #region//状況に応じて使用するフラグ関係
-    //移動
-    private bool moveFlag = false;
+    //氷の上に乗っているかどうか
+    private bool iceWalkFlag = false;
     //落下中
     private bool fallFlag = false;
-    //着地中
-    private bool landFlag = false;
     //ゲームオーバー
     private bool gameOverFlag = false;
     //ジャンプ
     private bool jumpFlag = false;
-
     #endregion
 
     //RigidBodyとカプセルコライダーの定義
     private Rigidbody2D rb;
     private CapsuleCollider2D col2D;
 
-    //
-    readonly Collider[] _result = new Collider[5];
+    //readonly Collider[] _result = new Collider[5];
 
     //hitしたコライダー検知用
     private Collider2D hitCollider;
@@ -129,13 +119,13 @@ public class MoveObject : MonoBehaviour
     private float tan;
 
     //重力　使うかはわからん
-    [SerializeField]
+    [SerializeField,Header("重力用だけど使ってない")]
     private float _graviry = 9.80655f;
     private Vector3 _moveVelocity;
 
     #region//効果音関係
     private AudioSource audios = null;
-    [SerializeField]
+    [SerializeField,Header("木に当たった音")]
     private AudioClip sound1;
     /*[SerializeField]
     private AudioClip runSE;//移動用
@@ -175,6 +165,7 @@ public class MoveObject : MonoBehaviour
         // SkeletonAnimationからAnimationStateを取得
         animationState = skeletonAnimation.AnimationState;
 
+        //レイを飛ばす処理
         lineCastF = StartCoroutine(StartLineCast());
 
         //落ちた時に使う数値リセット
@@ -187,8 +178,7 @@ public class MoveObject : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(jumpFlag);
-
+        //ゲームオーバーシーンにいく処理
         if(gameOverFlag == true)
         {
             gm.BackScene = gm.MyGetScene();
@@ -200,13 +190,10 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log("飛び降り:" +offJumpAnimaFlag);
-
         //移動
-        //trueなら右
         if (jumpFlag == false)
         {
-
+            //移動のアニメーション流しと移動
             if (iceWalkFlag == false)
             {
                 transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
@@ -230,7 +217,6 @@ public class MoveObject : MonoBehaviour
         if (jumpFlag == false)
         {
             SlopeUp();
-
         }
 
         //レイの角度計算
@@ -253,6 +239,16 @@ public class MoveObject : MonoBehaviour
                 jumpFlag = false;
             }
         }
+    }
+
+    //移動のアニメーション処理
+    private void OnCompleteAnimation()
+    {
+        moveAnimaFlag = true;
+        skeletonAnimation.state.ClearTrack(0);
+        animationState.SetAnimation(0, moveAnimation, true);
+        Debug.Log("アニメーション");
+        skeletonAnimation.skeleton.SetToSetupPose();
     }
 
     //下方向レイの角度計算用
@@ -287,26 +283,26 @@ public class MoveObject : MonoBehaviour
                 jumpFlag = false;
             }
         }
+        //地面から離れた時の処理
         else
         {
-                Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.blue);
-
-                //地面から空中にいった時(fallFlag == false　から　true　になる時)
-                if (!IsOnGrounds(downObject))
-                {
+           Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.blue);
+           //地面から空中にいった時(fallFlag == false　から　true　になる時)
+           if (!IsOnGrounds(downObject))
+           {
                 //地面から一回でもLineCastの線が離れたとき = 落下状態とする
                 //その時に落下状態を判別するためfallFlagをtrueにする
                 //最初の落下地点を設定
 
-                    fallenPosition = transform.position.y;
-                    fallenDistance = 0;
+             fallenPosition = transform.position.y;
+             fallenDistance = 0;
 
-                    fallFlag = true;
-                    iceWalkFlag = false;
+             fallFlag = true;
+             iceWalkFlag = false;
 
-                    //アニメーション
-                    StartCoroutine(StartoffJump());
-                }
+             //アニメーション
+             StartCoroutine(StartoffJump());
+           }
             
         }
         //レイが何にも当たっていないときは強制リターン
@@ -357,26 +353,26 @@ public class MoveObject : MonoBehaviour
     {
       //if(fallFlag == false||)
       {
+        tan = 0f;
+        var GetObject = ForwardObject();
 
-            tan = 0f;
-            var GetObject = ForwardObject();
-
-            hitCollider = GetObject.collider;
+        hitCollider = GetObject.collider;
            
-           if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
-           {
-              return_tan();
+        if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
+        {
+           return_tan();
 
-           }
-           else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
-           {
-              return_tan();
-           }
+        }
+        else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
+        {
+           return_tan();
+        }
 
-           if (GetObject.normal.x == 1f)
-           {
-                    tan = 0f;
-           }
+        if (GetObject.normal.x == 1f)
+        {
+          tan = 0f;
+        }
+
       }
         return tan;
     }
@@ -413,7 +409,6 @@ public class MoveObject : MonoBehaviour
                 JumpCon();
             }
         }
-
     }
     
     //ジャンプ操作
@@ -423,7 +418,7 @@ public class MoveObject : MonoBehaviour
         Debug.Log("キャラ:"+transform.position.y);
         Debug.Log("ヒットしたオブジェクト:"+hitCollider.bounds.max.y);
 
-
+        //ジャンプに使う計算
         xLen = hitCollider.bounds.max.x - hitCollider.bounds.min.x;
         yLen = hitCollider.bounds.max.y - hitCollider.bounds.min.y;
         //pDis =hitCollider.bounds.min.x - transform.position.x;
@@ -431,6 +426,7 @@ public class MoveObject : MonoBehaviour
         //pVDis =  pVDis.normalized;
         Debug.Log(pVDis);
 
+        //ジャンプ処理
         if(transform.position.x< hitCollider.bounds.max.x &&
             transform.position.y < hitCollider.bounds.max.y +2f)
         {
@@ -478,13 +474,11 @@ public class MoveObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
-            offJumpAnimaFlag = false;
             iceWalkFlag = false;
         }
 
         if (other.gameObject.CompareTag("IceGround"))
         {
-            offJumpAnimaFlag = false;
             iceWalkFlag = true;
         }
 
@@ -544,17 +538,6 @@ public class MoveObject : MonoBehaviour
     }
 
 
-    //移動のアニメーション処理
-    private void OnCompleteAnimation()
-    {
-       moveAnimaFlag = true;
-       skeletonAnimation.state.ClearTrack(0);
-       animationState.SetAnimation(0, moveAnimation, true);
-       Debug.Log("アニメーション");
-       skeletonAnimation.skeleton.SetToSetupPose();
-    }
-
-
     //効果音を流す処理
     public void PlaySE(AudioClip clip)
     {
@@ -568,6 +551,7 @@ public class MoveObject : MonoBehaviour
         }
     }
 
+    //レイを飛ばすコルーチン
     private IEnumerator StartLineCast()
     {
         while (true)
@@ -576,28 +560,29 @@ public class MoveObject : MonoBehaviour
         }
     }
 
+    //飛び降りのアニメーション制御
     private IEnumerator StartoffJump()
     {
-        if (offJumpAnimaFlag == false)
-        {
-                offJumpAnimaFlag = true;
-                skeletonAnimation.state.ClearTrack(0);
-                TrackEntry fallTrackEntry =  animationState.SetAnimation(0, offJumpAnimation, false);
-                fallTrackEntry.Complete += FallSpineComplete;
-                skeletonAnimation.skeleton.SetToSetupPose();
-        }
+        //飛び降りのアニメーション流し、その後落下中のアニメーションを流す
+        skeletonAnimation.state.ClearTrack(0);
+        TrackEntry fallTrackEntry =  animationState.SetAnimation(0, offJumpAnimation, false);
+        fallTrackEntry.Complete += FallSpineComplete;
+        skeletonAnimation.skeleton.SetToSetupPose();
 
+        //一旦レイを無くす
         lineCastF = null;
 
         yield return new WaitForSeconds(1f);
-
+        
+        //レイを復活
         lineCastF = StartCoroutine(StartLineCast());
-        Debug.Log("aiu");
 
+        //コルーチンストップ
         StopCoroutine(StartoffJump());
 
     }
 
+    //落下中のアニメーションを流す
     private void FallSpineComplete(TrackEntry trackEntry)
     {
         skeletonAnimation.state.ClearTrack(0);
