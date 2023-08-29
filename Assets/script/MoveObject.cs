@@ -38,12 +38,8 @@ public class MoveObject : MonoBehaviour
     private Spine.AnimationState animationState = default;
     //歩くアニメーション制御
     private bool moveAnimaFlag = false;
-    //落下アニメーション制御
-    private bool fallAnimaFlag = false;
     //飛び降りアニメーション制御
     private bool offJumpAnimaFlag = false;
-    //着地アニメーション制御
-    private bool lindingAnimaFlag = false;
     #endregion
 
 
@@ -268,20 +264,12 @@ public class MoveObject : MonoBehaviour
             //レイを出す
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
             
-            //落下アニメーション制御
-            if (fallAnimaFlag == false)
-            {
-                fallAnimaFlag = true;
-                skeletonAnimation.state.ClearTrack(0);
-                animationState.SetAnimation(0, fallAnimation, true);
-                skeletonAnimation.skeleton.SetToSetupPose();
-            }
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
             {
                 skeletonAnimation.state.ClearTrack(0);
-                TrackEntry trackEntry = animationState.SetAnimation(0, lindingAnimation, false);
-                trackEntry.Complete += OnSpineComplete;
+                TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+                moveTrackEntry.Complete += MoveSpineComplete;
                 //歩行アニメーション制御
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
@@ -291,8 +279,8 @@ public class MoveObject : MonoBehaviour
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
                 skeletonAnimation.state.ClearTrack(0);
-                TrackEntry trackEntry = animationState.SetAnimation(0, lindingAnimation, false);
-                trackEntry.Complete += OnSpineComplete;
+                TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+                moveTrackEntry.Complete += MoveSpineComplete;
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 iceWalkFlag = true;
@@ -315,8 +303,6 @@ public class MoveObject : MonoBehaviour
 
                     fallFlag = true;
                     iceWalkFlag = false;
-
-
 
                     //アニメーション
                     StartCoroutine(StartoffJump());
@@ -359,7 +345,7 @@ public class MoveObject : MonoBehaviour
     }
 
     //着地後の歩行アニメーション制御用
-    private void OnSpineComplete(TrackEntry trackEntry)
+    private void MoveSpineComplete(TrackEntry trackEntry)
     {
         animationState.SetAnimation(0, moveAnimation, true);
         moveAnimaFlag = false;
@@ -493,14 +479,12 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             offJumpAnimaFlag = false;
-            fallAnimaFlag = false;
             iceWalkFlag = false;
         }
 
         if (other.gameObject.CompareTag("IceGround"))
         {
             offJumpAnimaFlag = false;
-            fallAnimaFlag = false;
             iceWalkFlag = true;
         }
 
@@ -598,7 +582,8 @@ public class MoveObject : MonoBehaviour
         {
                 offJumpAnimaFlag = true;
                 skeletonAnimation.state.ClearTrack(0);
-                animationState.SetAnimation(0, offJumpAnimation, false);
+                TrackEntry fallTrackEntry =  animationState.SetAnimation(0, offJumpAnimation, false);
+                fallTrackEntry.Complete += FallSpineComplete;
                 skeletonAnimation.skeleton.SetToSetupPose();
         }
 
@@ -606,13 +591,18 @@ public class MoveObject : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-
-
         lineCastF = StartCoroutine(StartLineCast());
         Debug.Log("aiu");
 
         StopCoroutine(StartoffJump());
 
+    }
+
+    private void FallSpineComplete(TrackEntry trackEntry)
+    {
+        skeletonAnimation.state.ClearTrack(0);
+        animationState.SetAnimation(0, fallAnimation, true);
+        skeletonAnimation.skeleton.SetToSetupPose();
     }
 
 }
