@@ -38,6 +38,16 @@ public class MoveObject : MonoBehaviour
     private Spine.AnimationState animationState = default;
     //歩くアニメーション制御
     private bool moveAnimaFlag = false;
+
+    //氷の上に乗っているかどうか
+    private bool iceWalkFlag = false;
+    //落下中
+    private bool fallFlag = false;
+    //ゲームオーバー
+    private bool gameOverFlag = false;
+    //ジャンプ
+    private bool jumpFlag = false;
+    //飛び降り中
     #endregion
 
     #region//レイ関係
@@ -51,18 +61,6 @@ public class MoveObject : MonoBehaviour
     //　レイを飛ばす距離
     [SerializeField,Header("レイの長さ")]
     private float rayRange;
-    //レイを飛ばす角度計算
-    /*[SerializeField]
-    private float _Velocity_0;
-    [SerializeField]
-    private float degree;
-    [SerializeField]
-    private float angle_Split;
-    //各計算用変数
-    float _theta;
-    float PI = Mathf.PI;
-    //レイを飛ばす角度保存用
-    Vector2 rayVector2;*/
     //　落ちたy座標
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
@@ -86,17 +84,6 @@ public class MoveObject : MonoBehaviour
     //キャラからhitしたオブジェクトの距離
     private float pDis;
     private Vector2 pVDis;
-    #endregion
-
-    #region//状況に応じて使用するフラグ関係
-    //氷の上に乗っているかどうか
-    private bool iceWalkFlag = false;
-    //落下中
-    private bool fallFlag = false;
-    //ゲームオーバー
-    private bool gameOverFlag = false;
-    //ジャンプ
-    private bool jumpFlag = false;
     #endregion
 
     //RigidBodyとカプセルコライダーの定義
@@ -262,7 +249,7 @@ public class MoveObject : MonoBehaviour
             
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
-            {
+            { 
                 skeletonAnimation.state.ClearTrack(0);
                 TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
                 moveTrackEntry.Complete += MoveSpineComplete;
@@ -271,7 +258,7 @@ public class MoveObject : MonoBehaviour
                 fallFlag = false;
                 jumpFlag = false;
             }
-            //上と同じ
+            //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
                 skeletonAnimation.state.ClearTrack(0);
@@ -290,9 +277,9 @@ public class MoveObject : MonoBehaviour
            //地面から空中にいった時(fallFlag == false　から　true　になる時)
            if (!IsOnGrounds(downObject))
            {
-                //地面から一回でもLineCastの線が離れたとき = 落下状態とする
-                //その時に落下状態を判別するためfallFlagをtrueにする
-                //最初の落下地点を設定
+             //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+             //その時に落下状態を判別するためfallFlagをtrueにする
+             //最初の落下地点を設定
 
              fallenPosition = transform.position.y;
              fallenDistance = 0;
@@ -352,7 +339,7 @@ public class MoveObject : MonoBehaviour
     private float SlopeUp()
     {
       //if(fallFlag == false||)
-      {
+      
         tan = 0f;
         var GetObject = ForwardObject();
 
@@ -373,7 +360,7 @@ public class MoveObject : MonoBehaviour
           tan = 0f;
         }
 
-      }
+      
         return tan;
     }
 
@@ -382,7 +369,7 @@ public class MoveObject : MonoBehaviour
     {
         Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
         forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
-        Debug.Log(forwardHitObject);
+        //Debug.Log(forwardHitObject);
         return forwardHitObject;
     }
     

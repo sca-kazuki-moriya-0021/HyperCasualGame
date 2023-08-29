@@ -5,28 +5,16 @@ using UnityEngine.UI;
 using UnityEditor;
 using UnityEngine.Video;
 using System.Linq;
-using Spine.Unity;
 using UnityEngine.EventSystems;
 
 public class LineDrawCon : MonoBehaviour
 {
-    private Camera mainCamera;
-    RaycastHit[] checkTouchResults = new RaycastHit[1];
-    //カメラからタッチ判定を飛ばす最大の距離
-    float checkTouchMaxDistance = 100f;
-    //選択対象のレイヤー
-    LayerMask targetLayer;
-    //タッチ位置
-    Vector3 touchPoint;
-    //カメラからタッチ位置へのRay
-    Ray checkTouchRay;
-    //タッチ位置のUI要素が返されるList
-    List<RaycastResult> isPointerOverUIResults = new List<RaycastResult>(10);
-    
+    [SerializeField,Header("UI保存用")]
+    private Button[]  botton;
 
     //線の太さ
     [Range(0.1f, 0.5f)]
-    [SerializeField]
+    [SerializeField,Header("線の太さ")]
     private float lineWidth;
 
     //線となるゲームオブジェクト用変数
@@ -69,20 +57,18 @@ public class LineDrawCon : MonoBehaviour
     //氷のアニメーション
     [SerializeField]
     private GameObject instansIcePrefab;
-    private SkeletonAnimation iceSkelton;
     private string ice;
 
 
     //炎のアニメーション
     [SerializeField]
     private GameObject instansfirePrefab;
-    private SkeletonAnimation fireSkelton;
     private string fire;
 
 
     //アニメーションを適用するために必要なAnimationState
-    private Spine.AnimationState iceAnimationState = default;
-    private Spine.AnimationState fireAnimationState = default;
+    //private Spine.AnimationState iceAnimationState = default;
+    //private Spine.AnimationState fireAnimationState = default;
 
     //private SkeletonAnimation nowSkeletonAnima;
 
@@ -107,10 +93,7 @@ public class LineDrawCon : MonoBehaviour
 
     private void Awake()
     {
-        mainCamera = Camera.main;
-        //対象のレイヤーを指定。複数を設定する場合は「1 << LayerMask.NameToLayer("Enemy") | 1 << LayerMask.NameToLayer("Ground")」みたいに「|」で区切る。
-        targetLayer = LayerMask.NameToLayer("UI");
-        //eventSystem = EventSystem.current;
+
     }
 
 
@@ -122,8 +105,8 @@ public class LineDrawCon : MonoBehaviour
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         penDisplayC = FindObjectOfType<PenDisplay>();
 
-        iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
-        fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
+        //iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
+        //fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
         audioSource = GetComponent<AudioSource>();
 
 
@@ -134,8 +117,8 @@ public class LineDrawCon : MonoBehaviour
         Input.multiTouchEnabled = false;
 
         //アニメーション初期化
-        iceSkelton.AnimationName = "None";
-        fireSkelton.AnimationName = "None";
+        //iceSkelton.AnimationName = "None";
+        //fireSkelton.AnimationName = "None";
 
         //線のポイント初期化
         linePoints = new List<Vector2>();
@@ -154,14 +137,14 @@ public class LineDrawCon : MonoBehaviour
                 lineMaterial = iceTexture;
                 lineColor = iceColor;
                 //nowSkeletonAnima = iceSkelton;
-                iceSkelton.AnimationName = "animetion";
+                //iceSkelton.AnimationName = "animetion";
 
                 //Debug.Log(lineColor);
                 break;
 
             case PenM.PenCom.Fire:
                 //nowSkeletonAnima = fireSkelton;
-                fireSkelton.AnimationName = "animetion";
+                //fireSkelton.AnimationName = "animetion";
                 break;
 
             case PenM.PenCom.General:
@@ -175,15 +158,19 @@ public class LineDrawCon : MonoBehaviour
         //線が引ける時
         if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false )
         {
+
+            //マウス座標取得
+            Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
+            //ワールド座標へ変換
+            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+            if (worldPos != botton[0].transform.localPosition ||
+               worldPos != botton[1].transform.localPosition)
+            {
+
                 //左クリックされたら
                 if (Input.GetMouseButtonDown(0))
                 {
-                    touchPoint = Input.mousePosition;
-                    checkTouchRay = mainCamera.ScreenPointToRay(touchPoint);
-                    
-                    //if(checkTouchRay)
-                    {
-
                         switch (penM.NowPen)
                         {
                             case PenM.PenCom.Ice:
@@ -212,8 +199,9 @@ public class LineDrawCon : MonoBehaviour
                             }
                             break;
                         }
-                    }
+                    
                 }
+            }
                 //クリック中（ストローク中）
                 if (Input.GetMouseButton(0) && lineFlag == true)
                 {
@@ -257,22 +245,16 @@ public class LineDrawCon : MonoBehaviour
         switch (penM.NowPen)
         {
             case PenM.PenCom.Ice:
-
                 lineObj.tag = "IceGround";
-
-                break;
+            break;
 
             case PenM.PenCom.Fire:
-
                 lineObj.tag = "FlameGround";
-
-                break;
+            break;
 
             case PenM.PenCom.General:
-
                 lineObj.tag = "Ground";
-
-                break;
+            break;
         }
 
         _initRenderer();
@@ -287,13 +269,11 @@ public class LineDrawCon : MonoBehaviour
         _myMat = new Material(lineMaterial);
         lineRenderer.material = _myMat;
 
-        
         //マテリアルの色を設定
         //lineRenderer.material.color = lineDrawCon.LineColor;
         //Debug.Log(lineRenderer.material.color);
         lineMaterial.SetColor("_Color",lineColor);
         lineRenderer.textureMode = LineTextureMode.Tile;
-
 
         //ポジションカウントをリセット
         lineRenderer.positionCount = 0;
@@ -304,29 +284,6 @@ public class LineDrawCon : MonoBehaviour
         lineRenderer.endWidth = lineWidth;
         //レイヤー指定
         lineRenderer.renderingLayerMask = 2;
-
-        //ペンの種類によって切り替えるプラグラム
-        switch (penM.NowPen)
-        {
-            case PenM.PenCom.Ice:
-
-                lineRenderer.tag = "IceGround";
-
-                break;
-
-            case PenM.PenCom.Fire:
-
-                lineRenderer.tag = "FlameGround";
-
-                break;
-
-            case PenM.PenCom.General:
-
-                lineRenderer.tag = "Ground";
-
-                break;
-        }
-
     }
 
 
