@@ -268,27 +268,31 @@ public class MoveObject : MonoBehaviour
             //レイを出す
             Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
             
-            //アニメーション制御
+            //落下アニメーション制御
             if (fallAnimaFlag == false)
             {
                 fallAnimaFlag = true;
                 skeletonAnimation.state.ClearTrack(0);
-                TrackEntry trackEntry = animationState.SetAnimation(0, fallAnimation, true);
+                animationState.SetAnimation(0, fallAnimation, true);
                 skeletonAnimation.skeleton.SetToSetupPose();
             }
-
+            //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
             {
                 skeletonAnimation.state.ClearTrack(0);
                 TrackEntry trackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+                trackEntry.Complete += OnSpineComplete;
+                //歩行アニメーション制御
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 jumpFlag = false;
             }
+            //上と同じ
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
             {
                 skeletonAnimation.state.ClearTrack(0);
                 TrackEntry trackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+                trackEntry.Complete += OnSpineComplete;
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 iceWalkFlag = true;
@@ -352,6 +356,13 @@ public class MoveObject : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    //着地後の歩行アニメーション制御用
+    private void OnSpineComplete(TrackEntry trackEntry)
+    {
+        animationState.SetAnimation(0, moveAnimation, true);
+        moveAnimaFlag = false;
     }
 
 
@@ -443,6 +454,7 @@ public class MoveObject : MonoBehaviour
         }
     }
 
+
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
     {
@@ -472,6 +484,7 @@ public class MoveObject : MonoBehaviour
         return a + (Vector2)transform.position;
 
     }*/
+    
 
 
     //何かしらに当たった時
@@ -552,7 +565,7 @@ public class MoveObject : MonoBehaviour
     {
        moveAnimaFlag = true;
        skeletonAnimation.state.ClearTrack(0);
-       TrackEntry trackEntry = animationState.SetAnimation(0, moveAnimation, true);
+       animationState.SetAnimation(0, moveAnimation, true);
        Debug.Log("アニメーション");
        skeletonAnimation.skeleton.SetToSetupPose();
     }
@@ -585,7 +598,7 @@ public class MoveObject : MonoBehaviour
         {
                 offJumpAnimaFlag = true;
                 skeletonAnimation.state.ClearTrack(0);
-                TrackEntry trackEntry = animationState.SetAnimation(0, offJumpAnimation, false);
+                animationState.SetAnimation(0, offJumpAnimation, false);
                 skeletonAnimation.skeleton.SetToSetupPose();
         }
 
@@ -593,7 +606,7 @@ public class MoveObject : MonoBehaviour
 
         yield return new WaitForSeconds(1f);
 
-        moveAnimaFlag = false;
+
 
         lineCastF = StartCoroutine(StartLineCast());
         Debug.Log("aiu");
