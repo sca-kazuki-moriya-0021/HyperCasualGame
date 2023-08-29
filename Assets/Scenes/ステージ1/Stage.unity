@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &245924258 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3320909042080492286, guid: 1cd16ca1f0ae42c4586a3097343652ca, type: 3}
+  m_PrefabInstance: {fileID: 1939956652152286895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &253596516
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -192,6 +203,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
+--- !u!114 &322339454 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1609091600897206265, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
+  m_PrefabInstance: {fileID: 1116069231275461139}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!223 &591013868 stripped
+Canvas:
+  m_CorrespondingSourceObject: {fileID: 6973324690106938868, guid: 99e422ad7b7147c4c9ae0e331cc1191e, type: 3}
+  m_PrefabInstance: {fileID: 6973324692201604733}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1227244474
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1064,6 +1091,34 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: botton.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: canvas.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: botton.Array.data[0]
+      value: 
+      objectReference: {fileID: 245924258}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: botton.Array.data[1]
+      value: 
+      objectReference: {fileID: 322339454}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: canvas.Array.data[0]
+      value: 
+      objectReference: {fileID: 9073824767257972404}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: canvas.Array.data[1]
+      value: 
+      objectReference: {fileID: 591013868}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: canvas.Array.data[2]
+      value: 
+      objectReference: {fileID: 3933352897432038439}
     - target: {fileID: 8866457617940983437, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
       propertyPath: m_Name
       value: LineDraw
