@@ -448,7 +448,7 @@ public class MoveObject : MonoBehaviour
         float distance = Vector2.Distance(transform.position,t);
         while (d != t)
         {
-            float p = (Time.time * moveSpeed * 0.9f) / distance;
+            float p = (Time.time * moveSpeed * 1.6f) / distance;
             yield return null;
             transform.position = Vector3.Slerp(d, hitCollider.transform.position, p);
         }
