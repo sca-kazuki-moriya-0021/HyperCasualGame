@@ -257,7 +257,7 @@ public class MoveObject : MonoBehaviour
                 //歩行アニメーション制御
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
-                jumpFlag = false;
+                //jumpFlag = false;
             }
             //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
@@ -268,7 +268,7 @@ public class MoveObject : MonoBehaviour
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 iceWalkFlag = true;
-                jumpFlag = false;
+                //jumpFlag = false;
             }
         }
         //地面から離れた時の処理
@@ -426,7 +426,7 @@ public class MoveObject : MonoBehaviour
         //Debug.Log(tan);
 
         //タンジェントがn度以上なら進行方向を変える
-        //if(tan <= Mathf.PI / )
+        if(tan <= Mathf.PI / 3 )
         {
             Debug.Log("タグ変更");
             hitBackCollider = hitCollider;
@@ -441,20 +441,29 @@ public class MoveObject : MonoBehaviour
 
     private IEnumerator JumpStart()
     {
- 
-        var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y);
-        float distance = Vector2.Distance(transform.position,t);
-        while (d != t)
+        var d = transform.position;
+        Debug.Log(d);
+        var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y +1.5f);
+        Debug.Log(t);
+        var sumTime = 0f;
+        while (true)
         {
-            Vector2 d = transform.position;
-            float p = (Time.time * moveSpeed * 1.0f) / distance;
+          sumTime += Time.deltaTime;
+          var ratio = sumTime / 3;
+          transform.position = Vector2.Lerp(d,t,ratio);
+
+            if (ratio > 1.0f)
+            {
+                // 目標の値に到達したらこのCoroutineを終了する
+                // ~.Lerpは割合を示す引数は0 ~ 1の間にClampされるので1より大きくても問題なし
+                break;
+            }
             yield return null;
-            transform.position = Vector3.Slerp(d, hitCollider.transform.position, p);
         }
-     
-        fallFlag = false;
+
+        jumpFlag = false;
         hitCollider.gameObject.tag = hitBackCollider.gameObject.tag;
-        
+        StopCoroutine(JumpStart());
     }
     
     //頭の上から横方向にレイを飛ばす
