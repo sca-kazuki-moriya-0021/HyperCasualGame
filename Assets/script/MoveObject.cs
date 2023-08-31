@@ -408,7 +408,7 @@ public class MoveObject : MonoBehaviour
     private RaycastHit2D ForwardObject()
     {
         Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange, LayerMask.GetMask("Ground"));
+        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange , LayerMask.GetMask("Ground"));
         //Debug.Log(forwardHitObject);
         return forwardHitObject;
     }
@@ -441,22 +441,20 @@ public class MoveObject : MonoBehaviour
 
     private IEnumerator JumpStart()
     {
-        Vector2 d = transform.position;
-        xLen = hitCollider.bounds.max.x +10f;
-        yLen = hitCollider.bounds.max.y + 15F;
-        Vector2 t = new Vector2(xLen,yLen);
+ 
+        var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y);
         float distance = Vector2.Distance(transform.position,t);
         while (d != t)
         {
-            float p = (Time.time * moveSpeed * 1.6f) / distance;
+            Vector2 d = transform.position;
+            float p = (Time.time * moveSpeed * 1.0f) / distance;
             yield return null;
             transform.position = Vector3.Slerp(d, hitCollider.transform.position, p);
         }
      
-       fallFlag = false;
-       yield return fallFlag;
+        fallFlag = false;
+        hitCollider.gameObject.tag = hitBackCollider.gameObject.tag;
         
-       //StopCoroutine(JumpStart());
     }
     
     //ì™ÇÃè„Ç©ÇÁâ°ï˚å¸Ç…ÉåÉCÇîÚÇŒÇ∑

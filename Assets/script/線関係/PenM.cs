@@ -9,6 +9,7 @@ public class PenM : MonoBehaviour
     private TotalGM gm;
     private PenDisplay penDis;
     private LineDrawCon lineDrawCon;
+    private RecoveryItemCon recovery;
 
     [SerializeField,Header("ペンボタンを表示するキャンパス")]
     private Canvas penCanvas;
@@ -85,6 +86,7 @@ public class PenM : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
+        recovery = FindObjectOfType<RecoveryItemCon>();
 
         audioSource = GetComponent<AudioSource>();
         myCanvas = this.GetComponent<Canvas>();
@@ -98,6 +100,8 @@ public class PenM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+
         //押されたペンボタンと同じイラストにする
         switch (nowPen)
         {
@@ -118,13 +122,40 @@ public class PenM : MonoBehaviour
                 break;
         }
 
-        
-
         //線がひかれたら
         if (lineDrawCon.LineFlag == true)
         {
             LineTime();
         }
+
+        if (recovery.RecoveryFlag == true)
+        {
+            switch (nowPen)
+            {
+                case PenCom.Ice:
+                    if (iceDrawTime > 0)
+                    {
+                        iceDrawTime = 0;
+                        recovery.RecoveryFlag = false;
+                    }
+                    break;
+                case PenCom.Fire:
+                    if (fireDrawTime > 0)
+                    {
+                        fireDrawTime = 0;
+                        recovery.RecoveryFlag = false;
+                    }
+                    break;
+                case PenCom.General:
+                    if (generalDrawTime > 0)
+                    {
+                        generalDrawTime = 0;
+                        recovery.RecoveryFlag = false;
+                    }
+                    break;
+            }
+        }
+
     }
     
     //炎のペンボタンが押された時の処理

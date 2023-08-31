@@ -18,6 +18,7 @@ TagManager:
   - StageGoalPoint
   - Catnip
   - 'AreaMoveP '
+  - RecoveryItem
   layers:
   - Default
   - TransparentFX
