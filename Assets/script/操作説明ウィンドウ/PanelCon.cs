@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class PanelCon : MonoBehaviour
 {
-    float x = 0;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -22,20 +22,23 @@ public class PanelCon : MonoBehaviour
     {
         Canvas canvas = GetComponentInParent<Canvas>();
         Text t = transform.GetComponent<Text>();
+        Debug.Log(canvas);
         t.text = text;
-        while (true)
-        {
-            x += Time.deltaTime;
-
-            if(x > 5)
-            {
-                canvas.enabled = false;
-            }
-        }
-
-
-        Debug.Log(x);
+     
+        StartCoroutine(ResetText(canvas));
         
+    }
+
+    private IEnumerator ResetText(Canvas c)
+    {
+        Debug.Log("mi");
+
+        yield return new WaitForSeconds(3.0f);
+
+        c.enabled = false;
+
+        yield break;
+
     }
 
 }
