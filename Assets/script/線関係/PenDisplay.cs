@@ -12,13 +12,14 @@ public class PenDisplay : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private LineDrawCon lineDrawCon;
 
-    /*[SerializeField, Header("操作説明するうぃんどう")]
+    [SerializeField, Header("操作説明するうぃんどう")]
     private Canvas operationCanvas;
     [SerializeField]
-    private List<string> texts;
+    private List<string> texts = new List<string>();
 
     private bool waitingFlag = false;
-    private PanelCon panelCon;*/
+    [SerializeField]
+    private PanelCon panelCon;
 
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
@@ -55,25 +56,35 @@ public class PenDisplay : MonoBehaviour
     }
     */
 
+    private void Awake()
+    {
+        operationCanvas = operationCanvas.GetComponent<Canvas>();
+        //texts = new List<string>();
+
+    }
+
     // Start is called before the first frame update
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
+        panelCon = FindObjectOfType<PanelCon>();
+
 
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
-        //operationCanvas = operationCanvas.GetComponent<Canvas>();
 
         audioSource = GetComponent<AudioSource>();
-
-        //operationCanvas.enabled = false;
+        operationCanvas.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(operationCanvas);
+        Debug.Log(panelCon);
+
         if (penMenuFlag == true)
         {
             Time.timeScale = 0f;
@@ -96,26 +107,21 @@ public class PenDisplay : MonoBehaviour
     {
         if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
-            //waitingFlag = true;
+            waitingFlag = true;
             audioSource.PlayOneShot(sound1);
-            //Time.timeScale = 0f;
 
-            /*if (waitingFlag == true)
+            if (waitingFlag == true)
             {
                 Debug.Log("asuki");
                 operationCanvas.enabled = true;
-                panelCon =  operationCanvas.GetComponent<PanelCon>();
                 panelCon.SetText(texts[0]);
                 
-            }*/
+            }
 
             penMCanvas.enabled = true;
             myCanvas.enabled = false;
 
             penMenuFlag = true;
-
         }
     }
-
-  
 }

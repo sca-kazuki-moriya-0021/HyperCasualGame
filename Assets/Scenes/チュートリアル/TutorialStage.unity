@@ -668,16 +668,24 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1755366626}
     - target: {fileID: 2473223865538015987, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
+      propertyPath: panelCon
+      value: 
+      objectReference: {fileID: 6933594432175468128}
+    - target: {fileID: 2473223865538015987, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
       propertyPath: operationCanvas
       value: 
       objectReference: {fileID: 631319250}
     - target: {fileID: 2473223865538015987, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
       propertyPath: texts.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2473223865538015987, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
       propertyPath: texts.Array.data[0]
       value: "\u3042\u3044\u3046\u3048\u304A"
+      objectReference: {fileID: 0}
+    - target: {fileID: 2473223865538015987, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
+      propertyPath: texts.Array.data[1]
+      value: "\u3048"
       objectReference: {fileID: 0}
     - target: {fileID: 3231684357353301164, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
       propertyPath: canvas

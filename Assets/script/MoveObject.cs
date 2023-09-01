@@ -146,11 +146,10 @@ public class MoveObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        //呼び出し
         gm = FindObjectOfType<TotalGM>();
         col2D = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
-        Debug.Log(" hitCollider.gameObject.tag");
-
 
         // ゲームオブジェクトのSkeletonAnimationを取得
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -164,8 +163,6 @@ public class MoveObject : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag = false;
-
-        
     }
 
     // Update is called once per frame
@@ -183,7 +180,7 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //Debug.Log(hitCollider.gameObject.tag);
+        Debug.Log(" hitCollider.gameObject.tag");
 
         //移動
         if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
@@ -220,19 +217,6 @@ public class MoveObject : MonoBehaviour
         {
             RayAngleIns();;
         }
-
-        //ジャンプの急降下
-        /*if(hitCollider != null)
-        {
-            if (jumpFlag == true && transform.position.x < hitCollider.bounds.max.x &&
-            transform.position.y < hitCollider.bounds.max.y + 2f)
-            {
-                //Debug.Log("suka");
-                rb.AddForce(Vector2.down * moveSpeed * 10, ForceMode2D.Force);
-                hitCollider.tag = hitBackCollider.tag;
-                jumpFlag = false;
-            }
-        }*/
     }
 
     //移動のアニメーション処理
@@ -248,6 +232,7 @@ public class MoveObject : MonoBehaviour
     //下方向レイの角度計算用
     public void RayAngleIns()
     {
+
         var downObject = GetDownObject();
         if (fallFlag == true)
         {
@@ -279,9 +264,6 @@ public class MoveObject : MonoBehaviour
            {
              //地面から一回でもLineCastの線が離れたとき = 落下状態とする
              //その時に落下状態を判別するためfallFlagをtrueにする
-             //最初の落下地点を設定
-             //fallenPosition = transform.position.y;
-             //fallenDistance = 0;
              fallFlag = true;
              iceWalkFlag = false;
              offJumpFlag = true;
@@ -388,6 +370,7 @@ public class MoveObject : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
+        //着地用フラグ変更
         lindingFlag = false;
 
         //コルーチンストップ
@@ -400,6 +383,7 @@ public class MoveObject : MonoBehaviour
     {
       //if(fallFlag == false||)
       
+        //横方向のオブジェクト検知
         tan = 0f;
         var GetObject = ForwardObject();
 
@@ -444,7 +428,7 @@ public class MoveObject : MonoBehaviour
         tan = Mathf.Tan(tan);
         //Debug.Log(tan);
 
-        //タンジェントがn度以上なら進行方向を変える
+        //タンジェントがn度以上ならジャンプ移行する
         if(tan <= Mathf.PI / 3 )
         {
             Debug.Log("タグ変更");
@@ -458,18 +442,22 @@ public class MoveObject : MonoBehaviour
         }
     }
 
+    //ジャンプ
     private IEnumerator JumpStart()
     {
         var d = transform.position;
         Debug.Log(d);
-        var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y +1.5f);
+        var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y +3.0f);
         Debug.Log(t);
         var sumTime = 0f;
         while (true)
         {
-          sumTime += Time.deltaTime;
-          var ratio = sumTime / 3;
-          transform.position = Vector2.Lerp(d,t,ratio);
+            sumTime += Time.deltaTime;
+            var ratio = sumTime / 3;
+            if (ratio < 1.0f)
+            {
+                transform.position = Vector3.Lerp(d, t, ratio);
+            }
 
             if (ratio > 1.0f)
             {
@@ -485,7 +473,6 @@ public class MoveObject : MonoBehaviour
         StopCoroutine(JumpStart());
     }
     
-
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
     {
@@ -585,7 +572,6 @@ public class MoveObject : MonoBehaviour
         }
     }
 
-
     //効果音を流す処理
     public void PlaySE(AudioClip clip)
     {
@@ -598,6 +584,4 @@ public class MoveObject : MonoBehaviour
 
         }
     }
-
-
 }
