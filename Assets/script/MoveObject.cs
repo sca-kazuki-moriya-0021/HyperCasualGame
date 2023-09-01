@@ -47,7 +47,8 @@ public class MoveObject : MonoBehaviour
     private bool gameOverFlag = false;
     //ジャンプ
     private bool jumpFlag = false;
-    //飛び降り中
+    //飛び降り
+    private bool offJumpFlag = false;
     #endregion
 
     #region//レイ関係
@@ -164,7 +165,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(jumpFlag);
+        Debug.Log(offJumpFlag);
 
         //ゲームオーバーシーンにいく処理
         if(gameOverFlag == true)
@@ -179,12 +180,13 @@ public class MoveObject : MonoBehaviour
     private void FixedUpdate()
     {
         //移動
-        if (jumpFlag == false)
+        if (jumpFlag == false && offJumpFlag == false)
         {
+            Debug.Log("動いている");
             //移動のアニメーション流しと移動
             if (iceWalkFlag == false)
             {
-                transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(-xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
                 if(moveAnimaFlag == false)
                 {
                     OnCompleteAnimation();
@@ -193,7 +195,7 @@ public class MoveObject : MonoBehaviour
             }
             if (iceWalkFlag == true)
             {
-                transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(-xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
                 if (moveAnimaFlag == false)
                 {
                     OnCompleteAnimation();
@@ -210,10 +212,8 @@ public class MoveObject : MonoBehaviour
         //レイの角度計算
         if(lineCastF != null)
         {
-            RayAngleIns();
-            Debug.Log("確かめよう");
+            RayAngleIns();;
         }
-
 
         //ジャンプの急降下
         /*if(hitCollider != null)
@@ -235,7 +235,6 @@ public class MoveObject : MonoBehaviour
         moveAnimaFlag = true;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, moveAnimation, true);
-        Debug.Log("アニメーション");
         skeletonAnimation.skeleton.SetToSetupPose();
     }
 
@@ -257,7 +256,6 @@ public class MoveObject : MonoBehaviour
                 //歩行アニメーション制御
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
-                //jumpFlag = false;
             }
             //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
@@ -268,7 +266,6 @@ public class MoveObject : MonoBehaviour
                 skeletonAnimation.skeleton.SetToSetupPose();
                 fallFlag = false;
                 iceWalkFlag = true;
-                //jumpFlag = false;
             }
         }
         //地面から離れた時の処理
@@ -287,6 +284,8 @@ public class MoveObject : MonoBehaviour
 
              fallFlag = true;
              iceWalkFlag = false;
+
+             offJumpFlag = true;
 
              //アニメーション
              StartCoroutine(StartoffJump());
@@ -357,7 +356,9 @@ public class MoveObject : MonoBehaviour
         //一旦レイを無くす
         lineCastF = null;
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
+
+        offJumpFlag = false;
 
         //レイを復活
         lineCastF = StartCoroutine(StartLineCast());

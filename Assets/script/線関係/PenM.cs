@@ -78,6 +78,8 @@ public class PenM : MonoBehaviour
         set { this.generalDrawFlag = value; }
     }
 
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -92,15 +94,19 @@ public class PenM : MonoBehaviour
         myCanvas = this.GetComponent<Canvas>();
         penCanvas = penCanvas.GetComponent<Canvas>();
 
+
+        //panelCon = FindObjectOfType<PanelCon>();
+
         nowPen = PenM.PenCom.General;
 
         myCanvas.enabled = false;
+
     }
 
     // Update is called once per frame
     void Update()
-    {
-
+    { 
+       
 
         //押されたペンボタンと同じイラストにする
         switch (nowPen)
@@ -157,7 +163,7 @@ public class PenM : MonoBehaviour
         }
 
     }
-    
+
     //炎のペンボタンが押された時の処理
     public void FirePen()
     {
@@ -166,8 +172,8 @@ public class PenM : MonoBehaviour
             //ペンの入れ替え
             audioSource.PlayOneShot(sound1);
 
-            nowPen = PenCom.Fire;
 
+            nowPen = PenCom.Fire;
 
             penDis.PenMenuFlag = false;
             //タイム戻す
@@ -234,6 +240,7 @@ public class PenM : MonoBehaviour
         myCanvas.enabled = false;
     }
 
+
     //線引く用
     private void LineTime()
     {
@@ -246,7 +253,7 @@ public class PenM : MonoBehaviour
                     case PenCom.Ice:
                         iceDrawTime += Time.deltaTime;
                         //InkDown(getInkSprite,iceDrawTime,5);
-                    break;
+                        break;
 
                     case PenCom.Fire:
                         fireDrawTime += Time.deltaTime;
@@ -264,9 +271,9 @@ public class PenM : MonoBehaviour
         }
 
         //線を引ける時間が過ぎたら選べなくする
-        if (nowPen == PenCom.General&& generalDrawTime > 5f)
+        if (nowPen == PenCom.General && generalDrawTime > 5f)
         {
-            lineDrawCon.LineFlag =false;
+            lineDrawCon.LineFlag = false;
             generalDrawFlag = false;
         }
         if (nowPen == PenCom.Ice && iceDrawTime > 5f)
@@ -282,10 +289,11 @@ public class PenM : MonoBehaviour
     }
 
     //引いた時間にあわせてインク減少
-    public void InkDown(Image image,float time,float maxTime)
+    public void InkDown(Image image, float time, float maxTime)
     {
-       image.fillAmount = 1-time/maxTime;
-       
+        image.fillAmount = 1 - time / maxTime;
+
     }
+
 
 }

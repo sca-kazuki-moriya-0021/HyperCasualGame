@@ -12,10 +12,13 @@ public class PenDisplay : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private LineDrawCon lineDrawCon;
 
-    //ペンで描いている長さ
-    //private float iceDrawTime;
-    //private float fireDrawTime;
-    //private float generalDrawTime;
+    /*[SerializeField, Header("操作説明するうぃんどう")]
+    private Canvas operationCanvas;
+    [SerializeField]
+    private List<string> texts;
+
+    private bool waitingFlag = false;
+    private PanelCon panelCon;*/
 
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
@@ -25,15 +28,6 @@ public class PenDisplay : MonoBehaviour
     private Canvas penMCanvas;
     private Canvas myCanvas;
 
-    //shader保管用
-    /*private Shader lineShader;
-    //shader用
-    [SerializeField]
-    private Shader iceShader;
-    [SerializeField]
-    private Shader generalShader;
-    [SerializeField]
-    private Shader fireShader;*/
 
     //効果音用
     private AudioSource audioSource;
@@ -48,6 +42,19 @@ public class PenDisplay : MonoBehaviour
         set { this.penMenuFlag = value; }
     }
 
+    /*
+    public bool PenMWaitingFlag
+    {
+        get { return this.waitingFlag; }
+        set { this.waitingFlag = value; }
+    }
+
+    private void Awake()
+    {
+        texts = new List<string>();
+    }
+    */
+
     // Start is called before the first frame update
     void Start()
     {
@@ -55,12 +62,13 @@ public class PenDisplay : MonoBehaviour
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
 
-
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
-
+        //operationCanvas = operationCanvas.GetComponent<Canvas>();
 
         audioSource = GetComponent<AudioSource>();
+
+        //operationCanvas.enabled = false;
     }
 
     // Update is called once per frame
@@ -88,56 +96,26 @@ public class PenDisplay : MonoBehaviour
     {
         if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
+            //waitingFlag = true;
             audioSource.PlayOneShot(sound1);
             //Time.timeScale = 0f;
 
+            /*if (waitingFlag == true)
+            {
+                Debug.Log("asuki");
+                operationCanvas.enabled = true;
+                panelCon =  operationCanvas.GetComponent<PanelCon>();
+                panelCon.SetText(texts[0]);
+                
+            }*/
+
             penMCanvas.enabled = true;
             myCanvas.enabled = false;
-
 
             penMenuFlag = true;
 
         }
     }
 
-    //ペンのクールタイム用関数
-    /*private void LineCoolTime()
-    {
-        switch (penM.NowPen)
-        {
-            case PenM.PenCom.Ice:
-                if(fireDrawTime > 0)
-                {
-                    fireDrawTime -= Time.deltaTime;
-                }
-                if(generalTime > 0)
-                {
-                    generalTime -= Time.deltaTime;
-                }
-                break;
-
-            case PenM.PenCom.Fire:
-                if (iceDrawTime > 0)
-                {
-                    iceDrawTime -= Time.deltaTime;
-                }
-                if (generalTime > 0)
-                {
-                    generalTime -= Time.deltaTime;
-                }
-                break;
-
-            case PenM.PenCom.General:
-                if (fireDrawTime > 0)
-                {
-                    fireDrawTime -= Time.deltaTime;
-                }
-                if (iceDrawTime > 0)
-                {
-                    iceDrawTime -= Time.deltaTime;
-                }
-                break;
-        }
-    }*/
-
+  
 }

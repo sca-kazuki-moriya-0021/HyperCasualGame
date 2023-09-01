@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PanelCon : MonoBehaviour
 {
@@ -14,5 +15,11 @@ public class PanelCon : MonoBehaviour
     void Update()
     {
         
+    }
+
+    public void SetText(string text)
+    {
+        Text t = transform.GetChild(0).GetComponent<Text>();
+        t.text = text;
     }
 }
