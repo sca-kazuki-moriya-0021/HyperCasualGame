@@ -365,6 +365,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4219249940836489952, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
+      propertyPath: _animationName
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 4219249940836489954, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -416,6 +420,14 @@ PrefabInstance:
     - target: {fileID: 4219249940836489980, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
       propertyPath: m_Name
       value: Cat
+      objectReference: {fileID: 0}
+    - target: {fileID: 4219249940836489981, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
+      propertyPath: rayRange
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7820527500190953866, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.56
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}

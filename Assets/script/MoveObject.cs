@@ -49,6 +49,8 @@ public class MoveObject : MonoBehaviour
     private bool jumpFlag = false;
     //飛び降り
     private bool offJumpFlag = false;
+    //着地中
+    private bool lindingFlag = false;
     #endregion
 
     #region//レイ関係
@@ -147,6 +149,8 @@ public class MoveObject : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         col2D = GetComponent<CapsuleCollider2D>();
         rb = GetComponent<Rigidbody2D>();
+        Debug.Log(" hitCollider.gameObject.tag");
+
 
         // ゲームオブジェクトのSkeletonAnimationを取得
         skeletonAnimation = GetComponent<SkeletonAnimation>();
@@ -160,15 +164,15 @@ public class MoveObject : MonoBehaviour
         fallenDistance = 0f;
         fallenPosition = transform.position.y;
         fallFlag = false;
+
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(offJumpFlag);
-
         //ゲームオーバーシーンにいく処理
-        if(gameOverFlag == true)
+        if (gameOverFlag == true)
         {
             gm.BackScene = gm.MyGetScene();
             gameOverFlag = false;
@@ -179,8 +183,10 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
+        //Debug.Log(hitCollider.gameObject.tag);
+
         //移動
-        if (jumpFlag == false && offJumpFlag == false)
+        if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
         {
             Debug.Log("動いている");
             //移動のアニメーション流しと移動
@@ -233,8 +239,9 @@ public class MoveObject : MonoBehaviour
     private void OnCompleteAnimation()
     {
         moveAnimaFlag = true;
+        skeletonAnimation.timeScale = 1;
         skeletonAnimation.state.ClearTrack(0);
-        animationState.SetAnimation(0, moveAnimation, true);
+        TrackEntry trackEntry = animationState.SetAnimation(0, moveAnimation, true);
         skeletonAnimation.skeleton.SetToSetupPose();
     }
 
@@ -249,23 +256,18 @@ public class MoveObject : MonoBehaviour
             
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
-            { 
-                skeletonAnimation.state.ClearTrack(0);
-                TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
-                moveTrackEntry.Complete += MoveSpineComplete;
-                //歩行アニメーション制御
-                skeletonAnimation.skeleton.SetToSetupPose();
+            {
                 fallFlag = false;
+                lindingFlag = true;
+                StartCoroutine(LindingCoroutine());
             }
             //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
-            {
-                skeletonAnimation.state.ClearTrack(0);
-                TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
-                moveTrackEntry.Complete += MoveSpineComplete;
-                skeletonAnimation.skeleton.SetToSetupPose();
+            { 
                 fallFlag = false;
                 iceWalkFlag = true;
+                lindingFlag = true;
+                StartCoroutine(LindingCoroutine());
             }
         }
         //地面から離れた時の処理
@@ -278,15 +280,11 @@ public class MoveObject : MonoBehaviour
              //地面から一回でもLineCastの線が離れたとき = 落下状態とする
              //その時に落下状態を判別するためfallFlagをtrueにする
              //最初の落下地点を設定
-
-             fallenPosition = transform.position.y;
-             fallenDistance = 0;
-
+             //fallenPosition = transform.position.y;
+             //fallenDistance = 0;
              fallFlag = true;
              iceWalkFlag = false;
-
              offJumpFlag = true;
-
              //アニメーション
              StartCoroutine(StartoffJump());
            }
@@ -327,13 +325,13 @@ public class MoveObject : MonoBehaviour
         return false;
     }
 
-    //着地後の歩行アニメーション制御用
+    //歩行アニメーション制御用
     private void MoveSpineComplete(TrackEntry trackEntry)
     {
-        animationState.SetAnimation(0, moveAnimation, true);
+        skeletonAnimation.timeScale = 1;
+        TrackEntry trackEntryA  = animationState.SetAnimation(0, moveAnimation, true);
         moveAnimaFlag = false;
     }
-
 
     //レイを飛ばすコルーチン
     private IEnumerator StartLineCast()
@@ -348,6 +346,7 @@ public class MoveObject : MonoBehaviour
     private IEnumerator StartoffJump()
     {
         //飛び降りのアニメーション流し、その後落下中のアニメーションを流す
+        skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry fallTrackEntry = animationState.SetAnimation(0, offJumpAnimation, false);
         fallTrackEntry.Complete += FallSpineComplete;
@@ -356,7 +355,7 @@ public class MoveObject : MonoBehaviour
         //一旦レイを無くす
         lineCastF = null;
 
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.01f);
 
         offJumpFlag = false;
 
@@ -371,11 +370,30 @@ public class MoveObject : MonoBehaviour
     //落下中のアニメーションを流す
     private void FallSpineComplete(TrackEntry trackEntry)
     {
+        skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
-        animationState.SetAnimation(0, fallAnimation, true);
+        animationState.SetAnimation(0, fallAnimation, false);
         skeletonAnimation.skeleton.SetToSetupPose();
     }
 
+
+    //着地のアニメーション
+    private IEnumerator LindingCoroutine()
+    {
+        skeletonAnimation.timeScale = 2;
+        skeletonAnimation.state.ClearTrack(0);
+        TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
+        moveTrackEntry.Complete += MoveSpineComplete;
+        skeletonAnimation.skeleton.SetToSetupPose();
+
+        yield return new WaitForSeconds(0.5f);
+
+        lindingFlag = false;
+
+        //コルーチンストップ
+        StopCoroutine(LindingCoroutine());
+
+    }
 
     //坂をジャンプするときに使う関数
     private float SlopeUp()
@@ -467,6 +485,7 @@ public class MoveObject : MonoBehaviour
         StopCoroutine(JumpStart());
     }
     
+
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
     {
