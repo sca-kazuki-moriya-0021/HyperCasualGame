@@ -28,8 +28,6 @@ public class PenDisplay : MonoBehaviour
     [SerializeField]
     private Canvas penMCanvas;
     private Canvas myCanvas;
-
-
     //Œø‰Ê‰¹—p
     private AudioSource audioSource;
     [SerializeField]
@@ -43,18 +41,13 @@ public class PenDisplay : MonoBehaviour
         set { this.penMenuFlag = value; }
     }
 
-    /*
-    public bool PenMWaitingFlag
+   
+    public bool PenDisplayWaitingFlag
     {
         get { return this.waitingFlag; }
         set { this.waitingFlag = value; }
     }
-
-    private void Awake()
-    {
-        texts = new List<string>();
-    }
-    */
+    
 
     private void Awake()
     {
