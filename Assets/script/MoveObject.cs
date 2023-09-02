@@ -180,7 +180,6 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(" hitCollider.gameObject.tag");
 
         //ˆÚ“®
         if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
@@ -528,6 +527,11 @@ public class MoveObject : MonoBehaviour
         {
             audios.PlayOneShot(sound1);
 
+            GameOverFlag = true;
+        }
+
+        if (other.gameObject.CompareTag("OutSide"))
+        {
             GameOverFlag = true;
         }
 

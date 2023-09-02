@@ -14,6 +14,8 @@ public class OperationCon : MonoBehaviour
     [SerializeField]
     private PanelCon panelCon;
 
+    private TutorialCon tutorialCon;
+
     private void Awake()
     {
         operationCanvas = operationCanvas.GetComponent<Canvas>();
@@ -23,6 +25,7 @@ public class OperationCon : MonoBehaviour
     void Start()
     {
         panelCon = FindObjectOfType<PanelCon>();
+        tutorialCon = FindObjectOfType<TutorialCon>();
 
         operationCanvas.enabled = false;
     }
@@ -35,8 +38,29 @@ public class OperationCon : MonoBehaviour
 
     public void Push()
     {
-        Debug.Log("asuki");
-        operationCanvas.enabled = true;
-        panelCon.SetText(texts[0]);
+            operationCanvas.enabled = true;
+            panelCon.SetText(texts[0]);
     }
+
+    public void Push2()
+    {
+       
+            operationCanvas.enabled = true;
+            panelCon.SetText(texts[1]);
+    }
+
+
+    public void Push3()
+    {
+            operationCanvas.enabled = true;
+            panelCon.SetText(texts[2]);
+    }
+
+    public void Push4()
+    {
+        
+            operationCanvas.enabled = true;
+            panelCon.SetText(texts[3]);
+    }
+
 }

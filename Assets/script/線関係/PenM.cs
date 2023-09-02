@@ -136,30 +136,32 @@ public class PenM : MonoBehaviour
 
         if (recovery.RecoveryFlag == true)
         {
-            switch (nowPen)
-            {
-                case PenCom.Ice:
-                    if (iceDrawTime > 0)
-                    {
-                        iceDrawTime = 0;
-                        recovery.RecoveryFlag = false;
-                    }
-                    break;
-                case PenCom.Fire:
-                    if (fireDrawTime > 0)
-                    {
-                        fireDrawTime = 0;
-                        recovery.RecoveryFlag = false;
-                    }
-                    break;
-                case PenCom.General:
-                    if (generalDrawTime > 0)
-                    {
-                        generalDrawTime = 0;
-                        recovery.RecoveryFlag = false;
-                    }
-                    break;
-            }
+            Debug.Log("‚»‚à‚»‚à");
+          if (recovery.Item.name == "RecoveryIce")
+          {
+                Debug.Log("‚©‚º");
+                if (iceDrawTime > 0)
+                {
+                    iceDrawTime = 0;
+                }
+          }
+          
+          if(recovery.Item.name == "RecoveryFire")
+          {
+                if (fireDrawTime > 0)
+                {
+                    fireDrawTime = 0;
+                }
+          }
+
+          if(recovery.Item.name == "RecoveryGeneral")
+          {
+                if (generalDrawTime > 0)
+                {
+                    generalDrawTime = 0;
+                }
+          }
+          recovery.RecoveryFlag = false;
         }
 
     }

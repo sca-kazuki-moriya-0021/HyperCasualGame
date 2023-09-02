@@ -5,12 +5,21 @@ using UnityEngine.UI;
 
 public class RecoveryItemCon : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject item;
+
     private bool recoveryFlag = false;
 
     public bool RecoveryFlag
     {
         get { return this.recoveryFlag; }
         set { this.recoveryFlag = value; }
+    }
+
+    public GameObject Item
+    {
+        get { return this.item; }
+        set { this.item = value; }
     }
 
     // Start is called before the first frame update

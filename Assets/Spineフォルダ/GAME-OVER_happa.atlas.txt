@@ -1,0 +1,9 @@
+GAME-OVER_happa.png
+size:386,102
+filter:Linear,Linear
+pma:true
+happa_1
+bounds:198,2,98,186
+rotate:90
+happa_2
+bounds:2,4,194,96
