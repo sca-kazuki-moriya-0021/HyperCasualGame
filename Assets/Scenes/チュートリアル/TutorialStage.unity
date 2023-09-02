@@ -193,7 +193,7 @@ GameObject:
   - component: {fileID: 631319249}
   - component: {fileID: 631319248}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: "\u64CD\u4F5C\u8AAC\u660E\u7528"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -280,11 +280,66 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1 &897823658 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1003472422562296642, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
+  m_PrefabInstance: {fileID: 1997813259131785685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &897823663
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 897823658}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Delegates:
+  - eventID: 2
+    callback:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1646089982}
+          m_TargetAssemblyTypeName: OperationCon, Assembly-CSharp
+          m_MethodName: Push
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!1 &1068854809 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5906603835142650676, guid: 8b90628b1d2eadb4288327b1c938e318, type: 3}
   m_PrefabInstance: {fileID: 358505397}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1646089974 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2473223865538015998, guid: 69a9651e2e650e5418f8f269c33ebf15, type: 3}
+  m_PrefabInstance: {fileID: 1997813259131785685}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1646089982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1646089974}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3854be2d68cce949874e85e3c467199, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  operationCanvas: {fileID: 631319250}
+  texts:
+  - "\u30DA\u30F3\u9078\u629E\u753B\u9762"
+  panelCon: {fileID: 6933594432175468128}
 --- !u!1001 &1725419052
 PrefabInstance:
   m_ObjectHideFlags: 0

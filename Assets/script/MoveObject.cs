@@ -470,6 +470,7 @@ public class MoveObject : MonoBehaviour
 
         jumpFlag = false;
         hitCollider.gameObject.tag = hitBackCollider.gameObject.tag;
+
         StopCoroutine(JumpStart());
     }
     

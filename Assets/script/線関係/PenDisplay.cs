@@ -12,14 +12,7 @@ public class PenDisplay : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private LineDrawCon lineDrawCon;
 
-    [SerializeField, Header("操作説明するうぃんどう")]
-    private Canvas operationCanvas;
-    [SerializeField]
-    private List<string> texts = new List<string>();
 
-    private bool waitingFlag = false;
-    [SerializeField]
-    private PanelCon panelCon;
 
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
@@ -41,20 +34,6 @@ public class PenDisplay : MonoBehaviour
         set { this.penMenuFlag = value; }
     }
 
-   
-    public bool PenDisplayWaitingFlag
-    {
-        get { return this.waitingFlag; }
-        set { this.waitingFlag = value; }
-    }
-    
-
-    private void Awake()
-    {
-        operationCanvas = operationCanvas.GetComponent<Canvas>();
-        //texts = new List<string>();
-
-    }
 
     // Start is called before the first frame update
     void Start()
@@ -62,21 +41,16 @@ public class PenDisplay : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
-        panelCon = FindObjectOfType<PanelCon>();
-
 
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
 
         audioSource = GetComponent<AudioSource>();
-        operationCanvas.enabled = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(operationCanvas);
-        Debug.Log(panelCon);
 
         if (penMenuFlag == true)
         {
@@ -100,17 +74,7 @@ public class PenDisplay : MonoBehaviour
     {
         if (pasueDisplayC.MenuFlag == false && penMenuFlag == false)
         {
-            waitingFlag = true;
             audioSource.PlayOneShot(sound1);
-
-            if (waitingFlag == true)
-            {
-                Debug.Log("asuki");
-                operationCanvas.enabled = true;
-                panelCon.SetText(texts[0]);
-                
-            }
-
             penMCanvas.enabled = true;
             myCanvas.enabled = false;
 
