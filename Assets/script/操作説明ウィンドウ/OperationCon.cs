@@ -36,31 +36,36 @@ public class OperationCon : MonoBehaviour
  
     }
 
+    public void DisplayTap()
+    {
+        operationCanvas.enabled = true;
+        panelCon.SetText(texts[0]);
+    }
+
     public void Push()
     {
-            operationCanvas.enabled = true;
-            panelCon.SetText(texts[0]);
+       //operationCanvas.enabled = true;
+       panelCon.backText(texts[0]);
     }
 
     public void Push2()
     {
        
-            operationCanvas.enabled = true;
-            panelCon.SetText(texts[1]);
+            //operationCanvas.enabled = true;
+            panelCon.backText(texts[1]);
     }
 
 
     public void Push3()
     {
-            operationCanvas.enabled = true;
-            panelCon.SetText(texts[2]);
+            //operationCanvas.enabled = true;
+            panelCon.backText(texts[2]);
     }
 
     public void Push4()
     {
-        
-            operationCanvas.enabled = true;
-            panelCon.SetText(texts[3]);
+            //operationCanvas.enabled = false;
+           panelCon.backText(texts[3]);
     }
 
 }

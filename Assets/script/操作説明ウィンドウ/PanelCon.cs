@@ -21,28 +21,31 @@ public class PanelCon : MonoBehaviour
 
     public void SetText(string text)
     {
+        Text t = transform.GetComponent<Text>();
+        t.text = text;
+    }
+
+    public void backText(string text)
+    {
         Canvas canvas = GetComponentInParent<Canvas>();
         Text t = transform.GetComponent<Text>();
         t.text = text;
-     
         StartCoroutine(ResetText(canvas));
-        
     }
 
     private IEnumerator ResetText(Canvas c)
     {
+        while (true)
+        {
+            //操作説明中は時止めをしているのでリアルタイム方式で待たないとだめ
+            yield return new WaitForSecondsRealtime(4.0f);
 
-        Debug.Log("mi");
-        Debug.Log(c);
+            Debug.Log("消える");
+            tutorialCon.TutorialDFlag = false;
+            c.enabled = false;
+            break;
 
-        //操作説明中は時止めをしているのでリアルタイム方式で待たないとだめ
-        yield return new WaitForSecondsRealtime(4.0f);
-
-        Debug.Log("消える");
-        tutorialCon.TutorialDFlag = false;
-        c.enabled = false;
-
-
+        }
         StopCoroutine(ResetText(c));
 
     }

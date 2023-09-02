@@ -372,7 +372,7 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 1646089982}
           m_TargetAssemblyTypeName: OperationCon, Assembly-CSharp
-          m_MethodName: Push
+          m_MethodName: DisplayTap
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -409,7 +409,7 @@ MonoBehaviour:
   - "\u6C37\u306E\u30DA\u30F3\u306F\u3001\u79FB\u52D5\u901F\u5EA6\u304C\u3042\u304C\u308A\u307E\u3059"
   - "\u708E\u306E\u30DA\u30F3\u306F\u3001\u6728\u306E\u677F\u3092\u6D88\u3059\u3053\u3068\u304C\u3067\u304D\u307E\u3059"
   - "\u4F7F\u3044\u3084\u3059\u3044\u666E\u901A\u306E\u30DA\u30F3\u3067\u3059"
-  - "\u9078\u629E\u305B\u305A\u306B\u76F4\u524D\u306E\u30DA\u30F3\u306B\u623B\u308A\u307E\u3059"
+  - "\u9589\u3058\u307E\u3057\u305F"
   panelCon: {fileID: 6933594432175468128}
 --- !u!1 &1167969714 stripped
 GameObject:

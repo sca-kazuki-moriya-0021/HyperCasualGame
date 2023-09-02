@@ -136,10 +136,8 @@ public class PenM : MonoBehaviour
 
         if (recovery.RecoveryFlag == true)
         {
-            Debug.Log("‚»‚à‚»‚à");
           if (recovery.Item.name == "RecoveryIce")
           {
-                Debug.Log("‚©‚º");
                 if (iceDrawTime > 0)
                 {
                     iceDrawTime = 0;

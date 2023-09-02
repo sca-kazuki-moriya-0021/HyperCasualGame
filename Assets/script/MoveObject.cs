@@ -184,7 +184,7 @@ public class MoveObject : MonoBehaviour
         //移動
         if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
         {
-            Debug.Log("動いている");
+            //Debug.Log("動いている");
             //移動のアニメーション流しと移動
             if (iceWalkFlag == false)
             {
@@ -445,10 +445,15 @@ public class MoveObject : MonoBehaviour
     private IEnumerator JumpStart()
     {
         var d = transform.position;
-        Debug.Log(d);
+        var myY = transform.position.y;
+        
         var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y +3.0f);
-        Debug.Log(t);
+
+        var b = hitCollider.bounds.min.x - transform.position.x;
+        var c = new Vector2(b,myY);
+
         var sumTime = 0f;
+        var varTime = 0f;
         while (true)
         {
             sumTime += Time.deltaTime;
@@ -460,6 +465,22 @@ public class MoveObject : MonoBehaviour
 
             if (ratio > 1.0f)
             {
+                var myT = transform.position;
+               while(true)
+               {
+                    varTime += Time.deltaTime;
+                    var raito2 = varTime/3;
+                    if(raito2 < 1.0f)
+                    {
+                        transform.position = Vector3.Lerp(myT,c,raito2);
+                    }
+
+                    if(raito2 > 1.0f)
+                    {
+                        break;
+                    }
+
+               }
                 // 目標の値に到達したらこのCoroutineを終了する
                 // ~.Lerpは割合を示す引数は0 ~ 1の間にClampされるので1より大きくても問題なし
                 break;

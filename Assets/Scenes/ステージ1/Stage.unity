@@ -171,6 +171,14 @@ PrefabInstance:
       value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 1388619684178677317, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.75
+      objectReference: {fileID: 0}
+    - target: {fileID: 1388619684178677317, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.58259326
+      objectReference: {fileID: 0}
+    - target: {fileID: 1388619684178677317, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -1439,7 +1447,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2443205042023315624, guid: ed4166c7388252c4b980820884b3cd28, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3067725556922634660, guid: ed4166c7388252c4b980820884b3cd28, type: 3}
       propertyPath: _animationName
