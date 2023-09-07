@@ -445,15 +445,15 @@ public class MoveObject : MonoBehaviour
     private IEnumerator JumpStart()
     {
         var myP = transform.position;
-        Vector2 toP =new Vector2(hitCollider.bounds.max.x + Mathf.Abs(myP.x),myP.y);
+        Vector3 toP =new Vector3(hitCollider.bounds.max.x + Mathf.Abs(myP.x),myP.y);
         Debug.Log(toP);
         
-        float center = hitCollider.bounds.center.y;
-        center = Mathf.Abs(center);
-        Vector3 vector = new Vector2(hitCollider.bounds.center.x,center);
+        var center = hitCollider.bounds.center;
+        //center = Mathf.Abs(center);
+        //Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
 
-        myP.y = myP.y - vector.y;
-        toP.y = toP.y - vector.y;
+        myP -= center;
+        toP -= center;
 
         var sumTime = 0f;
         while (true)
@@ -465,7 +465,8 @@ public class MoveObject : MonoBehaviour
                  var slerpPos = Vector3.Slerp(myP, toP, ratio);
 
                 // 中心点だけずらした位置を戻す
-                slerpPos += vector;
+                slerpPos += center;
+
                 // 補間位置を反映
                 transform.position = slerpPos;
             }

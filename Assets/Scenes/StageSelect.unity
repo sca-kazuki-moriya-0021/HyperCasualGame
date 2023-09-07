@@ -1933,6 +1933,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 35158770}
     m_Modifications:
+    - target: {fileID: 6274173761937456263, guid: 32986820b4ebe1b468e546b2111d596f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: c946ece40867ab44bb88c00e5b458a34, type: 3}
     - target: {fileID: 6274173761937456280, guid: 32986820b4ebe1b468e546b2111d596f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1999,11 +2003,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6274173761937456280, guid: 32986820b4ebe1b468e546b2111d596f, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -401.52997
+      value: -421
       objectReference: {fileID: 0}
     - target: {fileID: 6274173761937456280, guid: 32986820b4ebe1b468e546b2111d596f, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -193
+      value: -193.35
       objectReference: {fileID: 0}
     - target: {fileID: 6274173761937456280, guid: 32986820b4ebe1b468e546b2111d596f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
