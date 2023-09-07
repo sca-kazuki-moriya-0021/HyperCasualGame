@@ -444,16 +444,19 @@ public class MoveObject : MonoBehaviour
     //ジャンプ
     private IEnumerator JumpStart()
     {
+        //二次元ベジェ曲線パターン
         var myP = transform.position;
         Vector3 toP =new Vector3(hitCollider.bounds.max.x + Mathf.Abs(myP.x),myP.y);
-        Debug.Log(toP);
+        var miS = Mathf.Abs(hitCollider.bounds.size.y);
+        Vector3 miP = new Vector3(hitCollider.bounds.max.x,miS + 2f);
+        Debug.Log(miP);
         
-        var center = hitCollider.bounds.center;
-        //center = Mathf.Abs(center);
-        //Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
+        /*var center = hitCollider.bounds.center;
+        center = Mathf.Abs(center);
+        Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
 
         myP -= center;
-        toP -= center;
+        toP -= center;*/
 
         var sumTime = 0f;
         while (true)
@@ -462,13 +465,10 @@ public class MoveObject : MonoBehaviour
             var ratio = sumTime / 3;
             if (ratio < 1.0f)
             {
-                 var slerpPos = Vector3.Slerp(myP, toP, ratio);
-
-                // 中心点だけずらした位置を戻す
-                slerpPos += center;
-
+                 var a = Vector3.Lerp(myP, miP, ratio);
+                 var b = Vector3.Lerp(miP,toP,ratio);
                 // 補間位置を反映
-                transform.position = slerpPos;
+                transform.position = Vector3.Lerp(a,b,ratio);
             }
 
             if (ratio > 1.0f)
