@@ -444,43 +444,34 @@ public class MoveObject : MonoBehaviour
     //ジャンプ
     private IEnumerator JumpStart()
     {
-        var d = transform.position;
-        var myY = transform.position.y;
+        var myP = transform.position;
+        Vector2 toP =new Vector2(hitCollider.bounds.max.x + Mathf.Abs(myP.x),myP.y);
+        Debug.Log(toP);
         
-        var t = new Vector2(hitCollider.bounds.max.x,hitCollider.bounds.max.y +3.0f);
+        float center = hitCollider.bounds.center.y;
+        center = Mathf.Abs(center);
+        Vector3 vector = new Vector2(hitCollider.bounds.center.x,center);
 
-        var b = hitCollider.bounds.min.x - transform.position.x;
-        var c = new Vector2(b,myY);
+        myP.y = myP.y - vector.y;
+        toP.y = toP.y - vector.y;
 
         var sumTime = 0f;
-        var varTime = 0f;
         while (true)
         {
             sumTime += Time.deltaTime;
             var ratio = sumTime / 3;
             if (ratio < 1.0f)
             {
-                transform.position = Vector3.Lerp(d, t, ratio);
+                 var slerpPos = Vector3.Slerp(myP, toP, ratio);
+
+                // 中心点だけずらした位置を戻す
+                slerpPos += vector;
+                // 補間位置を反映
+                transform.position = slerpPos;
             }
 
             if (ratio > 1.0f)
             {
-                var myT = transform.position;
-               while(true)
-               {
-                    varTime += Time.deltaTime;
-                    var raito2 = varTime/3;
-                    if(raito2 < 1.0f)
-                    {
-                        transform.position = Vector3.Lerp(myT,c,raito2);
-                    }
-
-                    if(raito2 > 1.0f)
-                    {
-                        break;
-                    }
-
-               }
                 // 目標の値に到達したらこのCoroutineを終了する
                 // ~.Lerpは割合を示す引数は0 ~ 1の間にClampされるので1より大きくても問題なし
                 break;
