@@ -182,7 +182,7 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(offJumpFlag);
+        Debug.Log(fallFlag);
         //移動
         if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
         {
@@ -215,7 +215,7 @@ public class MoveObject : MonoBehaviour
         }
 
         //レイの角度計算
-        if(lineCastF != null || jumpFlag == true)
+        if(lineCastF != null || jumpFlag == true || fallFlag == true)
         {
             RayAngleIns();
         }
@@ -367,6 +367,7 @@ public class MoveObject : MonoBehaviour
     //着地のアニメーション
     private IEnumerator LindingCoroutine()
     {
+
         //着地用フラグ変更
         lindingFlag = false;
 
@@ -377,7 +378,6 @@ public class MoveObject : MonoBehaviour
         skeletonAnimation.skeleton.SetToSetupPose();
 
         yield return new WaitForSeconds(0.5f);
-
 
 
         //コルーチンストップ
@@ -443,7 +443,7 @@ public class MoveObject : MonoBehaviour
             hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
-                jumpFlag = true;
+                jumpFlag = true;;
                 StartCoroutine(JumpStart());
             }
         }

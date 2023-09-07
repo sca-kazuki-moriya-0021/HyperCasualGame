@@ -425,6 +425,10 @@ PrefabInstance:
       propertyPath: rayRange
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 4219249940836489981, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
+      propertyPath: hRayRange
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 7820527500190953866, guid: 4e45bba37c0835a4aa61a89d60294670, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.56
