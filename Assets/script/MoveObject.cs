@@ -552,6 +552,11 @@ public class MoveObject : MonoBehaviour
             jumpFlag = false;
         }
 
+        if(other.gameObject == hitCollider.gameObject.CompareTag("Wall"))
+        {
+            jumpFlag = false;
+        }
+
         //è·äQï®Ç…ìñÇΩÇ¡ÇΩÇÁ
         if (other.gameObject.CompareTag("Obstacle"))
         {
