@@ -170,6 +170,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Debug.Log(fallFlag);
         //ゲームオーバーシーンにいく処理
         if (gameOverFlag == true)
         {
@@ -182,7 +183,6 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(fallFlag);
         //移動
         if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
         {
@@ -243,6 +243,12 @@ public class MoveObject : MonoBehaviour
             
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
+            {
+                fallFlag = false;
+                lindingFlag = true;
+                StartCoroutine(LindingCoroutine());
+            }
+            else if(downObject && downObject.transform.gameObject.CompareTag("Wall"))
             {
                 fallFlag = false;
                 lindingFlag = true;
@@ -438,8 +444,8 @@ public class MoveObject : MonoBehaviour
         //タンジェントがn度以上ならジャンプ移行する
         if(tan <= Mathf.PI / 3 )
         {
-            Debug.Log("タグ変更");
             hitBackCollider = hitCollider;
+            Debug.Log(hitBackCollider.tag);
             hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
@@ -495,8 +501,8 @@ public class MoveObject : MonoBehaviour
             }
             yield return null;
         }
-        hitCollider.gameObject.tag = hitBackCollider.gameObject.tag;
-
+        hitCollider = hitBackCollider;
+        Debug.Log(hitCollider.gameObject.tag);
         StopCoroutine(JumpStart());
     }
     
