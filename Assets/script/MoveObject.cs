@@ -62,8 +62,10 @@ public class MoveObject : MonoBehaviour
     [SerializeField]
     private Vector2 downOffset;*/
     //　レイを飛ばす距離
-    [SerializeField,Header("レイの長さ")]
-    private float rayRange;
+    [SerializeField,Header("横に飛ばすレイの長さ")]
+    private float wRayRange;
+    [SerializeField,Header("縦に飛ばすレイの長さ")]
+    private float hRayRange;
     //　落ちたy座標
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
@@ -180,7 +182,7 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-
+        Debug.Log(offJumpFlag);
         //移動
         if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
         {
@@ -188,6 +190,7 @@ public class MoveObject : MonoBehaviour
             //移動のアニメーション流しと移動
             if (iceWalkFlag == false)
             {
+                Debug.Log("asukar");
                 transform.Translate(-xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
                 if(moveAnimaFlag == false)
                 {
@@ -206,15 +209,15 @@ public class MoveObject : MonoBehaviour
         }
 
         //坂角度計算とジャンプ処理
-        if (jumpFlag == false)
+        if (jumpFlag == false && fallFlag == false)
         {
             SlopeUp();
         }
 
         //レイの角度計算
-        if(lineCastF != null)
+        if(lineCastF != null || jumpFlag == true)
         {
-            RayAngleIns();;
+            RayAngleIns();
         }
     }
 
@@ -236,7 +239,7 @@ public class MoveObject : MonoBehaviour
         if (fallFlag == true)
         {
             //レイを出す
-            Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.red);
+            Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * hRayRange, Color.red);
             
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
@@ -257,7 +260,7 @@ public class MoveObject : MonoBehaviour
         //地面から離れた時の処理
         else
         {
-           Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * rayRange, Color.blue);
+           Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * hRayRange, Color.blue);
            //地面から空中にいった時(fallFlag == false　から　true　になる時)
            if (!IsOnGrounds(downObject))
            {
@@ -265,17 +268,20 @@ public class MoveObject : MonoBehaviour
              //その時に落下状態を判別するためfallFlagをtrueにする
              fallFlag = true;
              iceWalkFlag = false;
-             offJumpFlag = true;
-             //アニメーション
-             StartCoroutine(StartoffJump());
+             
+             if(jumpFlag == false)
+             {
+               offJumpFlag = true;
+               //アニメーション
+               StartCoroutine(StartoffJump());
+             }
            }
-            
         }
         //レイが何にも当たっていないときは強制リターン
         if (!downObject)
         {
             return;
-        }
+        } 
     }
 
     //下にオブジェクトがあったときhit2Dを返す
@@ -283,7 +289,7 @@ public class MoveObject : MonoBehaviour
     {
         RaycastHit2D hit2D;
         
-        hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * rayRange, LayerMask.GetMask("Ground"));
+        hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * hRayRange, LayerMask.GetMask("Ground"));
         return hit2D;
        
     }
@@ -361,6 +367,9 @@ public class MoveObject : MonoBehaviour
     //着地のアニメーション
     private IEnumerator LindingCoroutine()
     {
+        //着地用フラグ変更
+        lindingFlag = false;
+
         skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
@@ -369,8 +378,7 @@ public class MoveObject : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-        //着地用フラグ変更
-        lindingFlag = false;
+
 
         //コルーチンストップ
         StopCoroutine(LindingCoroutine());
@@ -409,8 +417,8 @@ public class MoveObject : MonoBehaviour
     //横方向に飛ばす
     private RaycastHit2D ForwardObject()
     {
-        Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * rayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * rayRange , LayerMask.GetMask("Ground"));
+        Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * wRayRange, Color.green);
+        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * wRayRange , LayerMask.GetMask("Ground"));
         //Debug.Log(forwardHitObject);
         return forwardHitObject;
     }
@@ -445,16 +453,17 @@ public class MoveObject : MonoBehaviour
     private IEnumerator JumpStart()
     {
         //二次元ベジェ曲線パターン
+        //自分の位置
         var myP = transform.position;
+        //特定の位置
         Vector3 toP =new Vector3(hitCollider.bounds.max.x + Mathf.Abs(myP.x),myP.y);
+        //中間の位置
         var miS = Mathf.Abs(hitCollider.bounds.size.y);
-        Vector3 miP = new Vector3(hitCollider.bounds.max.x,miS + 2f);
-        Debug.Log(miP);
-        
+        Vector3 miP = new Vector3(hitCollider.bounds.center.x,miS + 2f);
+
         /*var center = hitCollider.bounds.center;
         center = Mathf.Abs(center);
         Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
-
         myP -= center;
         toP -= center;*/
 
@@ -463,8 +472,15 @@ public class MoveObject : MonoBehaviour
         {
             sumTime += Time.deltaTime;
             var ratio = sumTime / 3;
+
+            if(jumpFlag == false)
+            {
+                break;
+            }
+            
             if (ratio < 1.0f)
             {
+                //移動するための引数
                  var a = Vector3.Lerp(myP, miP, ratio);
                  var b = Vector3.Lerp(miP,toP,ratio);
                 // 補間位置を反映
@@ -479,8 +495,6 @@ public class MoveObject : MonoBehaviour
             }
             yield return null;
         }
-
-        jumpFlag = false;
         hitCollider.gameObject.tag = hitBackCollider.gameObject.tag;
 
         StopCoroutine(JumpStart());
@@ -523,16 +537,19 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("Ground"))
         {
             iceWalkFlag = false;
+            jumpFlag = false;
         }
 
         if (other.gameObject.CompareTag("IceGround"))
         {
             iceWalkFlag = true;
+            jumpFlag = false;
         }
 
         if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("Ground"))
         {
             iceWalkFlag = true;
+            jumpFlag = false;
         }
 
         //障害物に当たったら
