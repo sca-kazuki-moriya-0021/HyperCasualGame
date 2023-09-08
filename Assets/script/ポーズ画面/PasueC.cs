@@ -43,10 +43,10 @@ public class PasueC : MonoBehaviour
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
             //エディタ上の動作
-#else
+        #else
             Application.Quit();
             //エディタ以外の操作
-#endif
+        #endif
 
             myCanvas.enabled = false;
             pDisplayC.MenuFlag = false;

@@ -28,7 +28,6 @@ public class StageSelectCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(gm.LeafGetFlag[0]);
         if (gm.LeafGetFlag[0] == true)
         { 
             images[0].SetActive(true);

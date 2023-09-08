@@ -24,9 +24,6 @@ public class goalPSliderCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(slider.value);
         slider.value = (float)gm.StageLeafCount / (float)gm.MaxLeafCount;
-
-
     }
 }

@@ -27,9 +27,9 @@ public class LineDrawCon : MonoBehaviour
     [SerializeField]
     private Material iceTexture;
     [SerializeField]
-    private Material fierTexture;
+    private Material fireTexture;
     [SerializeField]
-    private Material ironTexture;
+    private Material generalTexture;
 
     //色を保存しておく用変数
     private Material lineMaterial;
@@ -38,12 +38,16 @@ public class LineDrawCon : MonoBehaviour
     //PhysicsMaterial2DとColorをまとめておく用
     protected PhysicsMaterial2D sMaterial;
     protected Color lineColor;
+
     [SerializeField]
     private PhysicsMaterial2D iceMaterial;
     [SerializeField]
     private PhysicsMaterial2D generalMaterial;
+
     [SerializeField]
     private Color iceColor;
+    [SerializeField]
+    private Color fireColor;
     [SerializeField]
     private Color generalColor;
 
@@ -57,7 +61,6 @@ public class LineDrawCon : MonoBehaviour
     [SerializeField]
     private GameObject instansIcePrefab;
     private string ice;
-
 
     //炎のアニメーション
     [SerializeField]
@@ -122,8 +125,6 @@ public class LineDrawCon : MonoBehaviour
         //線のポイント初期化
         linePoints = new List<Vector2>();
 
- 
-
     }
 
     // Update is called once per frame
@@ -151,13 +152,15 @@ public class LineDrawCon : MonoBehaviour
                 break;
 
             case PenM.PenCom.Fire:
-                //nowSkeletonAnima = fireSkelton;
-                //fireSkelton.AnimationName = "animetion";
+                sMaterial = generalMaterial;
+                lineMaterial = fireTexture;
+                lineColor = fireColor;
+
                 break;
 
             case PenM.PenCom.General:
                 sMaterial = generalMaterial;
-                lineMaterial = ironTexture;
+                lineMaterial = generalTexture;
                 lineColor = generalColor;
                 //nowSkeletonAnima = null;
                 break;

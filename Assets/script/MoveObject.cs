@@ -95,8 +95,6 @@ public class MoveObject : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D col2D;
 
-    //readonly Collider[] _result = new Collider[5];
-
     //hitしたコライダー検知用
     private Collider2D hitCollider;
     private Collider2D hitBackCollider;
@@ -170,7 +168,7 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log(fallFlag);
+        //Debug.Log(fallFlag);
         //ゲームオーバーシーンにいく処理
         if (gameOverFlag == true)
         {
@@ -190,7 +188,6 @@ public class MoveObject : MonoBehaviour
             //移動のアニメーション流しと移動
             if (iceWalkFlag == false)
             {
-                Debug.Log("asukar");
                 transform.Translate(-xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
                 if(moveAnimaFlag == false)
                 {

@@ -1361,6 +1361,14 @@ PrefabInstance:
       propertyPath: range
       value: 
       objectReference: {fileID: 126386894}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: fireTexture
+      value: 
+      objectReference: {fileID: 2100000, guid: 8d25bcc92462476498ef10682ba25d79, type: 2}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: generalTexture
+      value: 
+      objectReference: {fileID: 2100000, guid: c405669a336e54f47a57bed55de0f10b, type: 2}
     - target: {fileID: 8866457617940983437, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
       propertyPath: m_Name
       value: LineDraw
