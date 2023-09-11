@@ -38,11 +38,11 @@ public class TimeGM : MonoBehaviour
         Debug.Log("ŽžŠÔŒo‰ß—p" + timeFlag);
         if (timeFlag == false)
         {
-            float s = 10f;
+            float s = 12f;
             countTime += Time.unscaledDeltaTime;
             s -= countTime;
             countText.text = s.ToString("f2");
-            if (countTime > 10.0f)
+            if (countTime > 12.0f)
             {
                 eriaIcon.SetActive(true);
                 timeIcon.enabled = false;

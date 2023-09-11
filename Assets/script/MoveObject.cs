@@ -19,8 +19,6 @@ public class MoveObject : MonoBehaviour
     private float xMoveIceSpeed = 7.0f;
     //ジャンプ中に使う速度
     private float moveSpeed = 2f;
-    //デフォルトの角度
-    //private Quaternion defeltRotation;
 
     //再生するアニメーション名
     [SerializeField,Header("歩行アニメーション")]
@@ -31,6 +29,8 @@ public class MoveObject : MonoBehaviour
     private string offJumpAnimation;
     [SerializeField,Header("着地モーション")]
     private string lindingAnimation;
+    [SerializeField,Header("ジャンプモーション")]
+    private string jumpAnimation;
 
     //オブジェクトに設定されているアニメーション
     private SkeletonAnimation skeletonAnimation = default;
@@ -70,25 +70,12 @@ public class MoveObject : MonoBehaviour
     private float fallenPosition;
     //　落下してから地面に落ちるまでの距離
     private float fallenDistance;
-    //　どのぐらいの高さからダメージを与えるか
-    //[SerializeField]
-    //private float takeDamageDistance = 3f;
-
     //ヒットしたオブジェクトの角度
     private Quaternion hitObjectRotaion;
     //ヒットしたオブジェクト保存用
     private RaycastHit2D headHitObject;
     private RaycastHit2D footHitObject;
     private RaycastHit2D forwardHitObject;
-
-    //hitしたコライダー長さ
-    private float xLen;
-    private float yLen;
-    private Vector2 xVLen;
-    private Vector2 yVLen;
-    //キャラからhitしたオブジェクトの距離
-    private float pDis;
-    private Vector2 pVDis;
     #endregion
 
     //RigidBodyとカプセルコライダーの定義
@@ -382,7 +369,6 @@ public class MoveObject : MonoBehaviour
 
         yield return new WaitForSeconds(0.5f);
 
-
         //コルーチンストップ
         StopCoroutine(LindingCoroutine());
 
@@ -462,15 +448,24 @@ public class MoveObject : MonoBehaviour
         Vector3 toP =new Vector3(hitCollider.bounds.max.x + Mathf.Abs(myP.x),myP.y);
         //中間の位置
         var miS = Mathf.Abs(hitCollider.bounds.size.y);
-        Vector3 miP = new Vector3(hitCollider.bounds.center.x,miS + 2f);
+        Vector3 miP = new Vector3(hitCollider.bounds.center.x,miS + 5f);
 
-        /*var center = hitCollider.bounds.center;
-        center = Mathf.Abs(center);
-        Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
-        myP -= center;
-        toP -= center;*/
+        //sleapパターンで使うもの
+        {
+            /*var center = hitCollider.bounds.center;
+            center = Mathf.Abs(center);
+            Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
+            myP -= center;
+            toP -= center;*/
+        }
 
         var sumTime = 0f;
+        //ジャンプ用
+        /*skeletonAnimation.timeScale = 2;
+        skeletonAnimation.state.ClearTrack(0);
+        animationState.SetAnimation(0, jumpAnimation, false);
+        skeletonAnimation.skeleton.SetToSetupPose();*/
+
         while (true)
         {
             sumTime += Time.deltaTime;
