@@ -9,6 +9,9 @@ public class TimeGM : MonoBehaviour
     private bool timeFlag;
     private float countTime = 0;
 
+    private PasueDisplayC pDisplayC;
+    private PenDisplay penDis;
+
     [SerializeField,Header("エリア進行度")]
     private GameObject eriaIcon;
 
@@ -27,9 +30,13 @@ public class TimeGM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        pDisplayC = FindObjectOfType<PasueDisplayC>();
+        penDis = FindObjectOfType<PenDisplay>();
+
         eriaIcon.SetActive(false);
         timeFlag = true;
         countTime = 0;
+
     }
 
     // Update is called once per frame
@@ -39,9 +46,12 @@ public class TimeGM : MonoBehaviour
         //最初の十秒ぐらい
         if (timeFlag == true)
         {
-            Time.timeScale = 0f;
             float s = 12f;
-            countTime += Time.unscaledDeltaTime;
+            Time.timeScale = 0f;
+            if(pDisplayC.MenuFlag == false && penDis.PenMenuFlag == false)
+            {
+                countTime += Time.unscaledDeltaTime;
+            }
             s -= countTime;
             countText.text = s.ToString("f2");
             if (countTime > 12.0f)

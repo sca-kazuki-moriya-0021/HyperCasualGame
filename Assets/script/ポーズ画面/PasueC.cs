@@ -53,7 +53,6 @@ public class PasueC : MonoBehaviour
 
             myCanvas.enabled = false;
             pDisplayC.MenuFlag = false;
-            pDisplayC.MenuFlag = false;
         }
     }
 

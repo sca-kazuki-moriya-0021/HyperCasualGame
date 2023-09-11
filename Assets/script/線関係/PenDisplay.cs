@@ -10,7 +10,6 @@ public class PenDisplay : MonoBehaviour
 
     //コード呼び出し
     private PasueDisplayC pasueDisplayC;
-    private LineDrawCon lineDrawCon;
 
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
@@ -38,7 +37,6 @@ public class PenDisplay : MonoBehaviour
     {
         gm = FindObjectOfType<TotalGM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
-        lineDrawCon = FindObjectOfType<LineDrawCon>();
 
         penMCanvas = penMCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
