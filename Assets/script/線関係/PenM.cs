@@ -94,7 +94,6 @@ public class PenM : MonoBehaviour
         myCanvas = this.GetComponent<Canvas>();
         penCanvas = penCanvas.GetComponent<Canvas>();
 
-
         //panelCon = FindObjectOfType<PanelCon>();
 
         nowPen = PenM.PenCom.General;
@@ -251,18 +250,18 @@ public class PenM : MonoBehaviour
                 switch (nowPen)
                 {
                     case PenCom.Ice:
-                        iceDrawTime += Time.deltaTime;
+                        iceDrawTime += Time.unscaledDeltaTime;
                         //InkDown(getInkSprite,iceDrawTime,5);
                         break;
 
                     case PenCom.Fire:
-                        fireDrawTime += Time.deltaTime;
+                        fireDrawTime += Time.unscaledDeltaTime;
                         //InkDown(getInkSprite,fireDrawTime,5);
 
                         break;
 
                     case PenCom.General:
-                        generalDrawTime += Time.deltaTime;
+                        generalDrawTime += Time.unscaledDeltaTime;
                         //getInkSprite.fillAmount = 1 - generalDrawTime / 5;
                         //InkDown(getInkSprite,generalDrawTime,5);
                         break;

@@ -28,7 +28,7 @@ public class TimeGM : MonoBehaviour
     void Start()
     {
         eriaIcon.SetActive(false);
-        timeFlag = false;
+        timeFlag = true;
         countTime = 0;
     }
 
@@ -36,8 +36,10 @@ public class TimeGM : MonoBehaviour
     void Update()
     {
         Debug.Log("éûä‘åoâﬂóp" + timeFlag);
-        if (timeFlag == false)
+        //ç≈èâÇÃè\ïbÇÆÇÁÇ¢
+        if (timeFlag == true)
         {
+            Time.timeScale = 0f;
             float s = 12f;
             countTime += Time.unscaledDeltaTime;
             s -= countTime;
@@ -47,7 +49,8 @@ public class TimeGM : MonoBehaviour
                 eriaIcon.SetActive(true);
                 timeIcon.enabled = false;
                 countText.enabled = false;
-                timeFlag = true;
+                Time.timeScale = 1f;
+                timeFlag = false;
                 countTime = 0;
             }
         }

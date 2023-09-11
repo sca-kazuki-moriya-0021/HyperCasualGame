@@ -7,6 +7,7 @@ public class PasueC : MonoBehaviour
 {
     private PasueDisplayC pDisplayC;
     private TotalGM gm;
+    //private TimeGM timeGM;
 
     [SerializeField]
     private Canvas pDisplayCanvas;
@@ -16,11 +17,13 @@ public class PasueC : MonoBehaviour
     [SerializeField]
     private AudioClip sound1;
     private AudioSource audioSource;
+
     // Start is called before the first frame update
     void Start()
     {
         gm = FindObjectOfType<TotalGM>();
         pDisplayC = FindObjectOfType<PasueDisplayC>();
+        //timeGM = FindObjectOfType<TimeGM>();
 
         myCanvas = this.GetComponent<Canvas>();
         pDisplayCanvas = pDisplayCanvas.GetComponent<Canvas>();
@@ -60,8 +63,11 @@ public class PasueC : MonoBehaviour
         SceneManager.LoadScene("StageSelect");
         pDisplayCanvas.enabled = true;
 
-        Time.timeScale = 1f;
-
+        //if(timeGM.TimeFlag == false)
+        {
+            Time.timeScale = 1f;
+        }
+       
         myCanvas.enabled = false;
         pDisplayC.MenuFlag = false;
     }
@@ -70,7 +76,10 @@ public class PasueC : MonoBehaviour
     {
         audioSource.PlayOneShot(sound1);
 
-        Time.timeScale = 1f;
+        //if (timeGM.TimeFlag == false)
+        {
+            Time.timeScale = 1f;
+        }
 
         gm.ReloadCurrentSchene();
 
@@ -84,7 +93,10 @@ public class PasueC : MonoBehaviour
     {
         audioSource.PlayOneShot(sound1);
 
-        Time.timeScale = 1f;
+        //if (timeGM.TimeFlag == false)
+        {
+            Time.timeScale = 1f;
+        }
 
         pDisplayCanvas.enabled = true;
         myCanvas.enabled = false;

@@ -14,6 +14,7 @@ public class PasueDisplayC : MonoBehaviour
     //ゲーマネ呼び出し
     private TotalGM gm;
     private PenDisplay penDisplay;
+    private TimeGM timeGM;
 
     //ポーズが開いたかのフラグ
     private bool menuFlag = false;
@@ -48,6 +49,7 @@ public class PasueDisplayC : MonoBehaviour
     {
         gm = FindObjectOfType<TotalGM>();
         penDisplay = FindObjectOfType<PenDisplay>();
+        timeGM = FindObjectOfType<TimeGM>();
 
         pauseCanvas = pauseCanvas.GetComponent<Canvas>();
         myCanvas = this.GetComponent<Canvas>();
@@ -82,10 +84,6 @@ public class PasueDisplayC : MonoBehaviour
         if (menuFlag == false  && penDisplay.PenMenuFlag == false)
         {
             audioSource.PlayOneShot(sound1);
-
-
-            Debug.Log("ポーズ画面押されたよ");
-
             pauseCanvas.enabled = true;
             myCanvas.enabled = false;
 

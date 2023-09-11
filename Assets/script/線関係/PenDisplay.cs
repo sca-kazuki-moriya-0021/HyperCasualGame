@@ -12,8 +12,6 @@ public class PenDisplay : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private LineDrawCon lineDrawCon;
 
-
-
     //ポーズが開いたかのフラグ
     private bool penMenuFlag = false;
 
