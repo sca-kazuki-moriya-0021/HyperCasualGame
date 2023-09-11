@@ -77,6 +77,7 @@ public class LineDrawCon : MonoBehaviour
     //スクリプト読み取り用
     private PasueDisplayC pasueDisplayC;
     private PenDisplay penDisplayC;
+    private TimeGM timeGM;
 
     //ペンのスプリクト
     private PenM penM;
@@ -106,11 +107,11 @@ public class LineDrawCon : MonoBehaviour
         penM = FindObjectOfType<PenM>();
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         penDisplayC = FindObjectOfType<PenDisplay>();
+        timeGM = FindObjectOfType<TimeGM>();
 
         //iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
         //fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
         audioSource = GetComponent<AudioSource>();
-
 
         //iceAnimationState = iceSkelton.AnimationState
         //fireAnimationState = fireSkelton.AnimationState;
@@ -137,6 +138,8 @@ public class LineDrawCon : MonoBehaviour
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
         //線引ける線の上限
         Vector3 u = range.transform.position;
+
+        Debug.Log(lineFlag);
 
         //ペンの種類によって切り替えるプラグラム
         switch (penM.NowPen)
@@ -167,9 +170,9 @@ public class LineDrawCon : MonoBehaviour
         }
 
         //線が引ける時
-        if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false )
+        if(pasueDisplayC.MenuFlag == false && penDisplayC.PenMenuFlag == false && timeGM.TimeFlag == true)
         {
-
+            //特定の座標以下なら線を引けるようにする
             if (u.y > worldPos.y)
             {
                 //左クリックされたら
@@ -212,6 +215,10 @@ public class LineDrawCon : MonoBehaviour
                     }
                     _addPositionDataToLineRenderer();
                 }
+            }
+            else
+            {
+                lineFlag = false;
             }
                 //クリック解除になったら
            if (Input.GetMouseButtonUp(0))
