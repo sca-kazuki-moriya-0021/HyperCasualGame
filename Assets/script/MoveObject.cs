@@ -444,7 +444,7 @@ public class MoveObject : MonoBehaviour
         //二次元ベジェ曲線パターン
         //自分の位置
         var myP = transform.position;
-        var x = Mathf.Abs(hitCollider.bounds.min.x - Mathf.Abs(myP.x));
+        var x = Mathf.Abs(hitCollider.bounds.min.x + Mathf.Abs(myP.x));
         //特定の位置
         Vector3 toP =new Vector3(x,myP.y);
         Debug.Log(toP.x);
