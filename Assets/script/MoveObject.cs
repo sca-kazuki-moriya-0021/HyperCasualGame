@@ -31,6 +31,8 @@ public class MoveObject : MonoBehaviour
     private string lindingAnimation;
     [SerializeField,Header("ジャンプモーション")]
     private string jumpAnimation;
+    [SerializeField,Header("ジャンプ中モーション")]
+    private string jumpDuringA;
 
     //オブジェクトに設定されているアニメーション
     private SkeletonAnimation skeletonAnimation = default;
@@ -302,14 +304,6 @@ public class MoveObject : MonoBehaviour
         return false;
     }
 
-    //歩行アニメーション制御用
-    private void MoveSpineComplete(TrackEntry trackEntry)
-    {
-        skeletonAnimation.timeScale = 1;
-        TrackEntry trackEntryA  = animationState.SetAnimation(0, moveAnimation, true);
-        moveAnimaFlag = false;
-    }
-
     //レイを飛ばすコルーチン
     private IEnumerator StartLineCast()
     {
@@ -374,6 +368,16 @@ public class MoveObject : MonoBehaviour
 
     }
 
+    //歩行アニメーション制御用
+    private void MoveSpineComplete(TrackEntry trackEntry)
+    {
+        skeletonAnimation.timeScale = 1;
+        skeletonAnimation.state.ClearTrack(0);
+        TrackEntry trackEntryA = animationState.SetAnimation(0, moveAnimation, true);
+        moveAnimaFlag = false;
+    }
+
+
     //坂をジャンプするときに使う関数
     private float SlopeUp()
     {
@@ -432,7 +436,7 @@ public class MoveObject : MonoBehaviour
             hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
-                jumpFlag = true;;
+                jumpFlag = true;
                 StartCoroutine(JumpStart());
             }
         }
@@ -463,10 +467,11 @@ public class MoveObject : MonoBehaviour
 
         var sumTime = 0f;
         //ジャンプ用
-        /*skeletonAnimation.timeScale = 2;
+        skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
-        animationState.SetAnimation(0, jumpAnimation, false);
-        skeletonAnimation.skeleton.SetToSetupPose();*/
+        TrackEntry jumpTrackEntry =  animationState.SetAnimation(0, jumpAnimation, false);
+        jumpTrackEntry.Complete += JumpSpineComplete;
+        skeletonAnimation.skeleton.SetToSetupPose();
 
         while (true)
         {
@@ -499,7 +504,16 @@ public class MoveObject : MonoBehaviour
         Debug.Log(hitCollider.gameObject.tag);
         StopCoroutine(JumpStart());
     }
-    
+
+    private void JumpSpineComplete(TrackEntry trackEntry)
+    {
+        skeletonAnimation.timeScale = 2;
+        skeletonAnimation.state.ClearTrack(0);
+        animationState.SetAnimation(0, jumpDuringA, true);
+        skeletonAnimation.skeleton.SetToSetupPose();
+    }
+
+
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
     {
