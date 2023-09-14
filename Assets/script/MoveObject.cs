@@ -84,15 +84,15 @@ public class MoveObject : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D col2D;
 
+    [SerializeField]
+    private Transform r;
+
     //hitしたコライダー検知用
     private Collider2D hitCollider;
     private Collider2D hitBackCollider;
 
     //スプリクト用
     private TotalGM gm;
-
-    //方向判別
-    //private bool dirSwitchFlag = false;
 
     //タンジェント
     private float tan;
@@ -448,13 +448,15 @@ public class MoveObject : MonoBehaviour
         //二次元ベジェ曲線パターン
         //自分の位置
         var myP = transform.position;
-        var x = Mathf.Abs(hitCollider.bounds.min.x + Mathf.Abs(myP.x));
         //特定の位置
+        var x = Mathf.Abs(hitCollider.bounds.min.x + Mathf.Abs(myP.x));
         Vector3 toP =new Vector3(x,myP.y);
-        Debug.Log(toP.x);
         //中間の位置
         var miS = Mathf.Abs(hitCollider.bounds.size.y);
         Vector3 miP = new Vector3(hitCollider.bounds.center.x,miS + 5f);
+
+        //角度
+        var planeNormal = Vector3.up;
 
         //sleapパターンで使うもの
         {
@@ -467,51 +469,64 @@ public class MoveObject : MonoBehaviour
 
         var sumTime = 0f;
         //ジャンプ用
-        skeletonAnimation.timeScale = 2;
+        /*skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry jumpTrackEntry =  animationState.SetAnimation(0, jumpAnimation, false);
         jumpTrackEntry.Complete += JumpSpineComplete;
-        skeletonAnimation.skeleton.SetToSetupPose();
+        skeletonAnimation.skeleton.SetToSetupPose();*/
 
         while (true)
         {
             sumTime += Time.deltaTime;
             var ratio = sumTime / 3;
 
+            Debug.Log(transform.rotation);
+
             if(jumpFlag == false)
             {
                 break;
             }
-            
+
             if (ratio < 1.0f)
             {
                 //移動するための引数
-                 var a = Vector3.Lerp(myP, miP, ratio);
-                 var b = Vector3.Lerp(miP,toP,ratio);
+                var a = Vector3.Lerp(myP, miP, ratio);
+                var b = Vector3.Lerp(miP, toP, ratio);
                 // 補間位置を反映
-                transform.position = Vector3.Lerp(a,b,ratio);
+                transform.position = Vector3.Lerp(a, b, ratio);
             }
 
             if (ratio > 1.0f)
             {
+                while (true)
+                {
+                    if(jumpFlag == true && transform.position == toP)
+                    {
+                        transform.position += new Vector3(0.1f,0.1f ,0)* sumTime/3;
+                    }
+                    if (jumpFlag == false)
+                    {
+                        break;
+                    }
+                }
                 // 目標の値に到達したらこのCoroutineを終了する
                 // ~.Lerpは割合を示す引数は0 ~ 1の間にClampされるので1より大きくても問題なし
                 break;
             }
+
             yield return null;
         }
         hitCollider = hitBackCollider;
-        Debug.Log(hitCollider.gameObject.tag);
         StopCoroutine(JumpStart());
     }
 
-    private void JumpSpineComplete(TrackEntry trackEntry)
+    /*private void JumpSpineComplete(TrackEntry trackEntry)
     {
         skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringA, true);
         skeletonAnimation.skeleton.SetToSetupPose();
-    }
+    }*/
 
 
     //頭の上から横方向にレイを飛ばす
@@ -525,6 +540,7 @@ public class MoveObject : MonoBehaviour
     //足元から横方向にレイを飛ばす
     /*private Vector2 FootGetForwardObject()
     {
+
         Debug.DrawRay((Vector2)rayPosition.position + downOffset, Vector2.right * rayRange, Color.green);
         var footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
         Vector2 a = Vector2.zero;
