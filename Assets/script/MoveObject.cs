@@ -84,9 +84,6 @@ public class MoveObject : MonoBehaviour
     private Rigidbody2D rb;
     private CapsuleCollider2D col2D;
 
-    [SerializeField]
-    private Transform r;
-
     //hitしたコライダー検知用
     private Collider2D hitCollider;
     private Collider2D hitBackCollider;
@@ -469,49 +466,33 @@ public class MoveObject : MonoBehaviour
 
         var sumTime = 0f;
         //ジャンプ用
-        /*skeletonAnimation.timeScale = 2;
+        skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry jumpTrackEntry =  animationState.SetAnimation(0, jumpAnimation, false);
         jumpTrackEntry.Complete += JumpSpineComplete;
-        skeletonAnimation.skeleton.SetToSetupPose();*/
+        skeletonAnimation.skeleton.SetToSetupPose();
 
         while (true)
         {
-            sumTime += Time.deltaTime;
-            var ratio = sumTime / 3;
-
-            Debug.Log(transform.rotation);
+            sumTime += Time.deltaTime /3;
+            //移動するための引数
+            var a = Vector3.Lerp(myP, miP, sumTime);
+            var b = Vector3.Lerp(miP, toP, sumTime);
 
             if(jumpFlag == false)
             {
                 break;
             }
 
-            if (ratio < 1.0f)
+            if (jumpFlag == true && transform.position != toP)
             {
-                //移動するための引数
-                var a = Vector3.Lerp(myP, miP, ratio);
-                var b = Vector3.Lerp(miP, toP, ratio);
                 // 補間位置を反映
-                transform.position = Vector3.Lerp(a, b, ratio);
+                transform.position = Vector3.Lerp(a, b, sumTime);
             }
 
-            if (ratio > 1.0f)
+            if (jumpFlag == true && transform.position == toP)
             {
-                while (true)
-                {
-                    if(jumpFlag == true && transform.position == toP)
-                    {
-                        transform.position += new Vector3(0.1f,0.1f ,0)* sumTime/3;
-                    }
-                    if (jumpFlag == false)
-                    {
-                        break;
-                    }
-                }
-                // 目標の値に到達したらこのCoroutineを終了する
-                // ~.Lerpは割合を示す引数は0 ~ 1の間にClampされるので1より大きくても問題なし
-                break;
+                jumpFlag = false;
             }
 
             yield return null;
@@ -520,13 +501,13 @@ public class MoveObject : MonoBehaviour
         StopCoroutine(JumpStart());
     }
 
-    /*private void JumpSpineComplete(TrackEntry trackEntry)
+    private void JumpSpineComplete(TrackEntry trackEntry)
     {
         skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringA, true);
         skeletonAnimation.skeleton.SetToSetupPose();
-    }*/
+    }
 
 
     //頭の上から横方向にレイを飛ばす
@@ -559,7 +540,7 @@ public class MoveObject : MonoBehaviour
         return a + (Vector2)transform.position;
 
     }*/
-
+    
 
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)

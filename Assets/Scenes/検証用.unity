@@ -282,7 +282,7 @@ MonoBehaviour:
   offJumpAnimation: tobiori
   lindingAnimation: tyakuti
   jumpAnimation: jump
-  jumpDuringA: jump_tyu
+  jumpDuringA: jump_yoko
   rayPosition: {fileID: 1242667468}
   wRayRange: 1
   hRayRange: 1
@@ -337,7 +337,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 94732f0fe39c0da46b86a53d2fa09ee4, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: ccf9187097f181d4b93f604390448202, type: 2}
   initialSkinName: 
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0
@@ -362,7 +362,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: 
+  _animationName: hokou
   loop: 1
   timeScale: 1
 --- !u!23 &1095181963
@@ -384,7 +384,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 209027a2545e4b24cbd240eca1b826d2, type: 2}
+  - {fileID: 2100000, guid: 5308b2039ddfe154b95991b84a409d36, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -485,15 +485,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304809, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.44889852
+      value: 0.7725992
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304809, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -4.39
+      value: -1.2825
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304809, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.87
+      value: 0.8499
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304809, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_LocalPosition.z
