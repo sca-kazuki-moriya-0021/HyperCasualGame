@@ -77,6 +77,16 @@ public class OperationCon : MonoBehaviour
                 }
                 if(time > 15f)
                 {
+                    panelCon.SetText(texts[6]);
+
+                }
+                if(time > 20f)
+                {
+                    panelCon.SetText(texts[6]);
+                }
+
+                if(time > 25f)
+                {
                     SceneManager.LoadScene("StageSelect");
                 }
             }

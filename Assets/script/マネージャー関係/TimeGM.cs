@@ -20,6 +20,9 @@ public class TimeGM : MonoBehaviour
 
     [SerializeField,Header("テキスト")]
     private Text countText = null;
+
+    [SerializeField,Header("文字後ろの背景")]
+    private Image image;
     
     public bool TimeFlag
     {
@@ -59,6 +62,7 @@ public class TimeGM : MonoBehaviour
                 eriaIcon.SetActive(true);
                 timeIcon.enabled = false;
                 countText.enabled = false;
+                image.enabled = false;
                 Time.timeScale = 1f;
                 timeFlag = false;
                 countTime = 0;

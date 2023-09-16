@@ -255,7 +255,7 @@ public class PenM : MonoBehaviour
                         break;
 
                     case PenCom.Fire:
-                        fireDrawTime += Time.unscaledDeltaTime;
+                        fireDrawTime += Time.unscaledDeltaTime ;
                         //InkDown(getInkSprite,fireDrawTime,5);
 
                         break;

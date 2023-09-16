@@ -13,10 +13,10 @@ public class MoveObject : MonoBehaviour
     #region//プレイヤー関係とアニメーション
     //x方向に進むスピード(一般的)
     [SerializeField,Header("普通の床で進むスピード")]
-    private float xMoveFloorSpeed = 6.0f;
+    private float xMoveFloorSpeed = 10.0f;
     //x方向に進むスピード(氷)
     [SerializeField,Header("氷の床で進むスピード")]
-    private float xMoveIceSpeed = 7.0f;
+    private float xMoveIceSpeed = 15.0f;
     //ジャンプ中に使う速度
     private float moveSpeed = 2f;
 
@@ -294,6 +294,12 @@ public class MoveObject : MonoBehaviour
         {
             return true;
         }
+
+        if (h.transform.gameObject.CompareTag("Wall"))
+        {
+            return true;
+        }
+
         if (h.transform.gameObject.CompareTag("IceGround"))
         {
             return true;
@@ -386,16 +392,11 @@ public class MoveObject : MonoBehaviour
 
         hitCollider = GetObject.collider;
            
-        if (GetObject && GetObject.transform.gameObject.CompareTag("Ground"))
+        if (GetObject && GetObject.transform.gameObject.CompareTag("Wall"))
         {
            return_tan();
 
         }
-        else if (GetObject && GetObject.transform.gameObject.CompareTag("IceGround"))
-        {
-           return_tan();
-        }
-
         if (GetObject.normal.x == 1f)
         {
           tan = 0f;
@@ -428,9 +429,6 @@ public class MoveObject : MonoBehaviour
         //タンジェントがn度以上ならジャンプ移行する
         if(tan <= Mathf.PI / 3 )
         {
-            hitBackCollider = hitCollider;
-            Debug.Log(hitBackCollider.tag);
-            hitCollider.gameObject.tag = "Wall";
             if(hitCollider.tag == "Wall")
             {
                 jumpFlag = true;
@@ -566,6 +564,7 @@ public class MoveObject : MonoBehaviour
         if(other.gameObject == hitCollider.gameObject.CompareTag("Wall"))
         {
             jumpFlag = false;
+            iceWalkFlag = false;
         }
 
         //障害物に当たったら
