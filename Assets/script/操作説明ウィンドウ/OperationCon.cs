@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OperationCon : MonoBehaviour
 {
@@ -74,9 +75,12 @@ public class OperationCon : MonoBehaviour
                 {
                     panelCon.SetText(texts[5]);
                 }
+                if(time > 15f)
+                {
+                    SceneManager.LoadScene("StageSelect");
+                }
             }
         }
-       
     }
 
    /* public void DisplayTap()

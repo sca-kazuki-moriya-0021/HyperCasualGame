@@ -21,15 +21,15 @@ public class TitleNexrStage : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            StageSelect();
+            TutorialStage();
         }
     }
 
-    public void StageSelect()
+    /*public void StageSelect()
     {
         audioSource.PlayOneShot(sound1);
         SceneManager.LoadScene("StageSelect",LoadSceneMode.Single);
-    }
+    }*/
 
     public void TutorialStage()
     {

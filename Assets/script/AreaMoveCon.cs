@@ -30,8 +30,9 @@ public class AreaMoveCon : MonoBehaviour
             switch (scene)
             {
                 case TotalGM.StageCon.Fiast:
-                    Debug.Log("haitteru");
+
                     gm.BackScene = scene;
+
                 SceneManager.LoadScene("Stage1-2");
 
                 break;
