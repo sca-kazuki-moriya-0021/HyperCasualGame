@@ -11,8 +11,6 @@ public class TotalGM : MonoBehaviour
     private int stageLeafCount = 0;
     private int maxLeafCount = 9;
 
-
-
     #region//ステージ管理
     //ステージ管理
     public enum StageCon
