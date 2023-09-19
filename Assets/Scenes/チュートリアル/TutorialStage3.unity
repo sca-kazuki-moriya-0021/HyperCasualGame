@@ -138,6 +138,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5811073571023287274, guid: e781861e1bc6b0841a842cd386ef4225, type: 3}
+      propertyPath: _animationName
+      value: taiki
+      objectReference: {fileID: 0}
     - target: {fileID: 5811073571023287276, guid: e781861e1bc6b0841a842cd386ef4225, type: 3}
       propertyPath: m_Mesh
       value: 
