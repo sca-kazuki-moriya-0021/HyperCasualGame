@@ -87,10 +87,52 @@ public class OperationCon : MonoBehaviour
 
                 if(time > 25f)
                 {
-                    SceneManager.LoadScene("StageSelect");
+                    SceneManager.LoadScene("TutorialStage2");
+                    time = 0;
                 }
             }
         }
+
+        if (scene == TotalGM.StageCon.TutorialS)
+        {
+            time += Time.unscaledDeltaTime;
+            if(time > 5f)
+            {
+                panelCon.SetText(texts[1]);
+            }
+            if (time > 10f)
+            {
+                time = 0;
+                SceneManager.LoadScene("TutorialStage3");
+            }
+        }
+
+        if(scene == TotalGM.StageCon.TutorialT)
+        {
+            time += Time.unscaledTime;
+
+            if(time > 5f)
+            {
+                panelCon.SetText(texts[1]);
+            }
+
+            if(time > 10f)
+            {
+                panelCon.SetText(texts[2]);
+            }
+
+            if(time > 15f)
+            {
+                panelCon.SetText(texts[3]);
+            }
+
+            if(time > 20f)
+            {
+                SceneManager.LoadScene("StageSelect");
+                time = 0;
+            }
+        }
+
     }
 
    /* public void DisplayTap()
