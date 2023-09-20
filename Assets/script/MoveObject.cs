@@ -202,6 +202,8 @@ public class MoveObject : MonoBehaviour
         {
             RayAngleIns();
         }
+
+        //if()
     }
 
     //移動のアニメーション処理

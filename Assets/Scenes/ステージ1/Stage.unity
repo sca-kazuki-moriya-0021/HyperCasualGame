@@ -1399,6 +1399,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1670698412}
     - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
+      propertyPath: lineWidth
+      value: 0.331
+      objectReference: {fileID: 0}
+    - target: {fileID: 2492926543487984066, guid: 0378b6f4d31249f439446f137e7e8215, type: 3}
       propertyPath: fireTexture
       value: 
       objectReference: {fileID: 2100000, guid: 8d25bcc92462476498ef10682ba25d79, type: 2}
