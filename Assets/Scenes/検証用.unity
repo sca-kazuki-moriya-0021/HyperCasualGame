@@ -209,11 +209,11 @@ GameObject:
   - component: {fileID: 1095181959}
   m_Layer: 0
   m_Name: Cat
-  m_TagString: Untagged
+  m_TagString: MoveObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &1095181959
 MonoBehaviour:
   m_ObjectHideFlags: 0

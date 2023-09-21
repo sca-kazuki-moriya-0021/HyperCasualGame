@@ -53,6 +53,7 @@ public class MoveObject : MonoBehaviour
     private bool offJumpFlag = false;
     //着地中
     private bool lindingFlag = false;
+
     #endregion
 
     #region//レイ関係
@@ -162,6 +163,11 @@ public class MoveObject : MonoBehaviour
             gameOverFlag = false;
             SceneManager.LoadScene("GameOver");
         }
+
+        if(jumpFlag == true)
+        {
+            StartCoroutine(JumpAngle());
+        }
   
     }
 
@@ -202,8 +208,6 @@ public class MoveObject : MonoBehaviour
         {
             RayAngleIns();
         }
-
-        //if()
     }
 
     //移動のアニメーション処理
@@ -479,7 +483,7 @@ public class MoveObject : MonoBehaviour
             var a = Vector3.Lerp(myP, miP, sumTime);
             var b = Vector3.Lerp(miP, toP, sumTime);
 
-            if(jumpFlag == false)
+            if (jumpFlag == false)
             {
                 break;
             }
@@ -494,11 +498,33 @@ public class MoveObject : MonoBehaviour
             {
                 jumpFlag = false;
             }
-
             yield return null;
         }
         hitCollider = hitBackCollider;
         StopCoroutine(JumpStart());
+    }
+
+    private IEnumerator JumpAngle()
+    {
+        var t = transform.position;
+        yield return null;
+        //Debug.Log("今の座標" + t);
+        var t2 = transform.position;
+        if (t != t2)
+        {
+            var dt = t2 - t;
+            float rad = Mathf.Atan2(dt.y, dt.x);
+            float degree = rad * Mathf.Rad2Deg;
+            Debug.Log(degree);
+            var rotation = Quaternion.LookRotation(dt, Vector3.up);
+            Debug.Log("入ってる");
+        }
+
+        if(jumpFlag == false)
+        {
+            StopCoroutine(JumpAngle());
+        }
+
     }
 
     private void JumpSpineComplete(TrackEntry trackEntry)
@@ -508,7 +534,6 @@ public class MoveObject : MonoBehaviour
         animationState.SetAnimation(0, jumpDuringA, true);
         skeletonAnimation.skeleton.SetToSetupPose();
     }
-
 
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
@@ -563,7 +588,7 @@ public class MoveObject : MonoBehaviour
             jumpFlag = false;
         }
 
-        if(other.gameObject == hitCollider.gameObject.CompareTag("Wall"))
+        if(other.gameObject.CompareTag("Wall"))
         {
             jumpFlag = false;
             iceWalkFlag = false;
