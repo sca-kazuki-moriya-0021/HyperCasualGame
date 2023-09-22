@@ -10,6 +10,8 @@ using Spine;
 
 public class MoveObject : MonoBehaviour
 {
+    Vector3 prevPos;
+
     #region//プレイヤー関係とアニメーション
     //x方向に進むスピード(一般的)
     [SerializeField,Header("普通の床で進むスピード")]
@@ -40,7 +42,6 @@ public class MoveObject : MonoBehaviour
     private Spine.AnimationState animationState = default;
     //歩くアニメーション制御
     private bool moveAnimaFlag = false;
-
     //氷の上に乗っているかどうか
     private bool iceWalkFlag = false;
     //落下中
@@ -53,6 +54,8 @@ public class MoveObject : MonoBehaviour
     private bool offJumpFlag = false;
     //着地中
     private bool lindingFlag = false;
+    //ジャンプ中
+    private bool jumpingFlag = false;
 
     #endregion
 
@@ -133,6 +136,7 @@ public class MoveObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        prevPos = this.transform.position;
         //呼び出し
         gm = FindObjectOfType<TotalGM>();
         col2D = GetComponent<CapsuleCollider2D>();
@@ -166,7 +170,8 @@ public class MoveObject : MonoBehaviour
 
         if(jumpFlag == true)
         {
-            StartCoroutine(JumpAngle());
+            //StartCoroutine(JumpAngle());
+            JumpAngleB();
         }
   
     }
@@ -457,7 +462,7 @@ public class MoveObject : MonoBehaviour
         Vector3 miP = new Vector3(hitCollider.bounds.center.x,miS + 5f);
 
         //角度
-        var planeNormal = Vector3.up;
+        //var planeNormal = Vector3.up;
 
         //sleapパターンで使うもの
         {
@@ -469,14 +474,14 @@ public class MoveObject : MonoBehaviour
         }
 
         var sumTime = 0f;
-        //ジャンプ用
+
         skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry jumpTrackEntry =  animationState.SetAnimation(0, jumpAnimation, false);
         jumpTrackEntry.Complete += JumpSpineComplete;
         skeletonAnimation.skeleton.SetToSetupPose();
 
-        while (true)
+        while (jumpingFlag == true)
         {
             sumTime += Time.deltaTime /3;
             //移動するための引数
@@ -485,6 +490,9 @@ public class MoveObject : MonoBehaviour
 
             if (jumpFlag == false)
             {
+                hitCollider = hitBackCollider;
+                jumpingFlag = false;
+                StopCoroutine(JumpStart());
                 break;
             }
 
@@ -492,6 +500,25 @@ public class MoveObject : MonoBehaviour
             {
                 // 補間位置を反映
                 transform.position = Vector3.Lerp(a, b, sumTime);
+
+                if( miP.x > transform.position.x &&  miP.y> transform.position.y)
+                {
+                    Quaternion quaternion =Quaternion.LookRotation(miP);
+                    quaternion.y = 180f;
+                    this.transform.rotation = quaternion;
+                    Debug.Log("as");
+                    /*Vector3 diff = miP - transform.position;
+                    float d = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
+                    //diff = diff.normalized;
+                    Debug.Log(diff);
+                    if (diff != Vector3.zero)
+                    {
+                        Debug.Log("aski");
+                        var rotation = Quaternion.FromToRotation(Vector3.up, diff);
+                        rotation.y = 180f;
+                        transform.rotation = rotation;
+                    }*/
+                }
             }
 
             if (jumpFlag == true && transform.position == toP)
@@ -500,24 +527,43 @@ public class MoveObject : MonoBehaviour
             }
             yield return null;
         }
-        hitCollider = hitBackCollider;
-        StopCoroutine(JumpStart());
+    }
+
+    private void JumpAngleB()
+    {
+        Vector3 diff = this.transform.position - prevPos;
+        float d = Mathf.Atan2(diff.y,diff.x) * Mathf.Rad2Deg;
+        //diff = diff.normalized;
+        Debug.Log(diff);
+        if (diff != Vector3.zero)
+        {   
+            var rotation = Quaternion.FromToRotation(Vector3.up, diff);
+            transform.rotation = rotation;
+        }
+        prevPos = this.transform.position;
     }
 
     private IEnumerator JumpAngle()
     {
-        var t = transform.position;
+        Vector2 t = transform.position * 100f;
+        var r = transform.rotation;
         yield return null;
-        //Debug.Log("今の座標" + t);
-        var t2 = transform.position;
+        
+        Vector2 t2 = transform.position * 100f;
+        var r2 = transform.rotation;
+        Debug.Log("b" + t + "\na" + t2 + "\ns" + (t2-t));
         if (t != t2)
         {
             var dt = t2 - t;
-            float rad = Mathf.Atan2(dt.y, dt.x);
-            float degree = rad * Mathf.Rad2Deg;
-            Debug.Log(degree);
-            var rotation = Quaternion.LookRotation(dt, Vector3.up);
+            t2 = t2 + dt;
+            //Debug.Log(dt);
+            var rotation = Quaternion.LookRotation(dt);
+            //rotation.y = 180;
+            transform.rotation = rotation;
+            ///float angle = Vector3.SignedAngle(dt,transform.forward,Vector3.forward);
+
             Debug.Log("入ってる");
+           
         }
 
         if(jumpFlag == false)
@@ -533,6 +579,7 @@ public class MoveObject : MonoBehaviour
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringA, true);
         skeletonAnimation.skeleton.SetToSetupPose();
+        jumpingFlag = true;
     }
 
     //頭の上から横方向にレイを飛ばす
