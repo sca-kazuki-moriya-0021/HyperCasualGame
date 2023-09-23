@@ -21,20 +21,28 @@ public class TitleNexrStage : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            TutorialStage();
+            //TutorialStage();
+            //StageSelect();
+            Stage();
         }
     }
 
-    /*public void StageSelect()
+    public void StageSelect()
     {
         audioSource.PlayOneShot(sound1);
         SceneManager.LoadScene("StageSelect",LoadSceneMode.Single);
-    }*/
+    }
 
     public void TutorialStage()
     {
         audioSource.PlayOneShot(sound1);
         SceneManager.LoadScene("TutorialStage", LoadSceneMode.Single);
+    }
+
+    public void Stage()
+    {
+        audioSource.PlayOneShot(sound1);
+        SceneManager.LoadScene("Stage", LoadSceneMode.Single);
     }
     
 }

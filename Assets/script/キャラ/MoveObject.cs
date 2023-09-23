@@ -19,8 +19,13 @@ public class MoveObject : MonoBehaviour
     //x方向に進むスピード(氷)
     [SerializeField,Header("氷の床で進むスピード")]
     private float xMoveIceSpeed = 15.0f;
-    //ジャンプ中に使う速度
-    private float moveSpeed = 2f;
+
+    private GameObject child;
+
+    //オブジェクトに設定されているアニメーション
+    private SkeletonAnimation skeletonAnimation = default;
+    //Spineアニメーションを艇起用するために必要なState
+    private Spine.AnimationState animationState = default;
 
     //再生するアニメーション名
     [SerializeField,Header("歩行アニメーション")]
@@ -36,10 +41,6 @@ public class MoveObject : MonoBehaviour
     [SerializeField,Header("ジャンプ中モーション")]
     private string jumpDuringA;
 
-    //オブジェクトに設定されているアニメーション
-    private SkeletonAnimation skeletonAnimation = default;
-    //Spineアニメーションを艇起用するために必要なState
-    private Spine.AnimationState animationState = default;
     //歩くアニメーション制御
     private bool moveAnimaFlag = false;
     //氷の上に乗っているかどうか
@@ -86,7 +87,7 @@ public class MoveObject : MonoBehaviour
 
     //RigidBodyとカプセルコライダーの定義
     private Rigidbody2D rb;
-    private CapsuleCollider2D col2D;
+    private EdgeCollider2D col2D;
 
     //hitしたコライダー検知用
     private Collider2D hitCollider;
@@ -136,16 +137,18 @@ public class MoveObject : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        child = transform.GetChild(0).gameObject;
+
         prevPos = this.transform.position;
         //呼び出し
         gm = FindObjectOfType<TotalGM>();
-        col2D = GetComponent<CapsuleCollider2D>();
+        col2D = GetComponent<EdgeCollider2D>();
         rb = GetComponent<Rigidbody2D>();
 
         // ゲームオブジェクトのSkeletonAnimationを取得
-        skeletonAnimation = GetComponent<SkeletonAnimation>();
+        skeletonAnimation =child.GetComponent<SkeletonAnimation>();
         // SkeletonAnimationからAnimationStateを取得
-        animationState = skeletonAnimation.AnimationState;
+        animationState =skeletonAnimation.AnimationState;
 
         //レイを飛ばす処理
         lineCastF = StartCoroutine(StartLineCast());
@@ -168,12 +171,12 @@ public class MoveObject : MonoBehaviour
             SceneManager.LoadScene("GameOver");
         }
 
-        if(jumpFlag == true)
+        //坂角度計算とジャンプ処理
+        if (jumpFlag == false && fallFlag == false)
         {
-            //StartCoroutine(JumpAngle());
-            JumpAngleB();
+            SlopeUp();
         }
-  
+
     }
 
     private void FixedUpdate()
@@ -185,7 +188,7 @@ public class MoveObject : MonoBehaviour
             //移動のアニメーション流しと移動
             if (iceWalkFlag == false)
             {
-                transform.Translate(-xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
                 if(moveAnimaFlag == false)
                 {
                     OnCompleteAnimation();
@@ -194,18 +197,12 @@ public class MoveObject : MonoBehaviour
             }
             if (iceWalkFlag == true)
             {
-                transform.Translate(-xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
                 if (moveAnimaFlag == false)
                 {
                     OnCompleteAnimation();
                 }
             }
-        }
-
-        //坂角度計算とジャンプ処理
-        if (jumpFlag == false && fallFlag == false)
-        {
-            SlopeUp();
         }
 
         //レイの角度計算
@@ -273,7 +270,7 @@ public class MoveObject : MonoBehaviour
              {
                offJumpFlag = true;
                //アニメーション
-               StartCoroutine(StartoffJump());
+              StartCoroutine(StartoffJump());
              }
            }
         }
@@ -447,20 +444,20 @@ public class MoveObject : MonoBehaviour
                 skeletonAnimation.timeScale = 5;
                 skeletonAnimation.state.ClearTrack(0);
                 TrackEntry jumpTrackEntry = animationState.SetAnimation(0, jumpAnimation, false);
-                jumpTrackEntry.Complete += JumpSpineComplete;
                 skeletonAnimation.skeleton.SetToSetupPose();
-                StartCoroutine(JumpStart());
+                jumpTrackEntry.Complete += JumpSpineComplete;
+
             }
         }
     }
 
-    //ジャンプ中
     private void JumpSpineComplete(TrackEntry trackEntry)
     {
-        skeletonAnimation.timeScale = 2;
+        skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringA, true);
         skeletonAnimation.skeleton.SetToSetupPose();
+        StartCoroutine(JumpStart());
     }
 
     //ジャンプ
@@ -468,13 +465,15 @@ public class MoveObject : MonoBehaviour
     {
         //二次元ベジェ曲線パターン
         //自分の位置
-        var myP = transform.position;
+        var myP =transform.position;
         //特定の位置
         var x = Mathf.Abs(hitCollider.bounds.min.x + Mathf.Abs(myP.x));
         Vector3 toP =new Vector3(x,myP.y);
         //中間の位置
-        var miS = Mathf.Abs(hitCollider.bounds.size.y);
-        Vector3 miP = new Vector3(hitCollider.bounds.center.x,miS + 5f);
+        var miS = Mathf.Abs(hitCollider.bounds.max.y);
+        Vector3 miP = new Vector3(hitCollider.bounds.max.x,miS + 8f);
+        Debug.Log(miP);
+       
 
         //角度
         //var planeNormal = Vector3.up;
@@ -489,6 +488,10 @@ public class MoveObject : MonoBehaviour
         }
 
         var sumTime = 0f;
+        var miFlag = false;
+
+        var y =transform.position;
+        Debug.Log(y);
 
         while (true)
         {
@@ -504,82 +507,54 @@ public class MoveObject : MonoBehaviour
                 break;
             }
 
+
             if (jumpFlag == true && transform.position != toP)
             {
                 // 補間位置を反映
                 transform.position = Vector3.Lerp(a, b, sumTime);
-
-                if( miP.x > transform.position.x &&  miP.y> transform.position.y)
+                if(miP .x >transform.position.x && miP.y>transform.position.y)
                 {
-                    Quaternion quaternion =Quaternion.LookRotation(miP);
-                    quaternion.y = 180f;
+                    var r = y - miP;
+                    float d =  - (Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
+                    d = 180-d;
+                    Quaternion quaternion =Quaternion.Euler(0,0,d);
                     this.transform.rotation = quaternion;
                     Debug.Log("as");
-                    /*Vector3 diff = miP - transform.position;
-                    float d = Mathf.Atan2(diff.y, diff.x) * Mathf.Rad2Deg;
-                    //diff = diff.normalized;
-                    Debug.Log(diff);
-                    if (diff != Vector3.zero)
-                    {
-                        Debug.Log("aski");
-                        var rotation = Quaternion.FromToRotation(Vector3.up, diff);
-                        rotation.y = 180f;
-                        transform.rotation = rotation;
-                    }*/
+                   
+                }
+
+                if (transform.position == miP)
+                {
+                    miFlag = true;
+                    Debug.Log("mikasa");
+                }
+
+                if (miFlag == true)
+                {
+
+                        if (toP.x > transform.position.x && toP.y > transform.position.y)
+                        {
+                            var r = y - toP;
+                            var d = -(Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
+                            d = 180 - d;
+                            var quaternion = Quaternion.Euler(0, 0, d);
+                            this.transform.rotation = quaternion;
+                            Debug.Log("aski");
+                        }
+                    
                 }
             }
 
             if (jumpFlag == true && transform.position == toP)
             {
+                miFlag = false;
                 jumpFlag = false;
             }
             yield return null;
         }
     }
 
-    private void JumpAngleB()
-    {
-        Vector3 diff = this.transform.position - prevPos;
-        float d = Mathf.Atan2(diff.y,diff.x) * Mathf.Rad2Deg;
-        //diff = diff.normalized;
-        Debug.Log(diff);
-        if (diff != Vector3.zero)
-        {   
-            var rotation = Quaternion.FromToRotation(Vector3.up, diff);
-            transform.rotation = rotation;
-        }
-        prevPos = this.transform.position;
-    }
 
-    private IEnumerator JumpAngle()
-    {
-        Vector2 t = transform.position * 100f;
-        var r = transform.rotation;
-        yield return null;
-        
-        Vector2 t2 = transform.position * 100f;
-        var r2 = transform.rotation;
-        Debug.Log("b" + t + "\na" + t2 + "\ns" + (t2-t));
-        if (t != t2)
-        {
-            var dt = t2 - t;
-            t2 = t2 + dt;
-            //Debug.Log(dt);
-            var rotation = Quaternion.LookRotation(dt);
-            //rotation.y = 180;
-            transform.rotation = rotation;
-            ///float angle = Vector3.SignedAngle(dt,transform.forward,Vector3.forward);
-
-            Debug.Log("入ってる");
-           
-        }
-
-        if(jumpFlag == false)
-        {
-            StopCoroutine(JumpAngle());
-        }
-
-    }
 
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()

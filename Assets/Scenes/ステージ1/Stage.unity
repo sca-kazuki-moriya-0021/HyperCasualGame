@@ -1218,6 +1218,14 @@ PrefabInstance:
       propertyPath: wRayRange
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 3442408582515930010, guid: 73bfb520141612540903707fe3a766a2, type: 3}
+      propertyPath: xMoveIceSpeed
+      value: 18
+      objectReference: {fileID: 0}
+    - target: {fileID: 3442408582515930010, guid: 73bfb520141612540903707fe3a766a2, type: 3}
+      propertyPath: xMoveFloorSpeed
+      value: 15
+      objectReference: {fileID: 0}
     - target: {fileID: 3442408582515930011, guid: 73bfb520141612540903707fe3a766a2, type: 3}
       propertyPath: m_GravityScale
       value: 1
