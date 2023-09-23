@@ -547,7 +547,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 1
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: "\u30B9\u30C6\u30FC\u30B8\u9078\u629E\u753B\u9762\u3078"
+  m_Text: "\u30B2\u30FC\u30E0\u7D42\u4E86"
 --- !u!222 &298501827
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -945,7 +945,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 177676959}
         m_TargetAssemblyTypeName: GoalNextStage, Assembly-CSharp
-        m_MethodName: StageSlect
+        m_MethodName: GameEnd
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

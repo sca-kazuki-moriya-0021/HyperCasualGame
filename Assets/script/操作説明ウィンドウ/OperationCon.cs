@@ -128,7 +128,7 @@ public class OperationCon : MonoBehaviour
 
             if(time > 20f)
             {
-                SceneManager.LoadScene("StageSelect");
+                SceneManager.LoadScene("Stage");
                 time = 0;
             }
         }

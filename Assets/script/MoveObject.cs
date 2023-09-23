@@ -443,9 +443,24 @@ public class MoveObject : MonoBehaviour
             if(hitCollider.tag == "Wall")
             {
                 jumpFlag = true;
+                //ジャンプモーション
+                skeletonAnimation.timeScale = 5;
+                skeletonAnimation.state.ClearTrack(0);
+                TrackEntry jumpTrackEntry = animationState.SetAnimation(0, jumpAnimation, false);
+                jumpTrackEntry.Complete += JumpSpineComplete;
+                skeletonAnimation.skeleton.SetToSetupPose();
                 StartCoroutine(JumpStart());
             }
         }
+    }
+
+    //ジャンプ中
+    private void JumpSpineComplete(TrackEntry trackEntry)
+    {
+        skeletonAnimation.timeScale = 2;
+        skeletonAnimation.state.ClearTrack(0);
+        animationState.SetAnimation(0, jumpDuringA, true);
+        skeletonAnimation.skeleton.SetToSetupPose();
     }
 
     //ジャンプ
@@ -475,13 +490,7 @@ public class MoveObject : MonoBehaviour
 
         var sumTime = 0f;
 
-        skeletonAnimation.timeScale = 5;
-        skeletonAnimation.state.ClearTrack(0);
-        TrackEntry jumpTrackEntry =  animationState.SetAnimation(0, jumpAnimation, false);
-        jumpTrackEntry.Complete += JumpSpineComplete;
-        skeletonAnimation.skeleton.SetToSetupPose();
-
-        while (jumpingFlag == true)
+        while (true)
         {
             sumTime += Time.deltaTime /3;
             //移動するための引数
@@ -491,7 +500,6 @@ public class MoveObject : MonoBehaviour
             if (jumpFlag == false)
             {
                 hitCollider = hitBackCollider;
-                jumpingFlag = false;
                 StopCoroutine(JumpStart());
                 break;
             }
@@ -571,15 +579,6 @@ public class MoveObject : MonoBehaviour
             StopCoroutine(JumpAngle());
         }
 
-    }
-
-    private void JumpSpineComplete(TrackEntry trackEntry)
-    {
-        skeletonAnimation.timeScale = 2;
-        skeletonAnimation.state.ClearTrack(0);
-        animationState.SetAnimation(0, jumpDuringA, true);
-        skeletonAnimation.skeleton.SetToSetupPose();
-        jumpingFlag = true;
     }
 
     //頭の上から横方向にレイを飛ばす

@@ -38,11 +38,9 @@ public class PasueC : MonoBehaviour
 
     }
 
-    private void PauseMenu()
+    public void GameEnd()
     {
-        //escキーおしたとき
-        if (Input.GetKey(KeyCode.Escape))
-        {
+      
         #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
             //エディタ上の動作
@@ -50,10 +48,9 @@ public class PasueC : MonoBehaviour
             Application.Quit();
             //エディタ以外の操作
         #endif
-
             myCanvas.enabled = false;
             pDisplayC.MenuFlag = false;
-        }
+        
     }
 
     public void StageSelectButton()
