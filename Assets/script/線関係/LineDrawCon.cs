@@ -30,6 +30,9 @@ public class LineDrawCon : MonoBehaviour
     private Material fireTexture;
     [SerializeField]
     private Material generalTexture;
+    
+    [SerializeField,Header("火")]
+    private GameObject fireObject;
 
     //色を保存しておく用変数
     private Material lineMaterial;
@@ -192,7 +195,7 @@ public class LineDrawCon : MonoBehaviour
                             if (penM.FireDrawFlag == true)
                             {
                                 lineFlag = true;
-                                _addLineObject();
+                                _addFireData();
                             }
                             break;
 
@@ -206,7 +209,7 @@ public class LineDrawCon : MonoBehaviour
                         }
                 }
                 //クリック中（ストローク中）
-                if (Input.GetMouseButton(0) && lineFlag == true)
+                if (Input.GetMouseButton(0) && lineFlag == true && penM.NowPen != PenM.PenCom.Fire)
                 {
                     if (sEffectFlag == false)
                     {
@@ -253,10 +256,6 @@ public class LineDrawCon : MonoBehaviour
         {
             case PenM.PenCom.Ice:
                 lineObj.tag = "IceGround";
-            break;
-
-            case PenM.PenCom.Fire:
-                lineObj.tag = "FlameGround";
             break;
 
             case PenM.PenCom.General:
@@ -313,8 +312,16 @@ public class LineDrawCon : MonoBehaviour
         linePoints.Add(worldPos);
         //EdgeCollider2Dのポイントを設定
         lineObj.GetComponent<EdgeCollider2D>().SetPoints(linePoints);
-
-
     }
 
+    private void _addFireData()
+    {
+        Vector3 mousePos = new Vector3(Input.mousePosition.x, Input.mousePosition.y, 1.0f);
+        //ワールド座標へ変換
+        Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+        GameObject obj = Instantiate(fireObject,worldPos,Quaternion.identity);
+        penM.FireDorwCount++;
+        Debug.Log("a");
+    }
 }

@@ -177,6 +177,7 @@ public class MoveObject : MonoBehaviour
             SlopeUp();
         }
 
+       
     }
 
     private void FixedUpdate()
@@ -206,10 +207,12 @@ public class MoveObject : MonoBehaviour
         }
 
         //レイの角度計算
-        if(lineCastF != null || jumpFlag == true || fallFlag == true)
+        if (lineCastF != null || jumpFlag == true || fallFlag == true)
         {
             RayAngleIns();
         }
+
+ 
     }
 
     //移動のアニメーション処理
@@ -237,13 +240,14 @@ public class MoveObject : MonoBehaviour
             {
                 fallFlag = false;
                 lindingFlag = true;
-                StartCoroutine(LindingCoroutine());
+                Debug.Log("コルーチン前" + transform.position );
+                LindingCoroutine();
             }
             else if(downObject && downObject.transform.gameObject.CompareTag("Wall"))
             {
                 fallFlag = false;
                 lindingFlag = true;
-                StartCoroutine(LindingCoroutine());
+                LindingCoroutine();
             }
             //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
@@ -251,7 +255,7 @@ public class MoveObject : MonoBehaviour
                 fallFlag = false;
                 iceWalkFlag = true;
                 lindingFlag = true;
-                StartCoroutine(LindingCoroutine());
+                LindingCoroutine();
             }
         }
         //地面から離れた時の処理
@@ -360,22 +364,16 @@ public class MoveObject : MonoBehaviour
 
 
     //着地のアニメーション
-    private IEnumerator LindingCoroutine()
+    private void LindingCoroutine()
     {
-
         //着地用フラグ変更
         lindingFlag = false;
-
         skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
         moveTrackEntry.Complete += MoveSpineComplete;
+        Debug.Log(transform.position);
         skeletonAnimation.skeleton.SetToSetupPose();
-
-        yield return new WaitForSeconds(0.5f);
-
-        //コルーチンストップ
-        StopCoroutine(LindingCoroutine());
 
     }
 
@@ -439,13 +437,14 @@ public class MoveObject : MonoBehaviour
         {
             if(hitCollider.tag == "Wall")
             {
-                jumpFlag = true;
                 //ジャンプモーション
+                jumpFlag = true;
                 skeletonAnimation.timeScale = 5;
                 skeletonAnimation.state.ClearTrack(0);
                 TrackEntry jumpTrackEntry = animationState.SetAnimation(0, jumpAnimation, false);
-                skeletonAnimation.skeleton.SetToSetupPose();
                 jumpTrackEntry.Complete += JumpSpineComplete;
+                skeletonAnimation.skeleton.SetToSetupPose();
+                Debug.Log("ジャンプにはいったよ");
 
             }
         }
@@ -453,16 +452,20 @@ public class MoveObject : MonoBehaviour
 
     private void JumpSpineComplete(TrackEntry trackEntry)
     {
+
         skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringA, true);
         skeletonAnimation.skeleton.SetToSetupPose();
+        Debug.Log("ジャンプ中だよ");
+        
         StartCoroutine(JumpStart());
     }
 
     //ジャンプ
     private IEnumerator JumpStart()
     {
+
         //二次元ベジェ曲線パターン
         //自分の位置
         var myP =transform.position;
@@ -503,8 +506,6 @@ public class MoveObject : MonoBehaviour
             if (jumpFlag == false)
             {
                 hitCollider = hitBackCollider;
-                StopCoroutine(JumpStart());
-                break;
             }
 
 
@@ -550,6 +551,7 @@ public class MoveObject : MonoBehaviour
                 miFlag = false;
                 jumpFlag = false;
             }
+
             yield return null;
         }
     }

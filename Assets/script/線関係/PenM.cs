@@ -41,7 +41,7 @@ public class PenM : MonoBehaviour
 
     //ÉyÉìÇ≈ï`Ç¢ÇƒÇ¢ÇÈí∑Ç≥
     private float iceDrawTime;
-    private float fireDrawTime;
+    private int fireDrawCount;
     private float generalDrawTime;
 
     //ÉyÉìÇÃéÌóﬁîªíË
@@ -76,6 +76,12 @@ public class PenM : MonoBehaviour
     {
         get { return this.generalDrawFlag; }
         set { this.generalDrawFlag = value; }
+    }
+
+    public int FireDorwCount
+    {
+        get { return this.FireDorwCount; }
+        set { this.FireDorwCount = value; }
     }
 
 
@@ -118,7 +124,7 @@ public class PenM : MonoBehaviour
             case PenCom.Fire:
                 getPenSprite.sprite = penSprites[1];
                 getInkSprite.sprite = inkSprites[1];
-                InkDown(getInkSprite, fireDrawTime, 5);
+                InkDown(getInkSprite, fireDrawCount, 5);
                 break;
             case PenCom.General:
                 getPenSprite.sprite = penSprites[2];
@@ -145,9 +151,9 @@ public class PenM : MonoBehaviour
           
           if(recovery.Item.name == "RecoveryFire")
           {
-                if (fireDrawTime > 0)
+                if (fireDrawCount > 0)
                 {
-                    fireDrawTime = 0;
+                    fireDrawCount = 0;
                 }
           }
 
@@ -243,7 +249,7 @@ public class PenM : MonoBehaviour
     //ê¸à¯Ç≠óp
     private void LineTime()
     {
-        if (generalDrawTime <= 5f || iceDrawTime <= 5f || fireDrawTime <= 5f)
+        if (generalDrawTime <= 5f || iceDrawTime <= 5f || fireDrawCount < 5)
         {
             if (lineDrawCon.LineFlag == true)
             {
@@ -255,9 +261,9 @@ public class PenM : MonoBehaviour
                         break;
 
                     case PenCom.Fire:
-                        fireDrawTime += Time.unscaledDeltaTime ;
+                        fireDrawCount++;
                         //InkDown(getInkSprite,fireDrawTime,5);
-
+                        Debug.Log(fireDrawCount);
                         break;
 
                     case PenCom.General:
@@ -280,7 +286,7 @@ public class PenM : MonoBehaviour
             lineDrawCon.LineFlag = false;
             iceDrawFlag = false;
         }
-        if (nowPen == PenCom.Fire && fireDrawTime > 5f)
+        if (nowPen == PenCom.Fire && fireDrawCount > 5)
         {
             lineDrawCon.LineFlag = false;
             fireDrawFlag = false;
@@ -292,6 +298,11 @@ public class PenM : MonoBehaviour
     {
         image.fillAmount = 1 - time / maxTime;
 
+    }
+
+    public void InkDown(Image image,int count ,int maxCount)
+    {
+        image.fillAmount = 1 - count/maxCount;
     }
 
 
