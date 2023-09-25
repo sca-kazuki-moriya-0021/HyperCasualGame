@@ -99,7 +99,7 @@ public class LineDrawCon : MonoBehaviour
 
     private void Awake()
     {
-
+        penM = FindObjectOfType<PenM>();
     }
 
 
@@ -107,7 +107,7 @@ public class LineDrawCon : MonoBehaviour
     void Start()
     {
         //初期化
-        penM = FindObjectOfType<PenM>();
+
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         penDisplayC = FindObjectOfType<PenDisplay>();
         timeGM = FindObjectOfType<TimeGM>();
@@ -143,6 +143,8 @@ public class LineDrawCon : MonoBehaviour
         Vector3 u = range.transform.position;
 
         Debug.Log(lineFlag);
+
+
 
         //ペンの種類によって切り替えるプラグラム
         switch (penM.NowPen)
@@ -194,7 +196,6 @@ public class LineDrawCon : MonoBehaviour
                             case PenM.PenCom.Fire:
                             if (penM.FireDrawFlag == true)
                             {
-                                lineFlag = true;
                                 _addFireData();
                             }
                             break;
@@ -209,7 +210,7 @@ public class LineDrawCon : MonoBehaviour
                         }
                 }
                 //クリック中（ストローク中）
-                if (Input.GetMouseButton(0) && lineFlag == true && penM.NowPen != PenM.PenCom.Fire)
+                if (Input.GetMouseButton(0) && lineFlag == true)
                 {
                     if (sEffectFlag == false)
                     {
@@ -321,7 +322,8 @@ public class LineDrawCon : MonoBehaviour
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
         GameObject obj = Instantiate(fireObject,worldPos,Quaternion.identity);
-        penM.FireDorwCount++;
         Debug.Log("a");
+        penM.FireDrawCount++;
+ 
     }
 }

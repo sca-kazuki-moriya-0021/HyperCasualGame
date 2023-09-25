@@ -78,10 +78,10 @@ public class PenM : MonoBehaviour
         set { this.generalDrawFlag = value; }
     }
 
-    public int FireDorwCount
+    public int FireDrawCount
     {
-        get { return this.FireDorwCount; }
-        set { this.FireDorwCount = value; }
+        get { return this.fireDrawCount; }
+        set { this.fireDrawCount = value; }
     }
 
 
@@ -139,6 +139,14 @@ public class PenM : MonoBehaviour
             LineTime();
         }
 
+        //炎のペンを選択した時
+        if (nowPen == PenCom.Fire && fireDrawCount > 5)
+        {
+            lineDrawCon.LineFlag = false;
+            fireDrawFlag = false;
+        }
+
+        //ペンの回復アイテムを入手したとき
         if (recovery.RecoveryFlag == true)
         {
           if (recovery.Item.name == "RecoveryIce")
@@ -166,7 +174,6 @@ public class PenM : MonoBehaviour
           }
           recovery.RecoveryFlag = false;
         }
-
     }
 
     //炎のペンボタンが押された時の処理
@@ -249,7 +256,7 @@ public class PenM : MonoBehaviour
     //線引く用
     private void LineTime()
     {
-        if (generalDrawTime <= 5f || iceDrawTime <= 5f || fireDrawCount < 5)
+        if (generalDrawTime <= 5f || iceDrawTime <= 5f)
         {
             if (lineDrawCon.LineFlag == true)
             {
@@ -259,13 +266,6 @@ public class PenM : MonoBehaviour
                         iceDrawTime += Time.unscaledDeltaTime;
                         //InkDown(getInkSprite,iceDrawTime,5);
                         break;
-
-                    case PenCom.Fire:
-                        fireDrawCount++;
-                        //InkDown(getInkSprite,fireDrawTime,5);
-                        Debug.Log(fireDrawCount);
-                        break;
-
                     case PenCom.General:
                         generalDrawTime += Time.unscaledDeltaTime;
                         //getInkSprite.fillAmount = 1 - generalDrawTime / 5;
@@ -286,11 +286,6 @@ public class PenM : MonoBehaviour
             lineDrawCon.LineFlag = false;
             iceDrawFlag = false;
         }
-        if (nowPen == PenCom.Fire && fireDrawCount > 5)
-        {
-            lineDrawCon.LineFlag = false;
-            fireDrawFlag = false;
-        }
     }
 
     //引いた時間にあわせてインク減少
@@ -302,7 +297,9 @@ public class PenM : MonoBehaviour
 
     public void InkDown(Image image,int count ,int maxCount)
     {
-        image.fillAmount = 1 - count/maxCount;
+
+        Debug.Log(image.fillAmount);
+        image.fillAmount = 1 - (float)count/ (float)maxCount;
     }
 
 

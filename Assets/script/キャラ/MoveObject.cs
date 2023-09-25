@@ -95,6 +95,7 @@ public class MoveObject : MonoBehaviour
 
     //スプリクト用
     private TotalGM gm;
+    private TimeGM timeGm;
 
     //タンジェント
     private float tan;
@@ -142,6 +143,7 @@ public class MoveObject : MonoBehaviour
         prevPos = this.transform.position;
         //呼び出し
         gm = FindObjectOfType<TotalGM>();
+        timeGm = FindObjectOfType<TimeGM>();
         col2D = GetComponent<EdgeCollider2D>();
         rb = GetComponent<Rigidbody2D>();
 
@@ -182,37 +184,38 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //移動
-        if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
+        //if(timeGm.TimeFlag == false)
         {
-            //Debug.Log("動いている");
-            //移動のアニメーション流しと移動
-            if (iceWalkFlag == false)
+            //移動
+            if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
             {
-                transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
-                if(moveAnimaFlag == false)
+                //Debug.Log("動いている");
+                //移動のアニメーション流しと移動
+                if (iceWalkFlag == false)
                 {
-                    OnCompleteAnimation();
-                }
+                    transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                    if (moveAnimaFlag == false)
+                    {
+                        OnCompleteAnimation();
+                    }
 
-            }
-            if (iceWalkFlag == true)
-            {
-                transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
-                if (moveAnimaFlag == false)
-                {
-                    OnCompleteAnimation();
                 }
+                if (iceWalkFlag == true)
+                {
+                    transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                    if (moveAnimaFlag == false)
+                    {
+                        OnCompleteAnimation();
+                    }
+                }
+            }
+
+            //レイの角度計算
+            if (lineCastF != null || jumpFlag == true || fallFlag == true)
+            {
+                RayAngleIns();
             }
         }
-
-        //レイの角度計算
-        if (lineCastF != null || jumpFlag == true || fallFlag == true)
-        {
-            RayAngleIns();
-        }
-
- 
     }
 
     //移動のアニメーション処理

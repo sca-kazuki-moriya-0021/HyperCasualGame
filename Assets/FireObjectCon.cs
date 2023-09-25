@@ -1,0 +1,20 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using Spine.Unity;
+
+public class FireObjectCon : MonoBehaviour
+{
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        var animation = GetComponent<SkeletonAnimation>();
+        animation.timeScale = 1 / Time.timeScale;
+    }
+}
