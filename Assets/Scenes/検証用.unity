@@ -357,7 +357,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: jump_tyu
+  _animationName: jump_yoko
   loop: 0
   timeScale: 1
 --- !u!23 &1095181963
