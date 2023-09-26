@@ -933,6 +933,7 @@ MonoBehaviour:
   iceTexture: {fileID: 2100000, guid: 582eb76d41dd0724b971bf05fb4447c3, type: 2}
   fireTexture: {fileID: 2100000, guid: 8d25bcc92462476498ef10682ba25d79, type: 2}
   generalTexture: {fileID: 2100000, guid: c405669a336e54f47a57bed55de0f10b, type: 2}
+  fireObject: {fileID: 8889629819785719149, guid: 8076b45146a64e74d8c2d850e1318914, type: 3}
   iceMaterial: {fileID: 6200000, guid: 782a55e8d05d2e949857baf795a0fb8e, type: 2}
   generalMaterial: {fileID: 6200000, guid: 516de371c9bcec842adf16dbb11517f4, type: 2}
   iceColor: {r: 0, g: 0, b: 0, a: 0}

@@ -122,7 +122,7 @@ MonoBehaviour:
   updateTiming: 1
   unscaledTime: 0
   _animationName: animation
-  loop: 0
+  loop: 1
   timeScale: 1
 --- !u!58 &4750968700200267685
 CircleCollider2D:

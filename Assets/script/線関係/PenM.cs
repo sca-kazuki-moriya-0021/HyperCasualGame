@@ -10,6 +10,7 @@ public class PenM : MonoBehaviour
     private PenDisplay penDis;
     private LineDrawCon lineDrawCon;
     private RecoveryItemCon recovery;
+    private PenInkM penInkM;
 
     [SerializeField,Header("ペンボタンを表示するキャンパス")]
     private Canvas penCanvas;
@@ -38,11 +39,6 @@ public class PenM : MonoBehaviour
     [SerializeField,Header("取得したいペンのイラスト")]
     private Image getInkSprite;
 
-
-    //ペンで描いている長さ
-    private float iceDrawTime;
-    private int fireDrawCount;
-    private float generalDrawTime;
 
     //ペンの種類判定
     public enum PenCom
@@ -78,13 +74,6 @@ public class PenM : MonoBehaviour
         set { this.generalDrawFlag = value; }
     }
 
-    public int FireDrawCount
-    {
-        get { return this.fireDrawCount; }
-        set { this.fireDrawCount = value; }
-    }
-
-
 
     // Start is called before the first frame update
     void Start()
@@ -94,6 +83,7 @@ public class PenM : MonoBehaviour
         gm = FindObjectOfType<TotalGM>();
         penDis = FindObjectOfType<PenDisplay>();
         lineDrawCon = FindObjectOfType<LineDrawCon>();
+        penInkM = FindObjectOfType<PenInkM>();
         recovery = FindObjectOfType<RecoveryItemCon>();
 
         audioSource = GetComponent<AudioSource>();
@@ -119,17 +109,17 @@ public class PenM : MonoBehaviour
             case PenCom.Ice:
                 getPenSprite.sprite = penSprites[0];
                 getInkSprite.sprite = inkSprites[0];
-                InkDown(getInkSprite,iceDrawTime,5);
+                InkDown(getInkSprite,penInkM.IceDrawTime,5);
                 break;
             case PenCom.Fire:
                 getPenSprite.sprite = penSprites[1];
                 getInkSprite.sprite = inkSprites[1];
-                InkDown(getInkSprite, fireDrawCount, 5);
+                InkDown(getInkSprite, penInkM.FireDrawCount, 5);
                 break;
             case PenCom.General:
                 getPenSprite.sprite = penSprites[2];
                 getInkSprite.sprite = inkSprites[2];
-                InkDown(getInkSprite,generalDrawTime,5);
+                InkDown(getInkSprite,penInkM.GeneralDrawTime,5);
                 break;
         }
 
@@ -140,7 +130,7 @@ public class PenM : MonoBehaviour
         }
 
         //炎のペンを選択した時
-        if (nowPen == PenCom.Fire && fireDrawCount > 5)
+        if (nowPen == PenCom.Fire && penInkM.FireDrawCount >= 5)
         {
             lineDrawCon.LineFlag = false;
             fireDrawFlag = false;
@@ -151,25 +141,25 @@ public class PenM : MonoBehaviour
         {
           if (recovery.Item.name == "RecoveryIce")
           {
-                if (iceDrawTime > 0)
+                if (penInkM.IceDrawTime > 0)
                 {
-                    iceDrawTime = 0;
+                    penInkM.IceDrawTime = 0;
                 }
           }
           
           if(recovery.Item.name == "RecoveryFire")
           {
-                if (fireDrawCount > 0)
+                if (penInkM.FireDrawCount > 0)
                 {
-                    fireDrawCount = 0;
+                    penInkM.FireDrawCount = 0;
                 }
           }
 
           if(recovery.Item.name == "RecoveryGeneral")
           {
-                if (generalDrawTime > 0)
+                if (penInkM.GeneralDrawTime > 0)
                 {
-                    generalDrawTime = 0;
+                    penInkM.GeneralDrawTime = 0;
                 }
           }
           recovery.RecoveryFlag = false;
@@ -256,18 +246,18 @@ public class PenM : MonoBehaviour
     //線引く用
     private void LineTime()
     {
-        if (generalDrawTime <= 5f || iceDrawTime <= 5f)
+        if (penInkM.GeneralDrawTime <= 5f ||penInkM.IceDrawTime <= 5f)
         {
             if (lineDrawCon.LineFlag == true)
             {
                 switch (nowPen)
                 {
                     case PenCom.Ice:
-                        iceDrawTime += Time.unscaledDeltaTime;
+                        penInkM.IceDrawTime += Time.unscaledDeltaTime;
                         //InkDown(getInkSprite,iceDrawTime,5);
                         break;
                     case PenCom.General:
-                        generalDrawTime += Time.unscaledDeltaTime;
+                        penInkM.GeneralDrawTime += Time.unscaledDeltaTime;
                         //getInkSprite.fillAmount = 1 - generalDrawTime / 5;
                         //InkDown(getInkSprite,generalDrawTime,5);
                         break;
@@ -276,12 +266,12 @@ public class PenM : MonoBehaviour
         }
 
         //線を引ける時間が過ぎたら選べなくする
-        if (nowPen == PenCom.General && generalDrawTime > 5f)
+        if (nowPen == PenCom.General &&penInkM.GeneralDrawTime > 5f)
         {
             lineDrawCon.LineFlag = false;
             generalDrawFlag = false;
         }
-        if (nowPen == PenCom.Ice && iceDrawTime > 5f)
+        if (nowPen == PenCom.Ice && penInkM.IceDrawTime > 5f)
         {
             lineDrawCon.LineFlag = false;
             iceDrawFlag = false;
@@ -298,7 +288,7 @@ public class PenM : MonoBehaviour
     public void InkDown(Image image,int count ,int maxCount)
     {
 
-        Debug.Log(image.fillAmount);
+        //Debug.Log(image.fillAmount);
         image.fillAmount = 1 - (float)count/ (float)maxCount;
     }
 

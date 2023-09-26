@@ -139,7 +139,7 @@ public class TotalGM : MonoBehaviour
     //前のシーンに戻る時に使う
     public void ReloadClearSchene()
     {
-        MyLoadScene(backScene);
+        MyLoadScene(backScene); 
     }
 
 }

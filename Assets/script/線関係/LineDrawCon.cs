@@ -81,6 +81,7 @@ public class LineDrawCon : MonoBehaviour
     private PasueDisplayC pasueDisplayC;
     private PenDisplay penDisplayC;
     private TimeGM timeGM;
+    private PenInkM penInkM;
 
     //ペンのスプリクト
     private PenM penM;
@@ -111,6 +112,7 @@ public class LineDrawCon : MonoBehaviour
         pasueDisplayC = FindObjectOfType<PasueDisplayC>();
         penDisplayC = FindObjectOfType<PenDisplay>();
         timeGM = FindObjectOfType<TimeGM>();
+        penInkM = FindObjectOfType<PenInkM>();
 
         //iceSkelton = instansIcePrefab.GetComponent<SkeletonAnimation>();
         //fireSkelton = instansfirePrefab.GetComponent<SkeletonAnimation>();
@@ -323,7 +325,7 @@ public class LineDrawCon : MonoBehaviour
 
         GameObject obj = Instantiate(fireObject,worldPos,Quaternion.identity);
         Debug.Log("a");
-        penM.FireDrawCount++;
+        penInkM.FireDrawCount++;
  
     }
 }

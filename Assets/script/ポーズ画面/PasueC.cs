@@ -77,6 +77,7 @@ public class PasueC : MonoBehaviour
             Time.timeScale = 1f;
         }
 
+        gm.BackScene = gm.MyGetScene();
         gm.ReloadCurrentSchene();
 
         pDisplayCanvas.enabled = true;
