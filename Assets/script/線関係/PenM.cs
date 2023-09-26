@@ -23,6 +23,7 @@ public class PenM : MonoBehaviour
     [SerializeField]
     private AudioClip sound1;
 
+
     private bool iceDrawFlag = true;
     private bool fireDrawFlag = true;
     private bool generalDrawFlag = true;
@@ -75,6 +76,7 @@ public class PenM : MonoBehaviour
     }
 
 
+
     // Start is called before the first frame update
     void Start()
     {
@@ -90,7 +92,21 @@ public class PenM : MonoBehaviour
         myCanvas = this.GetComponent<Canvas>();
         penCanvas = penCanvas.GetComponent<Canvas>();
 
-        //panelCon = FindObjectOfType<PanelCon>();
+        var scene = gm.MyGetScene();
+
+        if (scene == gm.BackScene)
+        {
+            penInkM.IceDrawTime = penInkM.BackIDrawTime;
+            penInkM.FireDrawCount = penInkM.BackFDrawCount;
+            penInkM.GeneralDrawTime = penInkM.BackGDrawTime;
+        }
+        if(scene != gm.BackScene)
+        {
+            Debug.Log("入った");
+            penInkM.BackGDrawTime = penInkM.GeneralDrawTime;
+            penInkM.BackFDrawCount =  penInkM.FireDrawCount ;
+            penInkM.BackIDrawTime = penInkM.IceDrawTime;
+        }
 
         nowPen = PenM.PenCom.General;
 
@@ -100,9 +116,7 @@ public class PenM : MonoBehaviour
 
     // Update is called once per frame
     void Update()
-    { 
-       
-
+    {
         //押されたペンボタンと同じイラストにする
         switch (nowPen)
         {
@@ -253,13 +267,18 @@ public class PenM : MonoBehaviour
                 switch (nowPen)
                 {
                     case PenCom.Ice:
+
                         penInkM.IceDrawTime += Time.unscaledDeltaTime;
-                        //InkDown(getInkSprite,iceDrawTime,5);
+
+
                         break;
+
                     case PenCom.General:
+
                         penInkM.GeneralDrawTime += Time.unscaledDeltaTime;
-                        //getInkSprite.fillAmount = 1 - generalDrawTime / 5;
-                        //InkDown(getInkSprite,generalDrawTime,5);
+
+
+                    
                         break;
                 }
             }

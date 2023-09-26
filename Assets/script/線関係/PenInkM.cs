@@ -13,9 +13,12 @@ public class PenInkM : MonoBehaviour
     private int fireDrawCount = 0;
     private float generalDrawTime = 0;
 
+
     private float backIceDrawTime = 0;
     private int backFireDrawCount = 0;
     private float backGeneralDrawTime = 0;
+
+
 
     public float IceDrawTime
     {
@@ -33,11 +36,25 @@ public class PenInkM : MonoBehaviour
         set { this.generalDrawTime = value; }
     }
 
+    public float BackIDrawTime {
+        get { return this.backIceDrawTime; }
+        set { this.backIceDrawTime = value; }
+    }
+
+    public int BackFDrawCount {
+        get { return this.backFireDrawCount; }
+        set { this.backFireDrawCount = value; }
+    }
+
+    public float BackGDrawTime {
+        get { return this.backGeneralDrawTime; }
+        set { this.backGeneralDrawTime = value; }
+    }
+
+
     private void Awake()
     {
         gm = FindObjectOfType<TotalGM>();
-
-        Debug.Log(fireDrawCount);
 
         if (instance == null)
         {
@@ -49,43 +66,40 @@ public class PenInkM : MonoBehaviour
             Destroy(gameObject);
         }
 
-        var scene = gm.MyGetScene();
+      
+    }
 
-        if(scene == gm.BackScene)
-        {
-            iceDrawTime = backIceDrawTime;
-            fireDrawCount = backFireDrawCount;
-            generalDrawTime = backGeneralDrawTime;
+    private void OnValidate()
+    {
 
-            if (scene == TotalGM.StageCon.Clear)
-            {
-                Destroy(gameObject);
-            }
-
-            if (scene == TotalGM.StageCon.GameOver)
-            {
-                iceDrawTime = 0;
-                fireDrawCount = 0;
-                generalDrawTime = 0;
-                backIceDrawTime = iceDrawTime;
-                backFireDrawCount = fireDrawCount;
-                backGeneralDrawTime = generalDrawTime;
-            }
-        }
     }
 
 
     // Start is called before the first frame update
     void Start()
     {
-        backIceDrawTime = iceDrawTime;
-        backFireDrawCount = fireDrawCount;
-        backGeneralDrawTime = generalDrawTime;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
+        var scene = gm.MyGetScene();
+
+        if (scene == TotalGM.StageCon.Clear)
+        {
+            Destroy(gameObject);
+        }
+
+        if (scene == TotalGM.StageCon.GameOver)
+        {
+            iceDrawTime = 0;
+            fireDrawCount = 0;
+            generalDrawTime = 0;
+            backIceDrawTime = iceDrawTime;
+            backFireDrawCount = fireDrawCount;
+            backGeneralDrawTime = generalDrawTime;
+        }
     }
 }
