@@ -184,7 +184,7 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(timeGm.TimeFlag == false)
+        //if(timeGm.TimeFlag == false)
         {
             //ˆÚ“®
             if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
@@ -477,8 +477,8 @@ public class MoveObject : MonoBehaviour
         Vector3 toP =new Vector3(x,myP.y);
         //’†ŠÔ‚ÌˆÊ’u
         var miS = Mathf.Abs(hitCollider.bounds.max.y);
-        Vector3 miP = new Vector3(hitCollider.bounds.max.x,miS + 8f);
-        Debug.Log(miP);
+        Vector3 miP = new Vector3(hitCollider.bounds.min.x,miS + 8f);
+        Debug.Log(miP.x);
        
 
         //Šp“x
@@ -516,7 +516,7 @@ public class MoveObject : MonoBehaviour
             {
                 // •âŠÔˆÊ’u‚ð”½‰f
                 transform.position = Vector3.Lerp(a, b, sumTime);
-                if(miP .x >transform.position.x && miP.y>transform.position.y)
+                if(miP .x >transform.position.x && miP.y>transform.position.y && miFlag == false)
                 {
                     var r = y - miP;
                     float d =  - (Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
@@ -527,7 +527,7 @@ public class MoveObject : MonoBehaviour
                    
                 }
 
-                if (transform.position == miP)
+                if (transform.position.x >= miP.x)
                 {
                     miFlag = true;
                     Debug.Log("mikasa");
@@ -536,11 +536,12 @@ public class MoveObject : MonoBehaviour
                 if (miFlag == true)
                 {
 
-                        if (toP.x > transform.position.x && toP.y > transform.position.y)
+                        if (toP.x > transform.position.x && toP.y <transform.position.y)
                         {
-                            var r = y - toP;
-                            var d = -(Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
-                            d = 180 - d;
+                            var r = toP -y;
+                            var d = (Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
+                           
+                            Debug.Log(d);
                             var quaternion = Quaternion.Euler(0, 0, d);
                             this.transform.rotation = quaternion;
                             Debug.Log("aski");
