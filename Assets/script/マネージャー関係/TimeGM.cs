@@ -45,7 +45,7 @@ public class TimeGM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Debug.Log("ŠÔŒo‰ß—p" + timeFlag);
+      
         //Å‰‚Ì\•b‚®‚ç‚¢
         if (timeFlag == true)
         {

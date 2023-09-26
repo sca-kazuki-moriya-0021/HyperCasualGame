@@ -102,7 +102,7 @@ public class PenM : MonoBehaviour
         }
         if(scene != gm.BackScene)
         {
-            Debug.Log("“ü‚Á‚½");
+            //Debug.Log("“ü‚Á‚½");
             penInkM.BackGDrawTime = penInkM.GeneralDrawTime;
             penInkM.BackFDrawCount =  penInkM.FireDrawCount ;
             penInkM.BackIDrawTime = penInkM.IceDrawTime;

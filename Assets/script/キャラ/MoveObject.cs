@@ -184,7 +184,7 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if(timeGm.TimeFlag == false)
+        if(timeGm.TimeFlag == false)
         {
             //ˆÚ“®
             if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)

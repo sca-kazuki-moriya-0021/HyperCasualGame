@@ -17,4 +17,5 @@ public class FireObject : MonoBehaviour
     {
 
     }
+
 }

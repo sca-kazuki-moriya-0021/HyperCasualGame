@@ -144,10 +144,6 @@ public class LineDrawCon : MonoBehaviour
         //üˆø‚¯‚éü‚ÌãŒÀ
         Vector3 u = range.transform.position;
 
-        Debug.Log(lineFlag);
-
-
-
         //ƒyƒ“‚Ìí—Ş‚É‚æ‚Á‚ÄØ‚è‘Ö‚¦‚éƒvƒ‰ƒOƒ‰ƒ€
         switch (penM.NowPen)
         {
