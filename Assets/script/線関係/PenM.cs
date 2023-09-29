@@ -33,12 +33,16 @@ public class PenM : MonoBehaviour
     private Sprite[] penSprites;
     [SerializeField,Header("インクのイラスト")]
     private Sprite[] inkSprites;
+    [SerializeField,Header("ペンのイラスト")]
+    private Sprite[] iconSprites;
 
     //取得するスプライト
     [SerializeField,Header("取得したいペンのイラスト")]
     private Image getPenSprite;
-    [SerializeField,Header("取得したいペンのイラスト")]
+    [SerializeField,Header("取得したいインクのイラスト")]
     private Image getInkSprite;
+    [SerializeField,Header("取得したいアイコンのイラスト")]
+    private Image getIconSprite;
 
 
     //ペンの種類判定
@@ -123,16 +127,19 @@ public class PenM : MonoBehaviour
             case PenCom.Ice:
                 getPenSprite.sprite = penSprites[0];
                 getInkSprite.sprite = inkSprites[0];
+                getIconSprite.sprite = iconSprites[0];
                 InkDown(getInkSprite,penInkM.IceDrawTime,5);
                 break;
             case PenCom.Fire:
                 getPenSprite.sprite = penSprites[1];
                 getInkSprite.sprite = inkSprites[1];
+                getIconSprite.sprite = iconSprites[1];
                 InkDown(getInkSprite, penInkM.FireDrawCount, 5);
                 break;
             case PenCom.General:
                 getPenSprite.sprite = penSprites[2];
                 getInkSprite.sprite = inkSprites[2];
+                getIconSprite.sprite = iconSprites[2];
                 InkDown(getInkSprite,penInkM.GeneralDrawTime,5);
                 break;
         }
