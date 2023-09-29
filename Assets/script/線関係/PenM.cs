@@ -108,7 +108,7 @@ public class PenM : MonoBehaviour
         {
             //Debug.Log("“ü‚Á‚½");
             penInkM.BackGDrawTime = penInkM.GeneralDrawTime;
-            penInkM.BackFDrawCount =  penInkM.FireDrawCount ;
+            penInkM.BackFDrawCount =  penInkM.FireDrawCount;
             penInkM.BackIDrawTime = penInkM.IceDrawTime;
         }
 
