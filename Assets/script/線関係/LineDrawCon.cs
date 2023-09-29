@@ -9,7 +9,7 @@ using UnityEngine.EventSystems;
 
 public class LineDrawCon : MonoBehaviour
 {
-    [SerializeField,Header("UI•Û‘¶—p")]
+    [SerializeField,Header("ƒyƒ“‚ÌãŒÀƒ‰ƒCƒ“")]
     private GameObject range;
     //ü‚Ì‘¾‚³
     [Range(0.1f, 0.5f)]
