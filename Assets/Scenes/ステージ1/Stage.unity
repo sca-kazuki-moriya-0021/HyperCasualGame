@@ -210,6 +210,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1609091600897206264, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609091600897206264, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609091600897206264, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 118.39111
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609091600897206264, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 69
+      objectReference: {fileID: 0}
+    - target: {fileID: 1609091600897206264, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -96
+      objectReference: {fileID: 0}
     - target: {fileID: 4173430113890362932, guid: 26e9679aa9783704293b5b43b924a855, type: 3}
       propertyPath: m_Camera
       value: 
@@ -1680,6 +1700,22 @@ PrefabInstance:
       propertyPath: getPenSprite
       value: 
       objectReference: {fileID: 354386330}
+    - target: {fileID: 3990355701103944752, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
+      propertyPath: inkSprites.Array.data[0]
+      value: 
+      objectReference: {fileID: 21300000, guid: 73b2c6012367a354bbbe0a83f506b7ab, type: 3}
+    - target: {fileID: 3990355701103944752, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
+      propertyPath: inkSprites.Array.data[1]
+      value: 
+      objectReference: {fileID: 21300000, guid: d82ac290867de1947b30e494c45a11bc, type: 3}
+    - target: {fileID: 3990355701103944752, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
+      propertyPath: inkSprites.Array.data[2]
+      value: 
+      objectReference: {fileID: 21300000, guid: 02acfb4aff4e5304188c96a4bd181357, type: 3}
+    - target: {fileID: 4414231731288643367, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4978208606408058487, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
       propertyPath: m_RaycastTarget
       value: 1
@@ -1790,6 +1826,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8664011373692252100, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
       propertyPath: m_RaycastTarget
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8984368916567138114, guid: 860ebb4cff4810749b3a1adf06e53279, type: 3}
+      propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
