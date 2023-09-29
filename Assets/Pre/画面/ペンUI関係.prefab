@@ -66,10 +66,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 345475169a05c6249b4578dfb509d0dd, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -1074,10 +1074,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 4dce0b1619d9d1a4b89e0f9348012ca6, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
@@ -1500,9 +1500,13 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 7fc0859fa3800e844a00988a29d389be, type: 3}
   - {fileID: 21300000, guid: 0eb48ea878b56e0418d3bc3d6f6f3131, type: 3}
   - {fileID: 21300000, guid: de2850821a3450449b2ebfbba4fd1d55, type: 3}
-  getPenSprite: {fileID: 4481451662864475111}
-  getInkSprite: {fileID: 5342573829895347988}
-  getIconSprite: {fileID: 3625575354691792602}
+  myPenSprites:
+  - {fileID: 4389624852668242549}
+  - {fileID: 603971951168727273}
+  - {fileID: 4391255737968856268}
+  getPenButtonSprite: {fileID: 4481451662864475111}
+  getPenButtonInkSprite: {fileID: 5342573829895347988}
+  getPenButtonIconSprite: {fileID: 3625575354691792602}
 --- !u!225 &1322553264427963483
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -1752,10 +1756,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: d03f9c70c3671e347be7fd733bda6b91, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 1
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0

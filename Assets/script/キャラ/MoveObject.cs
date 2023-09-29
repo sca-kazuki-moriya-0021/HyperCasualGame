@@ -231,7 +231,6 @@ public class MoveObject : MonoBehaviour
     //下方向レイの角度計算用
     public void RayAngleIns()
     {
-
         var downObject = GetDownObject();
         if (fallFlag == true)
         {
