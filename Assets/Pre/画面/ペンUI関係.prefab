@@ -1386,6 +1386,7 @@ GameObject:
   - component: {fileID: 6455016833736634153}
   - component: {fileID: 1322553264427963483}
   - component: {fileID: 5271656340083921946}
+  - component: {fileID: 6140939815787754753}
   m_Layer: 5
   m_Name: "\u30DA\u30F3\u9078\u629E\u753B\u9762\u30AD\u30E3\u30F3\u30D1\u30B9"
   m_TagString: Untagged
@@ -1615,6 +1616,25 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!95 &6140939815787754753
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7629959039371791812}
+  m_Enabled: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a21162975c978454cb5bef40e5cd4e58, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &8443547128873117602
 GameObject:
   m_ObjectHideFlags: 0
