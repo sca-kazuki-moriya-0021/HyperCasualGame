@@ -288,7 +288,7 @@ public class LineDrawCon : MonoBehaviour
         //終点の太さを設定
         lineRenderer.endWidth = lineWidth;
         //レイヤー指定
-        lineRenderer.renderingLayerMask = 2;
+        lineRenderer.renderingLayerMask = 1;
     }
 
 

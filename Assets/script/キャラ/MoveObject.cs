@@ -87,7 +87,7 @@ public class MoveObject : MonoBehaviour
 
     //RigidBodyとカプセルコライダーの定義
     private Rigidbody2D rb;
-    private EdgeCollider2D col2D;
+    //private EdgeCollider2D col2D;
 
     //hitしたコライダー検知用
     private Collider2D hitCollider;
@@ -144,7 +144,7 @@ public class MoveObject : MonoBehaviour
         //呼び出し
         gm = FindObjectOfType<TotalGM>();
         timeGm = FindObjectOfType<TimeGM>();
-        col2D = GetComponent<EdgeCollider2D>();
+        //col2D = GetComponent<EdgeCollider2D>();
         rb = GetComponent<Rigidbody2D>();
 
         // ゲームオブジェクトのSkeletonAnimationを取得
@@ -184,6 +184,8 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        Debug.Log(rb.velocity.y);
         //if(timeGm.TimeFlag == false)
         {
             //移動
@@ -194,6 +196,7 @@ public class MoveObject : MonoBehaviour
                 if (iceWalkFlag == false)
                 {
                     transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                    //rb.velocity = new Vector2(xMoveFloorSpeed*Time.deltaTime*2f, rb.velocity.y * Time.deltaTime);
                     if (moveAnimaFlag == false)
                     {
                         OnCompleteAnimation();
@@ -203,6 +206,7 @@ public class MoveObject : MonoBehaviour
                 if (iceWalkFlag == true)
                 {
                     transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                    //rb.velocity = new Vector2(xMoveFloorSpeed *Time.deltaTime*2f,rb.velocity.y * Time.deltaTime);
                     if (moveAnimaFlag == false)
                     {
                         OnCompleteAnimation();
@@ -476,7 +480,7 @@ public class MoveObject : MonoBehaviour
         Vector3 toP =new Vector3(x,myP.y);
         //中間の位置
         var miS = Mathf.Abs(hitCollider.bounds.max.y);
-        Vector3 miP = new Vector3(hitCollider.bounds.min.x,miS + 8f);
+        Vector3 miP = new Vector3(hitCollider.bounds.min.x,miS + 3f);
         Debug.Log(miP.x);
        
 
@@ -598,6 +602,7 @@ public class MoveObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Ground"))
         {
+            Debug.Log("触れている");
             iceWalkFlag = false;
             jumpFlag = false;
         }

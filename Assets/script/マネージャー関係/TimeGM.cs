@@ -49,7 +49,7 @@ public class TimeGM : MonoBehaviour
         //Å‰‚Ì\•b‚®‚ç‚¢
         if (timeFlag == true)
         {
-            float s = 5f;
+            float s = 10f;
             Time.timeScale = 0f;
             if(pDisplayC.MenuFlag == false && penDis.PenMenuFlag == false)
             {
@@ -57,7 +57,7 @@ public class TimeGM : MonoBehaviour
             }
             s -= countTime;
             countText.text = s.ToString("f2");
-            if (countTime > 5.0f)
+            if (countTime > 10.0f)
             {
                 eriaIcon.SetActive(true);
                 timeIcon.enabled = false;
