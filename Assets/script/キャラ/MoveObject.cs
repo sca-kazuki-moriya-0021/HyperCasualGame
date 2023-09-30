@@ -62,8 +62,11 @@ public class MoveObject : MonoBehaviour
 
     #region//レイ関係
     //　レイを飛ばす場所
-    [SerializeField,Header("レイを飛ばす位置")]
-    private Transform rayPosition;
+    [SerializeField,Header("中央からレイを飛ばす位置")]
+    private Transform centerRayPosition;
+    [SerializeField,Header("頭からレイを飛ばす位置")]
+    private Transform herdRayPosition;
+
     /*[SerializeField]
     private Vector2 upOffset;
     [SerializeField]
@@ -239,7 +242,7 @@ public class MoveObject : MonoBehaviour
         if (fallFlag == true)
         {
             //レイを出す
-            Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * hRayRange, Color.red);
+            Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.down * hRayRange, Color.red);
             
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
@@ -267,7 +270,7 @@ public class MoveObject : MonoBehaviour
         //地面から離れた時の処理
         else
         {
-           Debug.DrawRay((Vector2)rayPosition.position, Vector2.down * hRayRange, Color.blue);
+           Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.down * hRayRange, Color.blue);
            //地面から空中にいった時(fallFlag == false　から　true　になる時)
            if (!IsOnGrounds(downObject))
            {
@@ -296,7 +299,7 @@ public class MoveObject : MonoBehaviour
     {
         RaycastHit2D hit2D;
         
-        hit2D = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.down * hRayRange, LayerMask.GetMask("Ground"));
+        hit2D = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.down * hRayRange, LayerMask.GetMask("Ground"));
         return hit2D;
        
     }
@@ -422,8 +425,8 @@ public class MoveObject : MonoBehaviour
     //横方向に飛ばす
     private RaycastHit2D ForwardObject()
     {
-        Debug.DrawRay((Vector2)rayPosition.position , Vector2.right * wRayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)rayPosition.position, (Vector2)rayPosition.position + Vector2.right * wRayRange , LayerMask.GetMask("Ground"));
+        Debug.DrawRay((Vector2)centerRayPosition.position , Vector2.right * wRayRange, Color.green);
+        forwardHitObject = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.right * wRayRange , LayerMask.GetMask("Ground"));
         //Debug.Log(forwardHitObject);
         return forwardHitObject;
     }

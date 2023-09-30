@@ -31,7 +31,7 @@ public class AreaMoveCon : MonoBehaviour
             {
                 case TotalGM.StageCon.Fiast:
 
-                    gm.BackScene = scene;
+                gm.BackScene = scene;
 
                 SceneManager.LoadScene("Stage1-2");
 
