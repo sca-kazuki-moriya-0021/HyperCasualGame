@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5818790243016775751}
   - component: {fileID: 3158450980772891398}
   - component: {fileID: 1921017888472503781}
+  - component: {fileID: 6080967672769639357}
   m_Layer: 0
   m_Name: "\u30A8\u30EA\u30A2\u79FB\u52D5\u30DD\u30A4\u30F3\u30C8"
   m_TagString: 'AreaMoveP '
@@ -136,3 +137,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!50 &6080967672769639357
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3638842094198235360}
+  m_BodyType: 0
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 0.0001
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 0
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 6

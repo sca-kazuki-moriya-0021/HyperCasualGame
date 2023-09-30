@@ -372,14 +372,16 @@ public class MoveObject : MonoBehaviour
     //着地のアニメーション
     private void LindingCoroutine()
     {
-        //着地用フラグ変更
-        lindingFlag = false;
+
         skeletonAnimation.timeScale = 2;
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
         moveTrackEntry.Complete += MoveSpineComplete;
         Debug.Log(transform.position);
         skeletonAnimation.skeleton.SetToSetupPose();
+
+        //着地用フラグ変更
+        lindingFlag = false;
 
     }
 

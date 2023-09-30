@@ -209,7 +209,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5367964078899827348, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_Constraints
-      value: 5
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 5367964078899827348, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_SleepingMode
@@ -225,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5367964078899827350, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.87
+      value: -2.72
       objectReference: {fileID: 0}
     - target: {fileID: 5367964078899827350, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_LocalPosition.z
@@ -263,9 +263,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u732B\u306E\u89AA\u30AA\u30D6\u30B8\u30A7\u30AF\u30C8"
       objectReference: {fileID: 0}
+    - target: {fileID: 5367964078899827352, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
+      propertyPath: m_TagString
+      value: MoveObject
+      objectReference: {fileID: 0}
+    - target: {fileID: 5367964078899827353, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
+      propertyPath: hRayRange
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 5367964078899827353, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: wRayRange
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5367964079895659100, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5367964079895659101, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_Mesh

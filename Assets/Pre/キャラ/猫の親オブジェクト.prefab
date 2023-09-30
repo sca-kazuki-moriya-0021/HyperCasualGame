@@ -28,7 +28,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5367964078899827352}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.829, y: -3.1, z: 0}
+  m_LocalPosition: {x: -6.829, y: -4.372, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 5367964079895659102}
@@ -57,7 +57,7 @@ MonoBehaviour:
   jumpDuringA: jump_yoko
   rayPosition: {fileID: 5367964080462506722}
   wRayRange: 2
-  hRayRange: 1
+  hRayRange: 1.3
   _graviry: 9.80655
   sound1: {fileID: 8300000, guid: 8f2fc102ce4fa8e449a3c19474008bcf, type: 3}
 --- !u!50 &5367964078899827348
