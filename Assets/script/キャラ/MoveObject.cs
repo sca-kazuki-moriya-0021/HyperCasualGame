@@ -528,7 +528,7 @@ public class MoveObject : MonoBehaviour
             {
                 // ï‚ä‘à íuÇîΩâf
                 transform.position = Vector3.Lerp(a, b, sumTime);
-                if(miP .x >transform.position.x && miP.y>transform.position.y && miFlag == false)
+               /* if(miP .x >transform.position.x && miP.y>transform.position.y && miFlag == false)
                 {
                     var r = y - miP;
                     float d =  - (Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
@@ -557,7 +557,7 @@ public class MoveObject : MonoBehaviour
                             this.transform.rotation = quaternion;
                             //Debug.Log("aski");
                         }
-                }
+                }*/
             }
 
             if (jumpFlag == true && transform.position == toP)
@@ -609,20 +609,14 @@ public class MoveObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("AreaGround"))
         {
-            Debug.Log("êGÇÍÇƒÇ¢ÇÈ");
+            //Debug.Log("êGÇÍÇƒÇ¢ÇÈ");
             iceWalkFlag = false;
             jumpFlag = false;
         }
 
         if (other.gameObject.CompareTag("Ground"))
         {
-
-            ContactPoint2D contact = other.contacts[0];
-            Vector2 hitPos = contact.point; 
-            Debug.Log(hitPos.y);
-            float boundVec =this.transform.position.y +Mathf.Abs(hitPos.y)/3;
-            transform.position = new Vector3(transform.position.x ,boundVec, transform.position.z); 
-
+            
             Debug.Log("êGÇÍÇƒÇ¢ÇÈ");
             iceWalkFlag = false;
             jumpFlag = false;
@@ -642,6 +636,7 @@ public class MoveObject : MonoBehaviour
 
         if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("Ground"))
         {
+
             iceWalkFlag = true;
             jumpFlag = false;
         }
@@ -672,6 +667,14 @@ public class MoveObject : MonoBehaviour
         {
              GameOverFlag = true;
         }
+    }
+
+    public void LineSensor(Vector3 postion)
+    {
+        Vector2 hitPos = postion;
+        Debug.Log(hitPos.y);
+        float boundVec = (Mathf.Abs(hitPos.y) - Mathf.Abs(transform.position.y)+1)*2f;
+        transform.position = new Vector3(transform.position.x, transform.position.y + boundVec, transform.position.z);
     }
 
     void OnCollisionStay2D(Collision2D collision)

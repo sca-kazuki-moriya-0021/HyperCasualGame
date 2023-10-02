@@ -1143,6 +1143,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: "\u969C\u5BB3\u7269"
       objectReference: {fileID: 0}
+    - target: {fileID: 5624702206977211602, guid: 4a3a65d20343e87408beb465378911e3, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4a3a65d20343e87408beb465378911e3, type: 3}
 --- !u!1001 &2021247658
@@ -1575,7 +1579,7 @@ Transform:
   m_Children:
   - {fileID: 3387360010027777316}
   m_Father: {fileID: 0}
-  m_RootOrder: 14
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &3387360010027777316
 RectTransform:
