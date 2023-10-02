@@ -19,6 +19,7 @@ TagManager:
   - Catnip
   - 'AreaMoveP '
   - RecoveryItem
+  - AreaGround
   layers:
   - Default
   - TransparentFX

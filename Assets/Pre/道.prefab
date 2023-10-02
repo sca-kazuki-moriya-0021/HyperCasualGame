@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4171677379366449039}
   m_Layer: 6
   m_Name: "\u9053"
-  m_TagString: Ground
+  m_TagString: AreaGround
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

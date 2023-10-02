@@ -225,7 +225,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5367964078899827350, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -2.72
+      value: -4.077
       objectReference: {fileID: 0}
     - target: {fileID: 5367964078899827350, guid: e66e6abc3417ba045b4e89271743c627, type: 3}
       propertyPath: m_LocalPosition.z
@@ -615,7 +615,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6450667346351829023, guid: 8a6303333a962264c99f8070e080e7c3, type: 3}
       propertyPath: m_TagString
-      value: Ground
+      value: Wall
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8a6303333a962264c99f8070e080e7c3, type: 3}

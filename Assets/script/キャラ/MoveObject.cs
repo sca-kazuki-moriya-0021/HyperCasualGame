@@ -64,9 +64,6 @@ public class MoveObject : MonoBehaviour
     //　レイを飛ばす場所
     [SerializeField,Header("中央からレイを飛ばす位置")]
     private Transform centerRayPosition;
-    [SerializeField,Header("頭からレイを飛ばす位置")]
-    private Transform herdRayPosition;
-
     /*[SerializeField]
     private Vector2 upOffset;
     [SerializeField]
@@ -188,7 +185,7 @@ public class MoveObject : MonoBehaviour
     private void FixedUpdate()
     {
 
-        Debug.Log(rb.velocity.y);
+        //Debug.Log(rb.velocity.y);
         //if(timeGm.TimeFlag == false)
         {
             //移動
@@ -245,11 +242,12 @@ public class MoveObject : MonoBehaviour
             Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.down * hRayRange, Color.red);
             
             //地面に触れた時に各種フラグとアニメーション制御
-            if (downObject && downObject.transform.gameObject.CompareTag("Ground"))
+            if (downObject && downObject.transform.gameObject.CompareTag("Ground") 
+                || downObject && downObject.transform.gameObject.CompareTag("AreaGround"))
             {
                 fallFlag = false;
                 lindingFlag = true;
-                Debug.Log("コルーチン前" + transform.position );
+                //Debug.Log("コルーチン前" + transform.position );
                 LindingCoroutine();
             }
             else if(downObject && downObject.transform.gameObject.CompareTag("Wall"))
@@ -311,6 +309,12 @@ public class MoveObject : MonoBehaviour
         {
             return false;
         }
+
+        if (h.transform.gameObject.CompareTag("AreaGround"))
+        {
+            return true;
+        }
+
         if (h.transform.gameObject.CompareTag("Ground"))
         {
             return true;
@@ -543,7 +547,6 @@ public class MoveObject : MonoBehaviour
 
                 if (miFlag == true)
                 {
-
                         if (toP.x > transform.position.x && toP.y <transform.position.y)
                         {
                             var r = toP -y;
@@ -552,9 +555,8 @@ public class MoveObject : MonoBehaviour
                             Debug.Log(d);
                             var quaternion = Quaternion.Euler(0, 0, d);
                             this.transform.rotation = quaternion;
-                            Debug.Log("aski");
+                            //Debug.Log("aski");
                         }
-                    
                 }
             }
 
@@ -605,14 +607,34 @@ public class MoveObject : MonoBehaviour
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("Ground"))
+        if (other.gameObject.CompareTag("AreaGround"))
         {
             Debug.Log("触れている");
             iceWalkFlag = false;
             jumpFlag = false;
         }
 
+        if (other.gameObject.CompareTag("Ground"))
+        {
+
+            ContactPoint2D contact = other.contacts[0];
+            Vector2 hitPos = contact.point; 
+            Debug.Log(hitPos.y);
+            float boundVec =this.transform.position.y +Mathf.Abs(hitPos.y)/3;
+            transform.position = new Vector3(transform.position.x ,boundVec, transform.position.z); 
+
+            Debug.Log("触れている");
+            iceWalkFlag = false;
+            jumpFlag = false;
+        }
+
         if (other.gameObject.CompareTag("IceGround"))
+        {
+            iceWalkFlag = true;
+            jumpFlag = false;
+        }
+
+        if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("AreaGround"))
         {
             iceWalkFlag = true;
             jumpFlag = false;
