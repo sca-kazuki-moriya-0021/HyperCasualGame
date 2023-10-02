@@ -31,6 +31,7 @@ public class TotalGM : MonoBehaviour
 
     private StageCon scene;
     private StageCon backScene;
+    private StageCon clearBackScene;
     
     private Dictionary<string,StageCon> sceneDic = new Dictionary<string, StageCon>()
     {
@@ -63,6 +64,14 @@ public class TotalGM : MonoBehaviour
         get {return this.backScene; }
         set {this.backScene = value; }
     }
+
+    public StageCon ClearBackScene
+    {
+        get { return this.clearBackScene; }
+        set { this.clearBackScene = value; }
+    }
+
+
 
     public  Dictionary<string,StageCon> SceneDic
     {
@@ -140,6 +149,11 @@ public class TotalGM : MonoBehaviour
     public void ReloadClearSchene()
     {
         MyLoadScene(backScene); 
+    }
+
+    public void ClearBack()
+    {
+        MyLoadScene(clearBackScene);
     }
 
 }

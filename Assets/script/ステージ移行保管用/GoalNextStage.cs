@@ -48,7 +48,7 @@ public class GoalNextStage : MonoBehaviour
     public void NextStage()
     {
         audioSource.PlayOneShot(sound1);
-        gm.ReloadClearSchene();
+        gm.ClearBack();
     }
 
     public void GameEnd()
