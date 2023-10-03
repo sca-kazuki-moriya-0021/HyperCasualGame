@@ -10,8 +10,6 @@ using Spine;
 
 public class MoveObject : MonoBehaviour
 {
-    Vector3 prevPos;
-
     #region//プレイヤー関係とアニメーション
     //x方向に進むスピード(一般的)
     [SerializeField,Header("普通の床で進むスピード")]
@@ -28,18 +26,19 @@ public class MoveObject : MonoBehaviour
     private Spine.AnimationState animationState = default;
 
     //再生するアニメーション名
-    [SerializeField,Header("歩行アニメーション")]
+    [Header("アニメーション")]
+    [SerializeField, Tooltip("歩行アニメーション")]
     private string moveAnimation;
-    [SerializeField, Header("落下アニメーション")]
+    [SerializeField, Tooltip("落下アニメーション")]
     private string fallAnimation;
-    [SerializeField, Header("飛び降りアニメーション")]
+    [SerializeField, Tooltip("飛び降りアニメーション")]
     private string offJumpAnimation;
-    [SerializeField,Header("着地モーション")]
+    [SerializeField, Tooltip("着地モーション")]
     private string lindingAnimation;
-    [SerializeField,Header("ジャンプモーション")]
+    [SerializeField, Tooltip("ジャンプモーション")]
     private string jumpAnimation;
-    [SerializeField,Header("ジャンプ中モーション")]
-    private string jumpDuringA;
+    [SerializeField, Tooltip("ジャンプ中モーション")]
+    private string jumpDuringAnimation;
 
     //歩くアニメーション制御
     private bool moveAnimaFlag = false;
@@ -140,7 +139,6 @@ public class MoveObject : MonoBehaviour
     {
         child = transform.GetChild(0).gameObject;
 
-        prevPos = this.transform.position;
         //呼び出し
         gm = FindObjectOfType<TotalGM>();
         timeGm = FindObjectOfType<TimeGM>();
@@ -470,7 +468,7 @@ public class MoveObject : MonoBehaviour
 
         skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
-        animationState.SetAnimation(0, jumpDuringA, true);
+        animationState.SetAnimation(0, jumpDuringAnimation, true);
         skeletonAnimation.skeleton.SetToSetupPose();
         Debug.Log("ジャンプ中だよ");
         
