@@ -293,7 +293,7 @@ MonoBehaviour:
   jumpAnimation: jump
   jumpDuringAnimation: jump_yoko
   centerRayPosition: {fileID: 5867532944817620577}
-  wRayRange: 2
+  wRayRange: 1.5
   hRayRange: 1.2
   _graviry: 9.80655
   sound1: {fileID: 8300000, guid: 8f2fc102ce4fa8e449a3c19474008bcf, type: 3}
