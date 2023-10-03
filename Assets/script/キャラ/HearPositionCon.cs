@@ -20,6 +20,7 @@ public class HearPositionCon : MonoBehaviour
     {
         if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("IceGround"))
         {
+            Debug.Log("mikana");
             Vector3 postion = other.ClosestPoint(transform.position);
             transform.root.gameObject.GetComponent<MoveObject>().LineSensor(postion);
         }

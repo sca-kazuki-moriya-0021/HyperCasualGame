@@ -673,8 +673,27 @@ public class MoveObject : MonoBehaviour
     {
         Vector2 hitPos = postion;
         Debug.Log(hitPos.y);
-        float boundVec = (Mathf.Abs(hitPos.y) - Mathf.Abs(transform.position.y)+1)*2f;
-        transform.position = new Vector3(transform.position.x, transform.position.y + boundVec, transform.position.z);
+
+        //二次元ベジェ曲線パターン
+        //自分の位置
+        var myP = transform.position;
+        //特定の位置
+        var x = Mathf.Abs(hitPos.x + 1);
+        Vector3 toP = new Vector3(x, hitPos.y);
+        //中間の位置
+        Vector3 miP = new Vector3(hitPos.x,hitPos.y + 1f);
+
+
+        var a = Vector3.Lerp(myP, miP, Time.deltaTime);
+        var b = Vector3.Lerp(miP, toP, Time.deltaTime);
+
+
+        while (transform.position  != toP)
+        {
+            transform.position = Vector3.Lerp(a, b, Time.deltaTime);
+        }
+     
+
     }
 
     void OnCollisionStay2D(Collision2D collision)
