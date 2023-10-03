@@ -4,8 +4,30 @@ using UnityEngine;
 
 public class BGMCon : MonoBehaviour
 {
+
+    public static BGMCon instance;
+
+    private TotalGM gm;
+
     private AudioSource audioSource;
-    
+
+
+    //シングルトン
+    private void Awake()
+    {
+        gm = FindObjectOfType<TotalGM>();
+
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -16,7 +38,17 @@ public class BGMCon : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        var scene = gm.MyGetScene();
+
+        if (scene == TotalGM.StageCon.Clear)
+        {
+            Destroy(gameObject);
+        }
+
+        if (scene == TotalGM.StageCon.GameOver)
+        {
+            Destroy(gameObject);
+        }
     }
 
     /// <summary>
@@ -26,6 +58,6 @@ public class BGMCon : MonoBehaviour
     public void SoundSliderOnValueChange(float newSliderValue)
     {
         // 音楽の音量をスライドバーの値に変更
-        audioSource.volume = newSliderValue;
+        
     }
 }
