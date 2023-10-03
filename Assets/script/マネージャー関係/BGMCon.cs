@@ -1,19 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BGMCon : MonoBehaviour
 {
 
-    public static BGMCon instance;
+    //public static BGMCon instance;
 
     private TotalGM gm;
+
+    private GameObject pasue;
+    private Slider pasueSlider;
 
     private AudioSource audioSource;
 
 
     //シングルトン
-    private void Awake()
+    /*private void Awake()
     {
         gm = FindObjectOfType<TotalGM>();
 
@@ -27,28 +31,32 @@ public class BGMCon : MonoBehaviour
             Destroy(gameObject);
         }
 
-    }
+    }*/
 
     // Start is called before the first frame update
     void Start()
     {
+        //pasue = GameObject.Find("Slider");
+        //pasueSlider = pasue.GetComponent<Slider>();
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        var scene = gm.MyGetScene();
+        //audioSource.volume = pasueSlider.value;
 
-        if (scene == TotalGM.StageCon.Clear)
+        //var scene = gm.MyGetScene();
+
+        /*if (scene == TotalGM.StageCon.Clear)
         {
             Destroy(gameObject);
         }
 
         if (scene == TotalGM.StageCon.GameOver)
         {
-            Destroy(gameObject);
-        }
+             Destroy(gameObject);
+        }*/
     }
 
     /// <summary>
@@ -58,6 +66,6 @@ public class BGMCon : MonoBehaviour
     public void SoundSliderOnValueChange(float newSliderValue)
     {
         // 音楽の音量をスライドバーの値に変更
-        
+        audioSource.volume = newSliderValue;
     }
 }

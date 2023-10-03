@@ -33,14 +33,13 @@ public class PasueC : MonoBehaviour
         pDisplayC = FindObjectOfType<PasueDisplayC>();
         //timeGM = FindObjectOfType<TimeGM>();
 
-        slider = GetComponent<Slider>();
-        bgm_Con =GameObject.Find("BGMObject");
-        bgmCon = bgm_Con.GetComponent<AudioSource>();
+        slider =slider.GetComponent<Slider>();
+        //bgm_Con =GameObject.Find("BGMObject");
+        //bgmCon = bgm_Con.GetComponent<AudioSource>();
+        
         myCanvas = this.GetComponent<Canvas>();
         pDisplayCanvas = pDisplayCanvas.GetComponent<Canvas>();
         audioSource = GetComponent<AudioSource>();
-
-        //slider.value = AudioListener.volume;
 
         myCanvas.enabled = false;
     }
@@ -48,8 +47,7 @@ public class PasueC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float v = slider.value;
-        bgmCon.volume = v;
+        //bgmCon.volume = slider.value;
     }
 
     public void GameEnd()
