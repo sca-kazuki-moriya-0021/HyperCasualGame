@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,9 +10,9 @@ public class PenM : MonoBehaviour
     private RecoveryItemCon recovery;
     private PenInkM penInkM;
 
-    [SerializeField,Header("ペンボタンを表示するキャンパス")]
+    [SerializeField, Header("ペンボタンを表示するキャンパス")]
     private Canvas penCanvas;
-    
+
     //自分のキャンパス
     private Canvas myCanvas;
 
@@ -29,11 +27,11 @@ public class PenM : MonoBehaviour
     private bool generalDrawFlag = true;
 
     //ボタン用
-    [SerializeField,Header("ペンのイラスト")]
+    [SerializeField, Header("ペンのイラスト")]
     private Sprite[] penSprites;
-    [SerializeField,Header("インクのイラスト")]
+    [SerializeField, Header("インクのイラスト")]
     private Sprite[] inkSprites;
-    [SerializeField,Header("ペンのイラスト")]
+    [SerializeField, Header("ペンのイラスト")]
     private Sprite[] iconSprites;
 
     //自分のオブジェクトボタンのイラスト
@@ -41,11 +39,11 @@ public class PenM : MonoBehaviour
     private Image[] myPenSprites;
 
     //取得するペンボタン側のイラスト
-    [SerializeField,Header("取得したいペンボタンのイラスト")]
+    [SerializeField, Header("取得したいペンボタンのイラスト")]
     private Image getPenButtonSprite;
-    [SerializeField,Header("取得したいペンボタンインクのイラスト")]
+    [SerializeField, Header("取得したいペンボタンインクのイラスト")]
     private Image getPenButtonInkSprite;
-    [SerializeField,Header("取得したいペンボタンアイコンのイラスト")]
+    [SerializeField, Header("取得したいペンボタンアイコンのイラスト")]
     private Image getPenButtonIconSprite;
 
 
@@ -108,11 +106,11 @@ public class PenM : MonoBehaviour
             penInkM.FireDrawCount = penInkM.BackFDrawCount;
             penInkM.GeneralDrawTime = penInkM.BackGDrawTime;
         }
-        if(scene != gm.BackScene)
+        if (scene != gm.BackScene)
         {
             //Debug.Log("入った");
             penInkM.BackGDrawTime = penInkM.GeneralDrawTime;
-            penInkM.BackFDrawCount =  penInkM.FireDrawCount;
+            penInkM.BackFDrawCount = penInkM.FireDrawCount;
             penInkM.BackIDrawTime = penInkM.IceDrawTime;
         }
 
@@ -133,7 +131,7 @@ public class PenM : MonoBehaviour
                 getPenButtonInkSprite.sprite = inkSprites[0];
                 getPenButtonIconSprite.sprite = iconSprites[0];
                 InkDown(myPenSprites[0], penInkM.IceDrawTime, 5);
-                InkDown(getPenButtonInkSprite,penInkM.IceDrawTime,5);
+                InkDown(getPenButtonInkSprite, penInkM.IceDrawTime, 5);
                 break;
             case PenCom.Fire:
                 getPenButtonSprite.sprite = penSprites[1];
@@ -147,7 +145,7 @@ public class PenM : MonoBehaviour
                 getPenButtonInkSprite.sprite = inkSprites[2];
                 getPenButtonIconSprite.sprite = iconSprites[2];
                 InkDown(myPenSprites[2], penInkM.GeneralDrawTime, 5);
-                InkDown(getPenButtonInkSprite,penInkM.GeneralDrawTime,5);
+                InkDown(getPenButtonInkSprite, penInkM.GeneralDrawTime, 5);
                 break;
         }
 
@@ -167,37 +165,37 @@ public class PenM : MonoBehaviour
         //ペンの回復アイテムを入手したとき
         if (recovery.RecoveryFlag == true)
         {
-          if (recovery.Item.name == "RecoveryIce")
-          {
+            if (recovery.Item.name == "RecoveryIce")
+            {
                 if (penInkM.IceDrawTime > 0)
                 {
                     penInkM.IceDrawTime = 0;
                 }
-          }
-          
-          if(recovery.Item.name == "RecoveryFire")
-          {
+            }
+
+            if (recovery.Item.name == "RecoveryFire")
+            {
                 if (penInkM.FireDrawCount > 0)
                 {
                     penInkM.FireDrawCount = 0;
                 }
-          }
+            }
 
-          if(recovery.Item.name == "RecoveryGeneral")
-          {
+            if (recovery.Item.name == "RecoveryGeneral")
+            {
                 if (penInkM.GeneralDrawTime > 0)
                 {
                     penInkM.GeneralDrawTime = 0;
                 }
-          }
-          recovery.RecoveryFlag = false;
+            }
+            recovery.RecoveryFlag = false;
         }
     }
 
     //炎のペンボタンが押された時の処理
     public void FirePen()
     {
-        if(fireDrawFlag == true)
+        if (fireDrawFlag == true)
         {
             //ペンの入れ替え
             audioSource.PlayOneShot(sound1);
@@ -217,7 +215,7 @@ public class PenM : MonoBehaviour
     //氷のペンボタンが押された時の処理
     public void IcePen()
     {
-        if (IceDrawFlag ==  true)
+        if (IceDrawFlag == true)
         {
             //ペンの入れ替え
             audioSource.PlayOneShot(sound1);
@@ -232,13 +230,13 @@ public class PenM : MonoBehaviour
             penCanvas.enabled = true;
             myCanvas.enabled = false;
         }
-     
+
     }
 
     //普通のペンボタンが押された時の処理
     public void GeneralPen()
     {
-        if(generalDrawFlag == true)
+        if (generalDrawFlag == true)
         {
             //ペンの入れ替え
             audioSource.PlayOneShot(sound1);
@@ -274,7 +272,7 @@ public class PenM : MonoBehaviour
     //線引く用
     private void LineTime()
     {
-        if (penInkM.GeneralDrawTime <= 5f ||penInkM.IceDrawTime <= 5f)
+        if (penInkM.GeneralDrawTime <= 5f || penInkM.IceDrawTime <= 5f)
         {
             if (lineDrawCon.LineFlag == true)
             {
@@ -297,7 +295,7 @@ public class PenM : MonoBehaviour
         }
 
         //線を引ける時間が過ぎたら選べなくする
-        if (nowPen == PenCom.General &&penInkM.GeneralDrawTime > 5f)
+        if (nowPen == PenCom.General && penInkM.GeneralDrawTime > 5f)
         {
             lineDrawCon.LineFlag = false;
             generalDrawFlag = false;
@@ -316,11 +314,11 @@ public class PenM : MonoBehaviour
 
     }
 
-    public void InkDown(Image image,int count ,int maxCount)
+    public void InkDown(Image image, int count, int maxCount)
     {
 
         //Debug.Log(image.fillAmount);
-        image.fillAmount = 1 - (float)count/ (float)maxCount;
+        image.fillAmount = 1 - (float)count / (float)maxCount;
     }
 
 
