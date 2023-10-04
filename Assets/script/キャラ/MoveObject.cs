@@ -61,12 +61,11 @@ public class MoveObject : MonoBehaviour
 
     #region//レイ関係
     //　レイを飛ばす場所
-    [SerializeField,Header("中央からレイを飛ばす位置")]
+    [Header("レイを飛ばす位置")]
+    [SerializeField, Tooltip("中央から出てるレイ")]
     private Transform centerRayPosition;
-    /*[SerializeField]
-    private Vector2 upOffset;
-    [SerializeField]
-    private Vector2 downOffset;*/
+    [SerializeField,Tooltip("頭の横から出てるレイ")]
+    private Transform herdRayPosition;
     //　レイを飛ばす距離
     [SerializeField,Header("横に飛ばすレイの長さ")]
     private float wRayRange;
@@ -180,7 +179,6 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-
         //if(timeGm.TimeFlag == false)
         {
             //移動
@@ -214,7 +212,22 @@ public class MoveObject : MonoBehaviour
             {
                 RayAngleIns();
             }
+
+            //段差用
+            var selfPosition = Vector2.zero;
+            var frontPosition = selfPosition + Vector2.right;
+            var yAdjustMaxDistance = 0.1f; // 補正可能な高さ 
+            var rayOrigin = frontPosition + (Vector2.up * yAdjustMaxDistance); // Rayの発射位置
+            var castResult = Physics2D.Raycast(rayOrigin, Vector2.down, distance: yAdjustMaxDistance, layerMask: /*地面colliderのmask*/0);
+            if (castResult.collider == null)
+                return;
+            var normal = Vector2.Dot(Vector2.up, castResult.normal);
+            if (normal <= 0.25f)
+                return;
+            var yAdjustDistance = castResult.distance - yAdjustMaxDistance;
+            selfPosition.y += yAdjustDistance;
         }
+     
     }
 
     //移動のアニメーション処理
@@ -262,17 +275,17 @@ public class MoveObject : MonoBehaviour
            //地面から空中にいった時(fallFlag == false　から　true　になる時)
            if (!IsOnGrounds(downObject))
            {
-             //地面から一回でもLineCastの線が離れたとき = 落下状態とする
-             //その時に落下状態を判別するためfallFlagをtrueにする
-             fallFlag = true;
-             iceWalkFlag = false;
+                //地面から一回でもLineCastの線が離れたとき = 落下状態とする
+                //その時に落下状態を判別するためfallFlagをtrueにする
+                fallFlag = true;
+                iceWalkFlag = false;
              
-             if(jumpFlag == false)
-             {
-               offJumpFlag = true;
-               //アニメーション
-              StartCoroutine(StartoffJump());
-             }
+                if(jumpFlag == false)
+                {
+                     offJumpFlag = true;
+                     //アニメーション
+                    StartCoroutine(StartoffJump());
+                }
            }
         }
         //レイが何にも当たっていないときは強制リターン
@@ -495,7 +508,6 @@ public class MoveObject : MonoBehaviour
         }
 
         var sumTime = 0f;
-        var miFlag = false;
 
         var y =transform.position;
         Debug.Log(y);
@@ -511,7 +523,6 @@ public class MoveObject : MonoBehaviour
             {
                 hitCollider = hitBackCollider;
             }
-
 
             if (jumpFlag == true && transform.position != toP)
             {
@@ -553,7 +564,6 @@ public class MoveObject : MonoBehaviour
 
             if (jumpFlag == true && transform.position == toP)
             {
-                miFlag = false;
                 jumpFlag = false;
             }
 
@@ -596,44 +606,18 @@ public class MoveObject : MonoBehaviour
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
     {
-        if (other.gameObject.CompareTag("AreaGround"))
+        if (other.gameObject.CompareTag("AreaGround") || other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Wall"))
         {
             //Debug.Log("触れている");
             iceWalkFlag = false;
             jumpFlag = false;
         }
 
-        if (other.gameObject.CompareTag("Ground"))
-        {
-            
-            Debug.Log("触れている");
-            iceWalkFlag = false;
-            jumpFlag = false;
-        }
-
-        if (other.gameObject.CompareTag("IceGround"))
+        if (other.gameObject.CompareTag("IceGround") || other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("AreaGround")
+            || other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("Ground"))
         {
             iceWalkFlag = true;
             jumpFlag = false;
-        }
-
-        if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("AreaGround"))
-        {
-            iceWalkFlag = true;
-            jumpFlag = false;
-        }
-
-        if (other.gameObject.CompareTag("IceGround") && other.gameObject.CompareTag("Ground"))
-        {
-
-            iceWalkFlag = true;
-            jumpFlag = false;
-        }
-
-        if(other.gameObject.CompareTag("Wall"))
-        {
-            jumpFlag = false;
-            iceWalkFlag = false;
         }
 
         //障害物に当たったら
@@ -656,32 +640,19 @@ public class MoveObject : MonoBehaviour
 
 
     //段差処理
-    public void LineSensor(Vector3 postion)
+    /*public void LineSensor(Vector3 postion)
     {
+        var selfPosition = Vector2.zero;
+        var yAdjustMaxDistance = 0.1f;
+
         Vector2 hitPos = postion;
         Debug.Log(hitPos.y);
 
-        //二次元ベジェ曲線パターン
-        //自分の位置
-        var myP = transform.position;
-        //特定の位置
-        var x = Mathf.Abs(hitPos.x + 1);
-        Vector3 toP = new Vector3(x, hitPos.y);
-        //中間の位置
-        Vector3 miP = new Vector3(hitPos.x,hitPos.y + 1f);
-
-
-        var a = Vector3.Lerp(myP, miP, Time.deltaTime);
-        var b = Vector3.Lerp(miP, toP, Time.deltaTime);
-
-
-        while (transform.position  != toP)
-        {
-            transform.position = Vector3.Lerp(a, b, Time.deltaTime);
-        }
+       
+        //transform.position = Vector3.Lerp(a, b, Time.deltaTime);
+        
      
-
-    }
+    }*/
 
     void OnCollisionStay2D(Collision2D collision)
     {

@@ -18,12 +18,12 @@ public class HearPositionCon : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("IceGround"))
+        /*if(other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("IceGround"))
         {
             Debug.Log("mikana");
             Vector3 postion = other.ClosestPoint(transform.position);
             transform.root.gameObject.GetComponent<MoveObject>().LineSensor(postion);
-        }
+        }*/
       
     }
 }

@@ -245,7 +245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304811, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_Name
-      value: "\u9053"
+      value: AreaGround
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
@@ -918,7 +918,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304811, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_Name
-      value: "\u9053 (1)"
+      value: AreaGround
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}

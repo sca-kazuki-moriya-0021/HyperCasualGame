@@ -907,7 +907,7 @@ GameObject:
   - component: {fileID: 2876250611334312166}
   - component: {fileID: 7257623175357177281}
   m_Layer: 6
-  m_Name: "\u9053"
+  m_Name: AreaGround
   m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
