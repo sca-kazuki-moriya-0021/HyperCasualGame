@@ -90,7 +90,7 @@ public class PasueC : MonoBehaviour
         }
 
         gm.BackScene = gm.MyGetScene();
-        gm.ReloadCurrentSchene();
+        gm.ReloadCurrentScene();
 
         pDisplayCanvas.enabled = true;
         myCanvas.enabled = false;

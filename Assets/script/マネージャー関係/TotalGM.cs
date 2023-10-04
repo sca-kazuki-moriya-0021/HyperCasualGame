@@ -139,14 +139,14 @@ public class TotalGM : MonoBehaviour
     }
 
     // 現在のシーンを再度ロードする
-    public void ReloadCurrentSchene()
+    public void ReloadCurrentScene()
     {
         StageCon scene = MyGetScene();
         MyLoadScene(scene);
     }
 
     //前のシーンに戻る時に使う
-    public void ReloadClearSchene()
+    public void ReloadClearScene()
     {
         MyLoadScene(backScene); 
     }

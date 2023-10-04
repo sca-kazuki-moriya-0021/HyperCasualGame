@@ -29,6 +29,6 @@ public class GameOver : MonoBehaviour
     public void ReloadStage()
     {
         audioSource.PlayOneShot(sound1);
-        gm.ReloadClearSchene();
+        gm.ReloadClearScene();
     }
 }
