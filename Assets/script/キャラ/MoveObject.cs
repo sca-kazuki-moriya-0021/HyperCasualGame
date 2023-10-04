@@ -176,8 +176,6 @@ public class MoveObject : MonoBehaviour
         {
             SlopeUp();
         }
-
-       
     }
 
     private void FixedUpdate()
@@ -427,15 +425,15 @@ public class MoveObject : MonoBehaviour
     }
     
     //タンジェント計算
-    private void return_tan(float tan)
+    private void return_tan(float ang)
     {
         //タンジェント計算
         if (ForwardObject().normal.x > 0f)
         {
-            tan = Mathf.PI * 0.5f + Mathf.Atan(ForwardObject().normal.y / Mathf.Abs(ForwardObject().normal.x));
+            ang = Mathf.PI * 0.5f + Mathf.Atan(ForwardObject().normal.y / Mathf.Abs(ForwardObject().normal.x));
         }
 
-        tan = Mathf.Tan(tan);
+         var tan = Mathf.Tan(ang);
         //Debug.Log(tan);
 
         //タンジェントがn度以上ならジャンプ移行する

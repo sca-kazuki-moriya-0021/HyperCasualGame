@@ -50,6 +50,7 @@ public class PasueC : MonoBehaviour
         //bgmCon.volume = slider.value;
     }
 
+    //ゲーム終了
     public void GameEnd()
     {
       
@@ -65,6 +66,7 @@ public class PasueC : MonoBehaviour
         
     }
 
+    //ステージセレクト
     public void StageSelectButton()
     {
         audioSource.PlayOneShot(sound1);
@@ -80,6 +82,7 @@ public class PasueC : MonoBehaviour
         pDisplayC.MenuFlag = false;
     }
 
+    //ステージリロード
     public void StageReload()
     {
         audioSource.PlayOneShot(sound1);
@@ -98,6 +101,7 @@ public class PasueC : MonoBehaviour
         pDisplayC.MenuFlag = false;
     }
 
+    //前のステージに戻る
     public void BackButton()
     {
         audioSource.PlayOneShot(sound1);

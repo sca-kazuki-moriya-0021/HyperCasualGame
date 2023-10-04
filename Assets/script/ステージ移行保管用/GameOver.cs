@@ -26,6 +26,7 @@ public class GameOver : MonoBehaviour
         
     }
 
+    //‘O‚ÌƒV[ƒ“‚É–ß‚é
     public void ReloadStage()
     {
         audioSource.PlayOneShot(sound1);
