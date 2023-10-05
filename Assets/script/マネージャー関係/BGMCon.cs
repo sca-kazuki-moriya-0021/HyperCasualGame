@@ -8,12 +8,12 @@ public class BGMCon : MonoBehaviour
 
     //public static BGMCon instance;
 
-    private TotalGM gm;
+    //private TotalGM gm;
 
-    private GameObject pasue;
-    private Slider pasueSlider;
+   // private GameObject pasue;
+    //private Slider pasueSlider;
 
-    private AudioSource audioSource;
+
 
 
     //シングルトン
@@ -38,7 +38,7 @@ public class BGMCon : MonoBehaviour
     {
         //pasue = GameObject.Find("Slider");
         //pasueSlider = pasue.GetComponent<Slider>();
-        audioSource = gameObject.GetComponent<AudioSource>();
+    
     }
 
     // Update is called once per frame
@@ -59,13 +59,4 @@ public class BGMCon : MonoBehaviour
         }*/
     }
 
-    /// <summary>
-	/// スライドバー値の変更イベント
-	/// </summary>
-	/// <param name="newSliderValue">スライドバーの値(自動的に引数に値が入る)</param>
-    public void SoundSliderOnValueChange(float newSliderValue)
-    {
-        // 音楽の音量をスライドバーの値に変更
-        audioSource.volume = newSliderValue;
-    }
 }

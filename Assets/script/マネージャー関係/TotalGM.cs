@@ -11,6 +11,11 @@ public class TotalGM : MonoBehaviour
     private int stageLeafCount = 0;
     private int maxLeafCount = 9;
 
+    private AudioSource audioSource;
+
+    [SerializeField]
+    private AudioClip[] audioClips;
+
     #region//ステージ管理
     //ステージ管理
     public enum StageCon
@@ -30,6 +35,7 @@ public class TotalGM : MonoBehaviour
     }
 
     private StageCon scene;
+    private StageCon tentative;
     private StageCon backScene;
     private StageCon clearBackScene;
     
@@ -108,6 +114,7 @@ public class TotalGM : MonoBehaviour
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+        tentative = MyGetScene();
     }
 
    
@@ -115,13 +122,17 @@ public class TotalGM : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-
+       var scene = MyGetScene();
+       if(scene != tentative)
+       {
+            BgmSelert(scene);
+       }
     }
 
     //現在のステージを返す
@@ -156,4 +167,41 @@ public class TotalGM : MonoBehaviour
         MyLoadScene(clearBackScene);
     }
 
+
+    public void BgmSelert(StageCon s)
+    {
+        switch (s)
+        {
+            case StageCon.Title:
+                audioSource.clip = audioClips[0];
+                audioSource.Play();
+                tentative = s;
+                break;
+            case StageCon.GameOver:
+                audioSource.clip = audioClips[1];
+                audioSource.Play();
+                tentative = s;
+                break;
+            case StageCon.Clear:
+                audioSource.clip = audioClips[2];
+                audioSource.Play();
+                tentative = s;
+                break;
+            default:
+                audioSource.clip = audioClips[3];
+                audioSource.Play();
+                tentative = s;
+                break;
+        }
+    }
+
+    /// <summary>
+    /// スライドバー値の変更イベント
+    /// </summary>
+    /// <param name="newSliderValue">スライドバーの値(自動的に引数に値が入る)</param>
+    public void SoundSliderOnValueChange(float newSliderValue)
+    {
+        // 音楽の音量をスライドバーの値に変更
+        audioSource.volume = newSliderValue;
+    }
 }

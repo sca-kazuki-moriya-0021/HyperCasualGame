@@ -24,7 +24,7 @@ public class PasueC : MonoBehaviour
     private AudioSource audioSource;
 
     [SerializeField]
-    private Slider slider;
+    //private Slider slider;
 
     // Start is called before the first frame update
     void Start()
@@ -33,8 +33,7 @@ public class PasueC : MonoBehaviour
         pDisplayC = FindObjectOfType<PasueDisplayC>();
         //timeGM = FindObjectOfType<TimeGM>();
 
-        slider =slider.GetComponent<Slider>();
-        //bgm_Con =GameObject.Find("BGMObject");
+        //slider =slider.GetComponent<Slider>();
         //bgmCon = bgm_Con.GetComponent<AudioSource>();
         
         myCanvas = this.GetComponent<Canvas>();
@@ -47,7 +46,7 @@ public class PasueC : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //bgmCon.volume = slider.value;
+         
     }
 
     //ÉQÅ[ÉÄèIóπ
