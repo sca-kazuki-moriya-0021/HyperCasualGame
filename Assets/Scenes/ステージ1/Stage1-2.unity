@@ -619,7 +619,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5867532945512087061, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.41
+      value: -0.73
       objectReference: {fileID: 0}
     - target: {fileID: 5867532945512087061, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_LocalPosition.z
@@ -718,6 +718,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 751888526880796593, guid: 8c026911df5a0aa4d9bbce7dba9c0a05, type: 3}
+      propertyPath: item
+      value: 
+      objectReference: {fileID: 1102812755}
     - target: {fileID: 751888526880796597, guid: 8c026911df5a0aa4d9bbce7dba9c0a05, type: 3}
       propertyPath: m_Name
       value: RecoveryGeneral
@@ -728,6 +732,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c026911df5a0aa4d9bbce7dba9c0a05, type: 3}
+--- !u!1 &1102812755 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 751888526880796597, guid: 8c026911df5a0aa4d9bbce7dba9c0a05, type: 3}
+  m_PrefabInstance: {fileID: 1102812754}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1109790842
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -761,7 +770,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6450667346351829021, guid: 8a6303333a962264c99f8070e080e7c3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.37
+      value: 2.92
       objectReference: {fileID: 0}
     - target: {fileID: 6450667346351829021, guid: 8a6303333a962264c99f8070e080e7c3, type: 3}
       propertyPath: m_LocalPosition.y
