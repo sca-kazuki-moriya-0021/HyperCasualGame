@@ -861,6 +861,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1419519257779643850, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
+      propertyPath: m_TagString
+      value: MoveObject
+      objectReference: {fileID: 0}
     - target: {fileID: 5867532944250990302, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -1119,6 +1123,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2363385168273862029, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
+      propertyPath: m_IsTrigger
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3376536361638299469, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
       propertyPath: m_Pivot.x
       value: 0.49797967
@@ -1206,6 +1214,10 @@ PrefabInstance:
     - target: {fileID: 3638842094198235360, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
       propertyPath: m_Name
       value: "\u30A8\u30EA\u30A2\u79FB\u52D5\u30DD\u30A4\u30F3\u30C8"
+      objectReference: {fileID: 0}
+    - target: {fileID: 6080967672769639357, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}
+      propertyPath: m_Constraints
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c314d355d8378149aaf79bf1931cfc6, type: 3}

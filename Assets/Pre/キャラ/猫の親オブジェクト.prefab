@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4423782897209532201}
   m_Layer: 0
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: MoveObject
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -310,6 +310,7 @@ MonoBehaviour:
   jumpAnimation: jump
   jumpDuringAnimation: jump_yoko
   centerRayPosition: {fileID: 5867532944817620577}
+  herdRayPosition: {fileID: 0}
   wRayRange: 1.5
   hRayRange: 1.2
   sound1: {fileID: 8300000, guid: 8f2fc102ce4fa8e449a3c19474008bcf, type: 3}
