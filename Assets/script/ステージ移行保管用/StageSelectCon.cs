@@ -29,17 +29,13 @@ public class StageSelectCon : MonoBehaviour
     void Update()
     {
         if (gm.LeafGetFlag[0] == true)
-        { 
             images[0].SetActive(true);
-        }
+
         if (gm.LeafGetFlag[1] == true)
-        {
             images[1].SetActive(true);
-        }
+
         if (gm.LeafGetFlag[2] == true)
-        {
             images[2].SetActive(true);
-        }
     }
 
 
@@ -47,9 +43,8 @@ public class StageSelectCon : MonoBehaviour
     {
         audioSource.PlayOneShot(sound1);
         for(int i = 0; gm.TmpGetFlag[2]; i++)
-        {
             gm.TmpGetFlag[i] = false;
-        }
+
         SceneManager.LoadScene("Stage");
     }
 

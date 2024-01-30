@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1921017888472503781}
   - component: {fileID: 6080967672769639357}
   m_Layer: 0
-  m_Name: "\u30A8\u30EA\u30A2\u79FB\u52D5\u30DD\u30A4\u30F3\u30C8"
+  m_Name: AreaMovePoint
   m_TagString: 'AreaMoveP '
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

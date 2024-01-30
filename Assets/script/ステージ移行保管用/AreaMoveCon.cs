@@ -25,7 +25,6 @@ public class AreaMoveCon : MonoBehaviour
 
         if (collision.gameObject.CompareTag("MoveObject"))
         {
-            Debug.Log("ask");
             var scene = gm.MyGetScene();
             switch (scene)
             {

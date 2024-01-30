@@ -32,4 +32,16 @@ public class GameOver : MonoBehaviour
         audioSource.PlayOneShot(sound1);
         gm.ReloadClearScene();
     }
+
+    //ゲーム終了
+    public void GameEnd()
+    {
+    #if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+        //エディタ上の動作
+    #else
+            Application.Quit();
+            //エディタ以外の操作
+    #endif
+    }
 }

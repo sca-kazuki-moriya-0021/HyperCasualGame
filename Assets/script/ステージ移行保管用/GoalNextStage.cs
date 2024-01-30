@@ -30,19 +30,11 @@ public class GoalNextStage : MonoBehaviour
     {
 
         if(gm.TmpGetFlag[0] == true)
-        {
-            Debug.Log("‚Í‚¢‚Á‚Ä‚é‚æ");
             images[0].SetActive(true);
-        }
         if (gm.TmpGetFlag[1] == true)
-        {
             images[1].SetActive(true);
-        }
         if(gm.TmpGetFlag[2] == true)
-        {
             images[2].SetActive(true);
-        }
-        
     }
 
     public void NextStage()
@@ -66,6 +58,5 @@ public class GoalNextStage : MonoBehaviour
     {
         audioSource.PlayOneShot(sound1);
         SceneManager.LoadScene("StageSelect");
-
     }
 }
