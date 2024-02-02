@@ -58,6 +58,7 @@ public class TotalGM : MonoBehaviour
 
     private bool[] leafGetFlag = { false, false, false };
 
+   //ゲームクリア画面で表示するもの
     private bool[] tmpGetFlag  = {false,false,false};
 
     public StageCon Scene
@@ -76,8 +77,6 @@ public class TotalGM : MonoBehaviour
         get { return this.clearBackScene; }
         set { this.clearBackScene = value; }
     }
-
-
 
     public  Dictionary<string,StageCon> SceneDic
     {
@@ -104,6 +103,7 @@ public class TotalGM : MonoBehaviour
         set { this.leafGetFlag = value; }
     }
 
+    
     public bool[] TmpGetFlag
     {
         get { return this.tmpGetFlag; }
@@ -117,8 +117,6 @@ public class TotalGM : MonoBehaviour
         tentative = MyGetScene();
     }
 
-   
-
     // Start is called before the first frame update
     void Start()
     {
@@ -130,9 +128,7 @@ public class TotalGM : MonoBehaviour
     {
        var scene = MyGetScene();
        if(scene != tentative)
-       {
             BgmSelert(scene);
-       }
     }
 
     //現在のステージを返す
@@ -166,7 +162,6 @@ public class TotalGM : MonoBehaviour
     {
         MyLoadScene(clearBackScene);
     }
-
 
     public void BgmSelert(StageCon s)
     {

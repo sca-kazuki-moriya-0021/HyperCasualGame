@@ -18,9 +18,7 @@ public class LeafCon : MonoBehaviour
     void Update()
     {
      
-        
     }
-
 
     private void OnTriggerEnter2D(Collider2D other)
     {
@@ -29,6 +27,7 @@ public class LeafCon : MonoBehaviour
             this.gameObject.SetActive(false);
 
             var s = gm.MyGetScene();
+            //取った枚数を数えて、ステージセレクト画面に表示する
             switch (s)
             {
                 case TotalGM.StageCon.Fiast:
@@ -38,7 +37,7 @@ public class LeafCon : MonoBehaviour
                   gm.StageLeafCount++;
                   gm.LeafGetFlag[0] = true;
                 }
-
+                //ゲームクリアで表示するためのフラグ
                 gm.TmpGetFlag[0] = true;
 
                 break;

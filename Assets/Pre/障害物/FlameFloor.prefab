@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 5181281976057966680}
   - component: {fileID: -1903962998638494331}
   m_Layer: 0
-  m_Name: "Spine GameObject (\u708E\u306E\u5E8A)"
+  m_Name: FlameFloor
   m_TagString: FlameFloor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

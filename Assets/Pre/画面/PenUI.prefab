@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1146071839002582553}
   - component: {fileID: 4389624852668242549}
   m_Layer: 0
-  m_Name: "\u6C37\u306E\u30A4\u30F3\u30AF"
+  m_Name: IceInk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 7346327369191923769}
   - component: {fileID: 9071747442100124917}
   m_Layer: 0
-  m_Name: "\u708E\u306E\u30DA\u30F3"
+  m_Name: FirePen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -220,7 +220,7 @@ GameObject:
   - component: {fileID: 1754572888657304847}
   - component: {fileID: 6032224930613894206}
   m_Layer: 0
-  m_Name: "\u7E26\u306E\u30EC\u30A4\u30A2\u30A6\u30C8"
+  m_Name: VerticalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -287,7 +287,7 @@ GameObject:
   - component: {fileID: 5496086387844912937}
   - component: {fileID: 5746056230650407048}
   m_Layer: 0
-  m_Name: "\u6C37\u306E\u30DA\u30F3"
+  m_Name: IcePen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -424,7 +424,7 @@ GameObject:
   - component: {fileID: 4984872476552325360}
   - component: {fileID: 7059391144907787879}
   m_Layer: 5
-  m_Name: "\u30DA\u30F3\u30DC\u30BF\u30F3\u30AD\u30E3\u30F3\u30D1\u30B9"
+  m_Name: PenButtonCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -646,7 +646,7 @@ GameObject:
   - component: {fileID: 4481451662864475111}
   - component: {fileID: 6593745376021533301}
   m_Layer: 5
-  m_Name: "\u30DC\u30BF\u30F3"
+  m_Name: Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -779,7 +779,7 @@ GameObject:
   - component: {fileID: 669776919450012316}
   - component: {fileID: 2376509325063996637}
   m_Layer: 0
-  m_Name: "\u6C37\u30A2\u30A4\u30B3\u30F3"
+  m_Name: IceIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -852,7 +852,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4354301613585804559}
   m_Layer: 0
-  m_Name: "\u30DA\u30F3UI\u95A2\u4FC2"
+  m_Name: PenUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -887,7 +887,7 @@ GameObject:
   - component: {fileID: 5485719776851415680}
   - component: {fileID: 5373088176361216416}
   m_Layer: 0
-  m_Name: "\u666E\u901A\u306E\u30DA\u30F3"
+  m_Name: GrayPen
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1020,7 +1020,7 @@ GameObject:
   - component: {fileID: 3332306126105530704}
   - component: {fileID: 4391255737968856268}
   m_Layer: 0
-  m_Name: "\u666E\u901A\u306E\u30A4\u30F3\u30AF"
+  m_Name: GrayInk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1095,7 +1095,7 @@ GameObject:
   - component: {fileID: 2551364226853197685}
   - component: {fileID: 7127548239657899100}
   m_Layer: 0
-  m_Name: "\u666E\u901A\u306E\u30A2\u30A4\u30B3\u30F3"
+  m_Name: GrayIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1170,7 +1170,7 @@ GameObject:
   - component: {fileID: 5484596184395685327}
   - component: {fileID: 3625575354691792602}
   m_Layer: 5
-  m_Name: "\u30A2\u30A4\u30B3\u30F3"
+  m_Name: InkIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1245,7 +1245,7 @@ GameObject:
   - component: {fileID: 3676054952817339198}
   - component: {fileID: 7813631662005294909}
   m_Layer: 0
-  m_Name: "\u708E\u30A2\u30A4\u30B3\u30F3"
+  m_Name: FireIcon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1319,7 +1319,7 @@ GameObject:
   - component: {fileID: 3663159630912335241}
   - component: {fileID: 5478104472013935589}
   m_Layer: 5
-  m_Name: "\u7E26\u306E\u30EC\u30A4\u30A2\u30A6\u30C8"
+  m_Name: VerticalLayout
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1388,7 +1388,7 @@ GameObject:
   - component: {fileID: 5271656340083921946}
   - component: {fileID: 6140939815787754753}
   m_Layer: 5
-  m_Name: "\u30DA\u30F3\u9078\u629E\u753B\u9762\u30AD\u30E3\u30F3\u30D1\u30B9"
+  m_Name: PenSelectCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1647,7 +1647,7 @@ GameObject:
   - component: {fileID: 3234414900283468926}
   - component: {fileID: 5342573829895347988}
   m_Layer: 5
-  m_Name: "\u30A4\u30F3\u30AF"
+  m_Name: InkImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1722,7 +1722,7 @@ GameObject:
   - component: {fileID: 4741814666446179269}
   - component: {fileID: 603971951168727273}
   m_Layer: 0
-  m_Name: "\u708E\u306E\u30A4\u30F3\u30AF"
+  m_Name: FireInk
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

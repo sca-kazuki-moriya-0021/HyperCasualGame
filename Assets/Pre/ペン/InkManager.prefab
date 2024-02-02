@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2037016398172914682}
   - component: {fileID: 2037016398172914683}
   m_Layer: 0
-  m_Name: "\u30A4\u30F3\u30AF\u5F15\u7D99\u304E"
+  m_Name: InkManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

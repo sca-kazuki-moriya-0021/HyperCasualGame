@@ -161,7 +161,6 @@ public class MoveObject : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //Debug.Log(fallFlag);
         //ゲームオーバーシーンにいく処理
         if (gameOverFlag == true)
         {
@@ -172,9 +171,7 @@ public class MoveObject : MonoBehaviour
 
         //壁角度計算とジャンプ処理
         if (jumpFlag == false && fallFlag == false)
-        {
             SlopeUp();
-        }
     }
 
     private void FixedUpdate()
@@ -184,16 +181,13 @@ public class MoveObject : MonoBehaviour
             //移動
             if (jumpFlag == false && offJumpFlag == false && lindingFlag == false)
             {
-                //Debug.Log("動いている");
                 //移動のアニメーション流しと移動
                 if (iceWalkFlag == false)
                 {
                     transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
                     //rb.velocity = new Vector2(xMoveFloorSpeed*Time.deltaTime*2f, rb.velocity.y * Time.deltaTime);
                     if (moveAnimaFlag == false)
-                    {
                         OnCompleteAnimation();
-                    }
 
                 }
                 if (iceWalkFlag == true)
@@ -201,17 +195,13 @@ public class MoveObject : MonoBehaviour
                     transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
                     //rb.velocity = new Vector2(xMoveFloorSpeed *Time.deltaTime*2f,rb.velocity.y * Time.deltaTime);
                     if (moveAnimaFlag == false)
-                    {
                         OnCompleteAnimation();
-                    }
                 }
             }
 
             //レイの角度計算
             if (lineCastF != null || jumpFlag == true || fallFlag == true)
-            {
                 RayAngleIns();
-            }
 
             //段差用
             var selfPosition = Vector2.zero;
@@ -227,7 +217,6 @@ public class MoveObject : MonoBehaviour
             var yAdjustDistance = castResult.distance - yAdjustMaxDistance;
             selfPosition.y += yAdjustDistance;
         }
-     
     }
 
     //移動のアニメーション処理
@@ -256,7 +245,6 @@ public class MoveObject : MonoBehaviour
             {
                 fallFlag = false;
                 lindingFlag = true;
-                //Debug.Log("コルーチン前" + transform.position );
                 LindingCoroutine();
             }
             //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
@@ -290,9 +278,7 @@ public class MoveObject : MonoBehaviour
         }
         //レイが何にも当たっていないときは強制リターン
         if (!downObject)
-        {
             return;
-        } 
     }
 
     //下にオブジェクトがあったときhit2Dを返す
@@ -302,36 +288,18 @@ public class MoveObject : MonoBehaviour
         
         hit2D = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.down * hRayRange, LayerMask.GetMask("Ground"));
         return hit2D;
-       
     }
 
     //下方向にヒットした時の場合分け
     private bool IsOnGrounds(RaycastHit2D h)
     {
         if (!h)
-        {
-            return false;
-        }
+         return false;
 
-        if (h.transform.gameObject.CompareTag("AreaGround"))
-        {
+        if (h.transform.gameObject.CompareTag("AreaGround") || h.transform.gameObject.CompareTag("IceGround")
+            || h.transform.gameObject.CompareTag("Ground")|| h.transform.gameObject.CompareTag("Wall"))
             return true;
-        }
 
-        if (h.transform.gameObject.CompareTag("Ground"))
-        {
-            return true;
-        }
-
-        if (h.transform.gameObject.CompareTag("Wall"))
-        {
-            return true;
-        }
-
-        if (h.transform.gameObject.CompareTag("IceGround"))
-        {
-            return true;
-        }
         return false;
     }
 
@@ -339,9 +307,7 @@ public class MoveObject : MonoBehaviour
     private IEnumerator StartLineCast()
     {
         while (true)
-        {
-            yield return null;
-        }
+          yield return null;
     }
 
     //飛び降りのアニメーション制御
@@ -378,7 +344,6 @@ public class MoveObject : MonoBehaviour
         skeletonAnimation.skeleton.SetToSetupPose();
     }
 
-
     //着地のアニメーション
     private void LindingCoroutine()
     {
@@ -386,12 +351,10 @@ public class MoveObject : MonoBehaviour
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry moveTrackEntry = animationState.SetAnimation(0, lindingAnimation, false);
         moveTrackEntry.Complete += MoveSpineComplete;
-        Debug.Log(transform.position);
         skeletonAnimation.skeleton.SetToSetupPose();
 
         //着地用フラグ変更
         lindingFlag = false;
-
     }
 
     //歩行アニメーション制御用
@@ -402,7 +365,6 @@ public class MoveObject : MonoBehaviour
         TrackEntry trackEntryA = animationState.SetAnimation(0, moveAnimation, true);
         moveAnimaFlag = false;
     }
-
 
     //壁をジャンプするときに使う関数
     private float SlopeUp()
@@ -416,14 +378,10 @@ public class MoveObject : MonoBehaviour
         hitCollider = GetObject.collider;
            
         if (GetObject && GetObject.transform.gameObject.CompareTag("Wall"))
-        {
            return_tan(tan);
 
-        }
         if (GetObject.normal.x == 1f)
-        {
           tan = 0f;
-        }
 
         return tan;
     }
@@ -442,12 +400,9 @@ public class MoveObject : MonoBehaviour
     {
         //タンジェント計算
         if (ForwardObject().normal.x > 0f)
-        {
             ang = Mathf.PI * 0.5f + Mathf.Atan(ForwardObject().normal.y / Mathf.Abs(ForwardObject().normal.x));
-        }
 
          var tan = Mathf.Tan(ang);
-        //Debug.Log(tan);
 
         //タンジェントがn度以上ならジャンプ移行する
         if(tan <= Mathf.PI / 3 )
@@ -461,8 +416,6 @@ public class MoveObject : MonoBehaviour
                 TrackEntry jumpTrackEntry = animationState.SetAnimation(0, jumpAnimation, false);
                 jumpTrackEntry.Complete += JumpSpineComplete;
                 skeletonAnimation.skeleton.SetToSetupPose();
-                Debug.Log("ジャンプにはいったよ");
-
             }
         }
     }
@@ -470,13 +423,10 @@ public class MoveObject : MonoBehaviour
     //ジャンプ中のアニメーション
     private void JumpSpineComplete(TrackEntry trackEntry)
     {
-
         skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringAnimation, true);
         skeletonAnimation.skeleton.SetToSetupPose();
-        Debug.Log("ジャンプ中だよ");
-        
         StartCoroutine(JumpStart());
     }
 
@@ -493,8 +443,7 @@ public class MoveObject : MonoBehaviour
         //中間の位置
         var miS = Mathf.Abs(hitCollider.bounds.max.y);
         Vector3 miP = new Vector3(hitCollider.bounds.min.x,miS + 3f);
-        Debug.Log(miP.x);
-   
+
         //角度
         //var planeNormal = Vector3.up;
 
@@ -506,11 +455,8 @@ public class MoveObject : MonoBehaviour
             myP -= center;
             toP -= center;*/
         }
-
         var sumTime = 0f;
-
         var y =transform.position;
-        Debug.Log(y);
 
         while (true)
         {
@@ -520,9 +466,7 @@ public class MoveObject : MonoBehaviour
             var b = Vector3.Lerp(miP, toP, sumTime);
 
             if (jumpFlag == false)
-            {
                 hitCollider = hitBackCollider;
-            }
 
             if (jumpFlag == true && transform.position != toP)
             {
@@ -559,13 +503,9 @@ public class MoveObject : MonoBehaviour
                         }
                     }*/
                 }
-
             }
-
             if (jumpFlag == true && transform.position == toP)
-            {
                 jumpFlag = false;
-            }
 
             yield return null;
         }
@@ -608,7 +548,6 @@ public class MoveObject : MonoBehaviour
     {
         if (other.gameObject.CompareTag("AreaGround") || other.gameObject.CompareTag("Ground") || other.gameObject.CompareTag("Wall"))
         {
-            //Debug.Log("触れている");
             iceWalkFlag = false;
             jumpFlag = false;
         }
@@ -624,7 +563,6 @@ public class MoveObject : MonoBehaviour
         if (other.gameObject.CompareTag("Obstacle"))
         {
             audios.PlayOneShot(sound1);
-
             GameOverFlag = true;
         }
 
@@ -633,9 +571,7 @@ public class MoveObject : MonoBehaviour
         ||other.gameObject.CompareTag("FlameFloor")
         ||other.gameObject.CompareTag("FlameGround")
         || other.gameObject.CompareTag("OutSide"))
-        {
              GameOverFlag = true;
-        }
     }
 
 
@@ -693,10 +629,6 @@ public class MoveObject : MonoBehaviour
         if (audios != null)
         {
             audios.PlayOneShot(clip);
-        }
-        else
-        {
-
         }
     }
 }

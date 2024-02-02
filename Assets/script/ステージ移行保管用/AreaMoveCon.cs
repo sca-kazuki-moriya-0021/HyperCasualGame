@@ -22,7 +22,7 @@ public class AreaMoveCon : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-
+        //ƒV[ƒ“ˆÚ“®—p
         if (collision.gameObject.CompareTag("MoveObject"))
         {
             var scene = gm.MyGetScene();

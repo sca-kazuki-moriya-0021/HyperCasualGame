@@ -13,11 +13,9 @@ public class PenInkM : MonoBehaviour
     private int fireDrawCount = 0;
     private float generalDrawTime = 0;
 
-
     private float backIceDrawTime = 0;
     private int backFireDrawCount = 0;
     private float backGeneralDrawTime = 0;
-
 
 
     public float IceDrawTime
@@ -62,18 +60,8 @@ public class PenInkM : MonoBehaviour
             DontDestroyOnLoad(gameObject);
         }
         else
-        {
             Destroy(gameObject);
-        }
-
-      
     }
-
-    private void OnValidate()
-    {
-
-    }
-
 
     // Start is called before the first frame update
     void Start()
@@ -84,14 +72,12 @@ public class PenInkM : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         var scene = gm.MyGetScene();
 
         if (scene == TotalGM.StageCon.Clear)
-        {
             Destroy(gameObject);
-        }
 
+        //リセット用
         if (scene == TotalGM.StageCon.GameOver)
         {
             iceDrawTime = 0;

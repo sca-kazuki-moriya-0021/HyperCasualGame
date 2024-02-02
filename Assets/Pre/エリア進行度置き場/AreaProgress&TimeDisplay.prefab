@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5826990651809973228}
   - component: {fileID: 5826990651809973229}
   m_Layer: 5
-  m_Name: "\u67A0\u7DDA"
+  m_Name: Frame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -207,7 +207,7 @@ GameObject:
   - component: {fileID: 5826990652016214092}
   - component: {fileID: 5826990652016214093}
   m_Layer: 5
-  m_Name: "\u80CC\u666F"
+  m_Name: BackGround
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -282,7 +282,7 @@ GameObject:
   - component: {fileID: 5826990652804157912}
   - component: {fileID: 5826990652804157913}
   m_Layer: 5
-  m_Name: "\u30A8\u30EA\u30A2\u9032\u884C\u5EA6\u8868\u793A"
+  m_Name: AreaProgressDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -355,7 +355,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5826990653216158396}
   m_Layer: 0
-  m_Name: "\u30A8\u30EA\u30A2\u9032\u884C\uFF06\u6642\u8A08\u8868\u793A"
+  m_Name: AreaProgress&TimeDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -388,7 +388,7 @@ GameObject:
   - component: {fileID: 5826990653519977624}
   - component: {fileID: 5826990653519977625}
   m_Layer: 5
-  m_Name: "\u30BF\u30A4\u30E0\u8868\u793A"
+  m_Name: TimeDisplay
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -467,7 +467,7 @@ GameObject:
   - component: {fileID: 5826990653688968453}
   - component: {fileID: 5826990653688968450}
   m_Layer: 5
-  m_Name: "\u6642\u8A08"
+  m_Name: TimeImage
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -540,7 +540,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5826990653834789029}
   m_Layer: 5
-  m_Name: "\u30A8\u30EA\u30A2\u9032\u884C"
+  m_Name: AreaProgress
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -580,7 +580,7 @@ GameObject:
   - component: {fileID: 7182069592403025849}
   - component: {fileID: 7182069592403021894}
   m_Layer: 5
-  m_Name: "\u307F\u3048\u3084\u3059\u304F\u3059\u308B\u7528"
+  m_Name: Panel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
