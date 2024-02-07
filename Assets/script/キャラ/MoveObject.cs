@@ -98,11 +98,6 @@ public class MoveObject : MonoBehaviour
     //タンジェント
     //private float tan;
 
-    //重力　使うかはわからん
-    //[SerializeField,Header("重力用だけど使ってない")]
-    //private float _graviry = 9.80655f;
-    //private Vector3 _moveVelocity;
-
     #region//効果音関係
     private AudioSource audios = null;
     [SerializeField,Header("木に当たった音")]
@@ -176,6 +171,11 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
+        Debug.Log(jumpFlag);
+        Debug.Log(fallFlag);
+        Debug.Log(lineCastF);
+
+
         //if(timeGm.TimeFlag == false)
         {
             //移動
@@ -185,15 +185,12 @@ public class MoveObject : MonoBehaviour
                 if (iceWalkFlag == false)
                 {
                     transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
-                    //rb.velocity = new Vector2(xMoveFloorSpeed*Time.deltaTime*2f, rb.velocity.y * Time.deltaTime);
                     if (moveAnimaFlag == false)
                         OnCompleteAnimation();
-
                 }
                 if (iceWalkFlag == true)
                 {
                     transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
-                    //rb.velocity = new Vector2(xMoveFloorSpeed *Time.deltaTime*2f,rb.velocity.y * Time.deltaTime);
                     if (moveAnimaFlag == false)
                         OnCompleteAnimation();
                 }
@@ -243,13 +240,15 @@ public class MoveObject : MonoBehaviour
                 || downObject && downObject.transform.gameObject.CompareTag("AreaGround")
                 || downObject && downObject.transform.gameObject.CompareTag("Wall"))
             {
+                jumpFlag = false;
                 fallFlag = false;
                 lindingFlag = true;
                 LindingCoroutine();
             }
             //上と同じ(こっちは氷の上なのでiceWalkFlagのみ変更)
             else if (downObject && downObject.transform.gameObject.CompareTag("IceGround"))
-            { 
+            {
+                jumpFlag = false;
                 fallFlag = false;
                 iceWalkFlag = true;
                 lindingFlag = true;
@@ -326,13 +325,10 @@ public class MoveObject : MonoBehaviour
         yield return new WaitForSeconds(0.01f);
 
         offJumpFlag = false;
-
         //レイを復活
         lineCastF = StartCoroutine(StartLineCast());
-
         //コルーチンストップ
         StopCoroutine(StartoffJump());
-
     }
 
     //落下中のアニメーションを流す
@@ -353,9 +349,25 @@ public class MoveObject : MonoBehaviour
         moveTrackEntry.Complete += MoveSpineComplete;
         skeletonAnimation.skeleton.SetToSetupPose();
 
+        //StartCoroutine(FixQuaternion());
+
         //着地用フラグ変更
         lindingFlag = false;
     }
+
+    /*private IEnumerator FixQuaternion()
+    {
+        var r = transform.rotation.z;
+        if(transform.rotation.z != 0)
+        {
+            while (true)
+            {
+                transform.rotation = new Quaternion(0,0,r +1,0);
+                yield return null;
+            }
+        }
+        StopCoroutine(FixQuaternion());
+    }*/
 
     //歩行アニメーション制御用
     private void MoveSpineComplete(TrackEntry trackEntry)
@@ -364,6 +376,14 @@ public class MoveObject : MonoBehaviour
         skeletonAnimation.state.ClearTrack(0);
         TrackEntry trackEntryA = animationState.SetAnimation(0, moveAnimation, true);
         moveAnimaFlag = false;
+    }
+
+    //横方向に飛ばす
+    private RaycastHit2D ForwardObject()
+    {
+        Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.right * wRayRange, Color.green);
+        forwardHitObject = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.right * wRayRange, LayerMask.GetMask("Ground"));
+        return forwardHitObject;
     }
 
     //壁をジャンプするときに使う関数
@@ -386,15 +406,6 @@ public class MoveObject : MonoBehaviour
         return tan;
     }
 
-    //横方向に飛ばす
-    private RaycastHit2D ForwardObject()
-    {
-        Debug.DrawRay((Vector2)centerRayPosition.position , Vector2.right * wRayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.right * wRayRange , LayerMask.GetMask("Ground"));
-        //Debug.Log(forwardHitObject);
-        return forwardHitObject;
-    }
-    
     //タンジェント計算
     private void return_tan(float ang)
     {
@@ -433,7 +444,6 @@ public class MoveObject : MonoBehaviour
     //ジャンプの処理
     private IEnumerator JumpStart()
     {
-
         //二次元ベジェ曲線パターン
         //自分の位置
         var myP =transform.position;
@@ -443,20 +453,9 @@ public class MoveObject : MonoBehaviour
         //中間の位置
         var miS = Mathf.Abs(hitCollider.bounds.max.y);
         Vector3 miP = new Vector3(hitCollider.bounds.min.x,miS + 3f);
+        var flag = false;
 
-        //角度
-        //var planeNormal = Vector3.up;
-
-        //sleapパターンで使うもの
-        {
-            /*var center = hitCollider.bounds.center;
-            center = Mathf.Abs(center);
-            Vector3 vector = new Vector3(Mathf.Abs(hitCollider.bounds.center.x),center);
-            myP -= center;
-            toP -= center;*/
-        }
         var sumTime = 0f;
-        var y =transform.position;
 
         while (true)
         {
@@ -465,52 +464,49 @@ public class MoveObject : MonoBehaviour
             var a = Vector3.Lerp(myP, miP, sumTime);
             var b = Vector3.Lerp(miP, toP, sumTime);
 
-            if (jumpFlag == false)
-                hitCollider = hitBackCollider;
-
             if (jumpFlag == true && transform.position != toP)
             {
                 // 補間位置を反映
                 transform.position = Vector3.Lerp(a, b, sumTime);
+                if(flag == false)
                 {
-                    /* if(miP .x >transform.position.x && miP.y>transform.position.y && miFlag == false)
-                    {
-                        var r = y - miP;
-                        float d =  - (Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
-                        d = 180-d;
-                        Quaternion quaternion =Quaternion.Euler(0,0,d);
-                        this.transform.rotation = quaternion;
-                        Debug.Log("as");
-                    }
-
-                    if (transform.position.x >= miP.x)
-                    {
-                        miFlag = true;
-                        Debug.Log("mikasa");
-                    }
-
-                    if (miFlag == true)
-                    {
-                        if (toP.x > transform.position.x && toP.y <transform.position.y)
-                        {
-                            var r = toP -y;
-                            var d = (Mathf.Atan2(r.y, r.x) * Mathf.Rad2Deg);
-
-                            Debug.Log(d);
-                            var quaternion = Quaternion.Euler(0, 0, d);
-                            this.transform.rotation = quaternion;
-                            //Debug.Log("aski");
-                        }
-                    }*/
-                }
+                    flag = true;
+                    StartCoroutine(SetQuaternion());
+                }  
             }
             if (jumpFlag == true && transform.position == toP)
                 jumpFlag = false;
 
+            if(jumpFlag == false)
+              break;
+
             yield return null;
         }
+
+        hitCollider = hitBackCollider;
+        StopCoroutine(JumpStart());
     }
 
+    //ジャンプ中の角度調整
+    private IEnumerator SetQuaternion()
+    {
+        while (true)
+        {
+            if (jumpFlag == false)
+                break;
+
+            var t = transform.position;
+            yield return new WaitForSeconds(0.01f);
+            var t2 = transform.position;
+
+            Vector2 m = t2 -t;
+            transform.rotation = Quaternion.FromToRotation(Vector2.right, m);
+        }
+        this.transform.rotation = Quaternion.Euler(0, 0, 0);
+        StopCoroutine(SetQuaternion());
+    }
+
+    #region
     //頭の上から横方向にレイを飛ばす
     /*private RaycastHit2D HeadGetForwardObject()
     {
@@ -541,7 +537,8 @@ public class MoveObject : MonoBehaviour
         return a + (Vector2)transform.position;
 
     }*/
-    
+    #endregion
+
 
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
@@ -573,7 +570,6 @@ public class MoveObject : MonoBehaviour
         || other.gameObject.CompareTag("OutSide"))
              GameOverFlag = true;
     }
-
 
     //段差処理
     /*public void LineSensor(Vector3 postion)
@@ -627,8 +623,6 @@ public class MoveObject : MonoBehaviour
     public void PlaySE(AudioClip clip)
     {
         if (audios != null)
-        {
             audios.PlayOneShot(clip);
-        }
     }
 }
