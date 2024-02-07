@@ -171,11 +171,6 @@ public class MoveObject : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Debug.Log(jumpFlag);
-        Debug.Log(fallFlag);
-        Debug.Log(lineCastF);
-
-
         //if(timeGm.TimeFlag == false)
         {
             //ˆÚ“®
