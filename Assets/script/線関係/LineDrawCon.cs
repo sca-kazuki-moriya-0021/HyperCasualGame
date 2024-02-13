@@ -245,7 +245,6 @@ public class LineDrawCon : MonoBehaviour
         EdgeCollider2D c = lineObj.AddComponent<EdgeCollider2D>();
         //マテリアルのコライダーの追加
         c.sharedMaterial = sMaterial;
-        //Debug.Log(lineObj.AddComponent<EdgeCollider2D>().sharedMaterial = lineDrawCon.SMaterial);
         //lineObjを自身（Stroke）の子要素に設定
         lineObj.transform.SetParent(transform);
         //レイヤーをGroundにする
@@ -261,7 +260,6 @@ public class LineDrawCon : MonoBehaviour
                 lineObj.tag = "Ground";
             break;
         }
-
         _initRenderer();
     }
 

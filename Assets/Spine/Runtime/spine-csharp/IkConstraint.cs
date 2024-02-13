@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated January 1, 2020. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2020, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -38,8 +38,8 @@ namespace Spine {
 	/// See <a href="http://esotericsoftware.com/spine-ik-constraints">IK constraints</a> in the Spine User Guide.</para>
 	/// </summary>
 	public class IkConstraint : IUpdatable {
-		internal readonly IkConstraintData data;
-		internal readonly ExposedList<Bone> bones = new ExposedList<Bone>();
+		internal IkConstraintData data;
+		internal ExposedList<Bone> bones = new ExposedList<Bone>();
 		internal Bone target;
 		internal int bendDirection;
 		internal bool compress, stretch;
@@ -59,8 +59,8 @@ namespace Spine {
 
 			bones = new ExposedList<Bone>(data.bones.Count);
 			foreach (BoneData boneData in data.bones)
-				bones.Add(skeleton.bones.Items[boneData.index]);
-			target = skeleton.bones.Items[data.target.index];
+				bones.Add(skeleton.FindBone(boneData.name));
+			target = skeleton.FindBone(data.target.name);
 		}
 
 		/// <summary>Copy constructor.</summary>
@@ -82,7 +82,7 @@ namespace Spine {
 		public void Update () {
 			if (mix == 0) return;
 			Bone target = this.target;
-			Bone[] bones = this.bones.Items;
+			var bones = this.bones.Items;
 			switch (this.bones.Count) {
 			case 1:
 				Apply(bones[0], target.worldX, target.worldY, compress, stretch, data.uniform, mix);
@@ -172,7 +172,7 @@ namespace Spine {
 				ty = targetY - bone.worldY;
 				break;
 			case TransformMode.NoRotationOrReflection: {
-				float s = Math.Abs(pa * pd - pb * pc) / Math.Max(0.0001f, pa * pa + pc * pc);
+				float s = Math.Abs(pa * pd - pb * pc) / (pa * pa + pc * pc);
 				float sa = pa / bone.skeleton.ScaleX;
 				float sc = pc / bone.skeleton.ScaleY;
 				pb = -sc * s * bone.skeleton.ScaleX;
@@ -183,13 +183,8 @@ namespace Spine {
 			default: {
 				float x = targetX - p.worldX, y = targetY - p.worldY;
 				float d = pa * pd - pb * pc;
-				if (Math.Abs(d) <= 0.0001f) {
-					tx = 0;
-					ty = 0;
-				} else {
-					tx = (x * pd - y * pb) / d - bone.ax;
-					ty = (y * pa - x * pc) / d - bone.ay;
-				}
+				tx = (x * pd - y * pb) / d - bone.ax;
+				ty = (y * pa - x * pc) / d - bone.ay;
 				break;
 			}
 			}
@@ -261,8 +256,7 @@ namespace Spine {
 			b = pp.b;
 			c = pp.c;
 			d = pp.d;
-			float id = a * d - b * c, x = cwx - pp.worldX, y = cwy - pp.worldY;
-			id = Math.Abs(id) <= 0.0001f ? 0 : 1 / id;
+			float id = 1 / (a * d - b * c), x = cwx - pp.worldX, y = cwy - pp.worldY;
 			float dx = (x * d - y * b) * id - px, dy = (y * a - x * c) * id - py;
 			float l1 = (float)Math.Sqrt(dx * dx + dy * dy), l2 = child.data.length * csx, a1, a2;
 			if (l1 < 0.0001f) {

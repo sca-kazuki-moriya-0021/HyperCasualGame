@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated January 1, 2020. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2020, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -121,6 +121,8 @@ namespace Spine {
 		/// <summary>Returns the magnitide (always positive) of the world scale Y.</summary>
 		public float WorldScaleY { get { return (float)Math.Sqrt(b * b + d * d); } }
 
+		/// <summary>Copy constructor. Does not copy the <see cref="Children"/> bones.</summary>
+		/// <param name="parent">May be null.</param>
 		public Bone (BoneData data, Skeleton skeleton, Bone parent) {
 			if (data == null) throw new ArgumentNullException("data", "data cannot be null.");
 			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
@@ -128,23 +130,6 @@ namespace Spine {
 			this.skeleton = skeleton;
 			this.parent = parent;
 			SetToSetupPose();
-		}
-
-		/// <summary>Copy constructor. Does not copy the <see cref="Children"/> bones.</summary>
-		/// <param name="parent">May be null.</param>
-		public Bone (Bone bone, Skeleton skeleton, Bone parent) {
-			if (bone == null) throw new ArgumentNullException("bone", "bone cannot be null.");
-			if (skeleton == null) throw new ArgumentNullException("skeleton", "skeleton cannot be null.");
-			this.skeleton = skeleton;
-			this.parent = parent;
-			data = bone.data;
-			x = bone.x;
-			y = bone.y;
-			rotation = bone.rotation;
-			scaleX = bone.scaleX;
-			scaleY = bone.scaleY;
-			shearX = bone.shearX;
-			shearY = bone.shearY;
 		}
 
 		/// <summary>Computes the world transform using the parent bone and this bone's local applied transform.</summary>

@@ -1,10 +1,6 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using UnityEngine.UI;
-using UnityEditor;
-using System.Linq;
 using Spine.Unity;
 using Spine;
 
@@ -54,8 +50,6 @@ public class MoveObject : MonoBehaviour
     private bool offJumpFlag = false;
     //着地中
     private bool lindingFlag = false;
-    //ジャンプ中
-    private bool jumpingFlag = false;
 
     #endregion
 
@@ -64,23 +58,13 @@ public class MoveObject : MonoBehaviour
     [Header("レイを飛ばす位置")]
     [SerializeField, Tooltip("中央から出てるレイ")]
     private Transform centerRayPosition;
-    [SerializeField,Tooltip("頭の横から出てるレイ")]
-    private Transform herdRayPosition;
+    private RaycastHit2D centerHitObject;
+
     //　レイを飛ばす距離
     [SerializeField,Header("横に飛ばすレイの長さ")]
     private float wRayRange;
     [SerializeField,Header("縦に飛ばすレイの長さ")]
     private float hRayRange;
-    //　落ちたy座標
-    private float fallenPosition;
-    //　落下してから地面に落ちるまでの距離
-    private float fallenDistance;
-    //ヒットしたオブジェクトの角度
-    private Quaternion hitObjectRotaion;
-    //ヒットしたオブジェクト保存用
-    private RaycastHit2D headHitObject;
-    private RaycastHit2D footHitObject;
-    private RaycastHit2D forwardHitObject;
     #endregion
 
     //RigidBodyとカプセルコライダーの定義
@@ -95,8 +79,6 @@ public class MoveObject : MonoBehaviour
     private TotalGM gm;
     //private TimeGM timeGm;
 
-    //タンジェント
-    //private float tan;
 
     #region//効果音関係
     private AudioSource audios = null;
@@ -147,9 +129,6 @@ public class MoveObject : MonoBehaviour
         //レイを飛ばす処理
         lineCastF = StartCoroutine(StartLineCast());
 
-        //落ちた時に使う数値リセット
-        fallenDistance = 0f;
-        fallenPosition = transform.position.y;
         fallFlag = false;
     }
 
@@ -163,10 +142,8 @@ public class MoveObject : MonoBehaviour
             gameOverFlag = false;
             SceneManager.LoadScene("GameOver");
         }
-
-        //壁角度計算とジャンプ処理
-        if (jumpFlag == false && fallFlag == false)
-            SlopeUp();
+        
+        SlopeUp();
     }
 
     private void FixedUpdate()
@@ -194,20 +171,6 @@ public class MoveObject : MonoBehaviour
             //レイの角度計算
             if (lineCastF != null || jumpFlag == true || fallFlag == true)
                 RayAngleIns();
-
-            //段差用
-            var selfPosition = Vector2.zero;
-            var frontPosition = selfPosition + Vector2.right;
-            var yAdjustMaxDistance = 0.1f; // 補正可能な高さ 
-            var rayOrigin = frontPosition + (Vector2.up * yAdjustMaxDistance); // Rayの発射位置
-            var castResult = Physics2D.Raycast(rayOrigin, Vector2.down, distance: yAdjustMaxDistance, layerMask: /*地面colliderのmask*/0);
-            if (castResult.collider == null)
-                return;
-            var normal = Vector2.Dot(Vector2.up, castResult.normal);
-            if (normal <= 0.25f)
-                return;
-            var yAdjustDistance = castResult.distance - yAdjustMaxDistance;
-            selfPosition.y += yAdjustDistance;
         }
     }
 
@@ -344,25 +307,9 @@ public class MoveObject : MonoBehaviour
         moveTrackEntry.Complete += MoveSpineComplete;
         skeletonAnimation.skeleton.SetToSetupPose();
 
-        //StartCoroutine(FixQuaternion());
-
         //着地用フラグ変更
         lindingFlag = false;
     }
-
-    /*private IEnumerator FixQuaternion()
-    {
-        var r = transform.rotation.z;
-        if(transform.rotation.z != 0)
-        {
-            while (true)
-            {
-                transform.rotation = new Quaternion(0,0,r +1,0);
-                yield return null;
-            }
-        }
-        StopCoroutine(FixQuaternion());
-    }*/
 
     //歩行アニメーション制御用
     private void MoveSpineComplete(TrackEntry trackEntry)
@@ -374,61 +321,53 @@ public class MoveObject : MonoBehaviour
     }
 
     //横方向に飛ばす
-    private RaycastHit2D ForwardObject()
+    private RaycastHit2D CenterHitObj()
     {
         Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.right * wRayRange, Color.green);
-        forwardHitObject = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.right * wRayRange, LayerMask.GetMask("Ground"));
-        return forwardHitObject;
+        centerHitObject = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.right * wRayRange, LayerMask.GetMask("Ground"));
+        return centerHitObject;
     }
 
     //壁をジャンプするときに使う関数
-    private float SlopeUp()
+    private void SlopeUp()
     {
-      //if(fallFlag == false||)
-      
         //横方向のオブジェクト検知
         var tan = 0f;
-        var GetObject = ForwardObject();
-
-        hitCollider = GetObject.collider;
-           
-        if (GetObject && GetObject.transform.gameObject.CompareTag("Wall"))
-           return_tan(tan);
-
-        if (GetObject.normal.x == 1f)
-          tan = 0f;
-
-        return tan;
+        var getObject = CenterHitObj();
+        if(getObject.collider == null) return;
+        else
+        {
+            hitCollider = getObject.collider;
+            return_tan(tan);
+        }
     }
 
     //タンジェント計算
     private void return_tan(float ang)
     {
         //タンジェント計算
-        if (ForwardObject().normal.x > 0f)
-            ang = Mathf.PI * 0.5f + Mathf.Atan(ForwardObject().normal.y / Mathf.Abs(ForwardObject().normal.x));
+        if (CenterHitObj().normal.x > 0f)
+            ang = Mathf.PI * 0.5f + Mathf.Atan(CenterHitObj().normal.y / Mathf.Abs(CenterHitObj().normal.x));
 
          var tan = Mathf.Tan(ang);
 
         //タンジェントがn度以上ならジャンプ移行する
         if(tan <= Mathf.PI / 3 )
         {
-            if(hitCollider.tag == "Wall")
-            {
                 //ジャンプモーション
-                jumpFlag = true;
-                skeletonAnimation.timeScale = 5;
-                skeletonAnimation.state.ClearTrack(0);
-                TrackEntry jumpTrackEntry = animationState.SetAnimation(0, jumpAnimation, false);
-                jumpTrackEntry.Complete += JumpSpineComplete;
-                skeletonAnimation.skeleton.SetToSetupPose();
-            }
+            jumpFlag = true;
+            skeletonAnimation.timeScale = 5;
+            skeletonAnimation.state.ClearTrack(0);
+            TrackEntry jumpTrackEntry = animationState.SetAnimation(0, jumpAnimation, false);
+            jumpTrackEntry.Complete += JumpSpineComplete;
+            skeletonAnimation.skeleton.SetToSetupPose();
         }
     }
 
     //ジャンプ中のアニメーション
     private void JumpSpineComplete(TrackEntry trackEntry)
     {
+        Debug.Log("入ってるよ");
         skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringAnimation, true);
@@ -500,41 +439,6 @@ public class MoveObject : MonoBehaviour
         this.transform.rotation = Quaternion.Euler(0, 0, 0);
         StopCoroutine(SetQuaternion());
     }
-
-    #region
-    //頭の上から横方向にレイを飛ばす
-    /*private RaycastHit2D HeadGetForwardObject()
-    {
-        Debug.DrawRay((Vector2)rayPosition.position + upOffset, Vector2.right * rayRange, Color.green);
-        headHitObject = Physics2D.Linecast((Vector2)rayPosition.position + upOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 0.5f), LayerMask.GetMask("Ground"));
-        return headHitObject;
-    }
-
-    //足元から横方向にレイを飛ばす
-    private Vector2 FootGetForwardObject()
-    {
-
-        Debug.DrawRay((Vector2)rayPosition.position + downOffset, Vector2.right * rayRange, Color.green);
-        var footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
-        Vector2 a = Vector2.zero;
-        
-        while(footHitObject.collider != null)
-        {
-            jumpTime = true;
-            footHitObject= new RaycastHit2D();
-            a.y +=0.01f;
-            if(a.y >= 5.0f)
-            {
-                break;
-            }
-            footHitObject = Physics2D.Linecast((Vector2)rayPosition.position + downOffset + a, (Vector2)rayPosition.position + Vector2.right * (rayRange * 2f), LayerMask.GetMask("Ground"));
-        }
-        return a + (Vector2)transform.position;
-
-    }*/
-    #endregion
-
-
     //何かしらに当たった時
     private void OnCollisionEnter2D(Collision2D other)
     {
@@ -564,54 +468,6 @@ public class MoveObject : MonoBehaviour
         ||other.gameObject.CompareTag("FlameGround")
         || other.gameObject.CompareTag("OutSide"))
              GameOverFlag = true;
-    }
-
-    //段差処理
-    /*public void LineSensor(Vector3 postion)
-    {
-        var selfPosition = Vector2.zero;
-        var yAdjustMaxDistance = 0.1f;
-
-        Vector2 hitPos = postion;
-        Debug.Log(hitPos.y);
-
-       
-        //transform.position = Vector3.Lerp(a, b, Time.deltaTime);
-        
-     
-    }*/
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        /*var capsuleDir = new Vector2 { [(int)col2D.direction] = 1 };
-        //Debug.Log("Dir:" + capsuleDir);
-        var capsuleOffset = col2D.size.y / 2 - (col2D.size.x / 2);
-       // Debug.Log("Offset:" + capsuleOffset);
-        var localPoint0 = (Vector2)transform.position + col2D.offset - capsuleDir * capsuleOffset;
-       // Debug.Log("ローカル座標0" + localPoint0);
-        var localPoint1 = (Vector2)transform.position + col2D.offset + capsuleDir * capsuleOffset;
-        //Debug.Log("ローカル座標1" + localPoint1);
-        var point0 = (Vector2)transform.TransformPoint(localPoint0);
-       // Debug.Log("ワールド座標:" + point0);
-        var point1 = (Vector2)transform.TransformPoint(localPoint1);
-        var r = transform.TransformVector(col2D.size.x / 2, col2D.size.y / 2, 0);
-        var radius = Enumerable.Range(0, 2).Select(xy => xy == (int)col2D.direction ? 0 : r[xy]).Select(Mathf.Abs).Max();
-        //Debug.Log((CapsuleDirection2D)radius);
-
-        var merging = Physics2D.OverlapCapsule(point0, point1, (CapsuleDirection2D)radius, LayerMask.GetMask("Ground"));
-        Debug.Log(collision.gameObject.name);*/
-        {
-             /*Vector3 a =  collision.collider.ClosestPoint(transform.position);
-             Vector3 b = (a - transform.position);
-             Vector3 c = b.normalized;
-             float returnDistance = col2D.size.y * transform.localScale.y / 2 - b.magnitude;
-            //Debug.Log(a);
-            //Debug.Log("sizey" + col2D.size.y *transform.localScale.y);
-            //Debug.Log(b.magnitude);
-            //Debug.Log(returnDistance);
-
-            transform.position = (transform.position - returnDistance * c);*/
-        }
     }
 
     //効果音を流す処理

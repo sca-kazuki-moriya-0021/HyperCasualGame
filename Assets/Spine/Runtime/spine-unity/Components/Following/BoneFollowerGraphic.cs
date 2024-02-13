@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated January 1, 2020. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2020, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -136,10 +136,10 @@ namespace Spine.Unity {
 				if (!SetBone(boneName)) return;
 			}
 
-			RectTransform thisTransform = this.transform as RectTransform;
+			var thisTransform = this.transform as RectTransform;
 			if (thisTransform == null) return;
 
-			Canvas canvas = skeletonGraphic.canvas;
+			var canvas = skeletonGraphic.canvas;
 			if (canvas == null) canvas = skeletonGraphic.GetComponentInParent<Canvas>();
 			float scale = canvas != null ? canvas.referencePixelsPerUnit : 100.0f;
 
@@ -188,16 +188,15 @@ namespace Spine.Unity {
 			}
 
 			Bone parentBone = bone.Parent;
-			if (followParentWorldScale || followLocalScale || followSkeletonFlip) {
-				Vector3 localScale = new Vector3(1f, 1f, 1f);
-				if (followParentWorldScale && parentBone != null)
-					localScale = new Vector3(parentBone.WorldScaleX, parentBone.WorldScaleY, 1f);
-				if (followLocalScale)
-					localScale.Scale(new Vector3(bone.ScaleX, bone.ScaleY, 1f));
-				if (followSkeletonFlip)
-					localScale.y *= Mathf.Sign(bone.Skeleton.ScaleX * bone.Skeleton.ScaleY) * additionalFlipScale;
-				thisTransform.localScale = localScale;
-			}
+			Vector3 localScale = new Vector3(1f, 1f, 1f);
+			if (followParentWorldScale && parentBone != null)
+				localScale = new Vector3(parentBone.WorldScaleX, parentBone.WorldScaleY, 1f);
+			if (followLocalScale)
+				localScale.Scale(new Vector3(bone.ScaleX, bone.ScaleY, 1f));
+			if (followSkeletonFlip)
+				localScale.y *= Mathf.Sign(bone.Skeleton.ScaleX * bone.Skeleton.ScaleY) * additionalFlipScale;
+			thisTransform.localScale = localScale;
 		}
+
 	}
 }

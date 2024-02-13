@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated January 1, 2020. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2020, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -434,7 +434,7 @@ public class SpineSpriteShaderGUI : SpineShaderWithOutlineGUI {
 		}
 
 		EditorGUI.BeginChangeCheck();
-		eCulling culling = (eCulling)Mathf.RoundToInt(_culling.floatValue);
+		var culling = (eCulling)Mathf.RoundToInt(_culling.floatValue);
 		EditorGUI.showMixedValue = _culling.hasMixedValue;
 		culling = (eCulling)EditorGUILayout.Popup(_cullingModeText, (int)culling, _cullingModeOptions);
 		if (EditorGUI.EndChangeCheck()) {
@@ -885,7 +885,7 @@ public class SpineSpriteShaderGUI : SpineShaderWithOutlineGUI {
 	#region Private Functions
 
 	void RenderMeshInfoBox () {
-		Material material = (Material)_materialEditor.target;
+		var material = (Material)_materialEditor.target;
 		bool requiresNormals = _fixedNormal != null && GetMaterialNormalsMode(material) == eNormalsMode.MeshNormals;
 		bool requiresTangents = material.HasProperty("_BumpMap") && material.GetTexture("_BumpMap") != null;
 

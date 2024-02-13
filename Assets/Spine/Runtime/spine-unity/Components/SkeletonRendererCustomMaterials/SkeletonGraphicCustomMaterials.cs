@@ -1,8 +1,8 @@
 /******************************************************************************
  * Spine Runtimes License Agreement
- * Last updated September 24, 2021. Replaces all prior versions.
+ * Last updated January 1, 2020. Replaces all prior versions.
  *
- * Copyright (c) 2013-2021, Esoteric Software LLC
+ * Copyright (c) 2013-2020, Esoteric Software LLC
  *
  * Integration of the Spine Runtimes into software or otherwise creating
  * derivative works of the Spine Runtimes is permitted under the terms and
@@ -55,12 +55,12 @@ namespace Spine.Unity {
 
 			// Populate material list
 			if (skeletonGraphic != null && skeletonGraphic.skeletonDataAsset != null) {
-				AtlasAssetBase[] atlasAssets = skeletonGraphic.skeletonDataAsset.atlasAssets;
+				var atlasAssets = skeletonGraphic.skeletonDataAsset.atlasAssets;
 
-				List<AtlasMaterialOverride> initialAtlasMaterialOverrides = new List<AtlasMaterialOverride>();
+				var initialAtlasMaterialOverrides = new List<AtlasMaterialOverride>();
 				foreach (AtlasAssetBase atlasAsset in atlasAssets) {
 					foreach (Material atlasMaterial in atlasAsset.Materials) {
-						AtlasMaterialOverride atlasMaterialOverride = new AtlasMaterialOverride {
+						var atlasMaterialOverride = new AtlasMaterialOverride {
 							overrideEnabled = false,
 							originalTexture = atlasMaterial.mainTexture
 						};
@@ -73,12 +73,12 @@ namespace Spine.Unity {
 
 			// Populate texture list
 			if (skeletonGraphic != null && skeletonGraphic.skeletonDataAsset != null) {
-				AtlasAssetBase[] atlasAssets = skeletonGraphic.skeletonDataAsset.atlasAssets;
+				var atlasAssets = skeletonGraphic.skeletonDataAsset.atlasAssets;
 
-				List<AtlasTextureOverride> initialAtlasTextureOverrides = new List<AtlasTextureOverride>();
+				var initialAtlasTextureOverrides = new List<AtlasTextureOverride>();
 				foreach (AtlasAssetBase atlasAsset in atlasAssets) {
 					foreach (Material atlasMaterial in atlasAsset.Materials) {
-						AtlasTextureOverride atlasTextureOverride = new AtlasTextureOverride {
+						var atlasTextureOverride = new AtlasTextureOverride {
 							overrideEnabled = false,
 							originalTexture = atlasMaterial.mainTexture
 						};
