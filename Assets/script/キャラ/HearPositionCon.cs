@@ -20,11 +20,10 @@ public class HearPositionCon : MonoBehaviour
     {
         gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-
         // 自身の座標
         var selfPosition = pos;
         var frontPosition = selfPosition + Vector2.right; // 前方 向きに応じてrightを反転
-        var yAdjustMaxDistance = 0.2f; // 補正可能な高さ 
+        var yAdjustMaxDistance = 0.5f; // 補正可能な高さ 
         var rayOrigin = frontPosition + (Vector2.up * yAdjustMaxDistance); // Rayの発射位置
                                                                            // 自身の前方の少し上から真下に向けてRayを飛ばす
         var castResult = Physics2D.Raycast(rayOrigin, Vector2.down, distance: yAdjustMaxDistance, 6);

@@ -50,6 +50,8 @@ public class MoveObject : MonoBehaviour
     private bool offJumpFlag = false;
     //着地中
     private bool lindingFlag = false;
+    //
+    private bool jumpingFlag;
 
     #endregion
 
@@ -143,7 +145,12 @@ public class MoveObject : MonoBehaviour
             SceneManager.LoadScene("GameOver");
         }
         
-        SlopeUp();
+        if(jumpingFlag == false)
+        {
+            jumpingFlag = true;
+            SlopeUp();
+        }
+
     }
 
     private void FixedUpdate()
@@ -334,7 +341,11 @@ public class MoveObject : MonoBehaviour
         //横方向のオブジェクト検知
         var tan = 0f;
         var getObject = CenterHitObj();
-        if(getObject.collider == null) return;
+        if(getObject.collider == null)
+        {
+            jumpingFlag = false;
+            return;
+        }
         else
         {
             hitCollider = getObject.collider;
@@ -367,7 +378,6 @@ public class MoveObject : MonoBehaviour
     //ジャンプ中のアニメーション
     private void JumpSpineComplete(TrackEntry trackEntry)
     {
-        Debug.Log("入ってるよ");
         skeletonAnimation.timeScale = 5;
         skeletonAnimation.state.ClearTrack(0);
         animationState.SetAnimation(0, jumpDuringAnimation, true);
@@ -418,6 +428,7 @@ public class MoveObject : MonoBehaviour
         }
 
         hitCollider = hitBackCollider;
+        jumpingFlag = false;
         StopCoroutine(JumpStart());
     }
 
