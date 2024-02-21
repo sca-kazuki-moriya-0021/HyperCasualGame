@@ -318,7 +318,6 @@ public class LineDrawCon : MonoBehaviour
         Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
 
         GameObject obj = Instantiate(fireObject,worldPos,Quaternion.identity);
-        Debug.Log("a");
         penInkM.FireDrawCount++;
  
     }

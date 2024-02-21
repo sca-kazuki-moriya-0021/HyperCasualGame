@@ -199,6 +199,10 @@ PrefabInstance:
       value: "\u9053 (2)"
       objectReference: {fileID: 0}
     - target: {fileID: 8842528813552304811, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8842528813552304811, guid: c962b4cf646ac924ca92635af0e0becb, type: 3}
       propertyPath: m_TagString
       value: Wall
       objectReference: {fileID: 0}
@@ -217,7 +221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5867532945512087061, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5867532945512087061, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_LocalPosition.x
@@ -225,7 +229,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5867532945512087061, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.34
+      value: -3.19
       objectReference: {fileID: 0}
     - target: {fileID: 5867532945512087061, guid: 20709da85214fb04bb960fcb6c1ff426, type: 3}
       propertyPath: m_LocalPosition.z
@@ -614,7 +618,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2072998632
 MonoBehaviour:

@@ -341,7 +341,7 @@ public class MoveObject : MonoBehaviour
         //横方向のオブジェクト検知
         var tan = 0f;
         var getObject = CenterHitObj();
-        if(getObject.collider == null)
+        if(getObject.collider == null || getObject.collider == getObject.collider.CompareTag("Ground"))
         {
             jumpingFlag = false;
             return;
@@ -365,7 +365,7 @@ public class MoveObject : MonoBehaviour
         //タンジェントがn度以上ならジャンプ移行する
         if(tan <= Mathf.PI / 3 )
         {
-                //ジャンプモーション
+            //ジャンプモーション
             jumpFlag = true;
             skeletonAnimation.timeScale = 5;
             skeletonAnimation.state.ClearTrack(0);
