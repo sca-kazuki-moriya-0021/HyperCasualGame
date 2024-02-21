@@ -107,6 +107,12 @@ public class MoveObject : MonoBehaviour
         set { this.gameOverFlag = value; }
     }
 
+    public bool JumpFlag
+    {
+        get { return this.jumpFlag; }
+        set { this.jumpFlag = value; }
+    }
+
     private void Awake()
     {
         audios = GetComponent<AudioSource>();
