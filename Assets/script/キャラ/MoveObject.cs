@@ -52,7 +52,6 @@ public class MoveObject : MonoBehaviour
     private bool lindingFlag = false;
     //
     private bool jumpingFlag;
-
     #endregion
 
     #region//レイ関係
@@ -60,6 +59,8 @@ public class MoveObject : MonoBehaviour
     [Header("レイを飛ばす位置")]
     [SerializeField, Tooltip("中央から出てるレイ")]
     private Transform centerRayPosition;
+    [SerializeField, Tooltip("下から出てるレイ")]
+    private Transform downRayPosition;
     private RaycastHit2D centerHitObject;
 
     //　レイを飛ばす距離
@@ -79,6 +80,7 @@ public class MoveObject : MonoBehaviour
 
     //スプリクト用
     private TotalGM gm;
+    private HearPositionCon positionCon;
     //private TimeGM timeGm;
 
 
@@ -125,6 +127,7 @@ public class MoveObject : MonoBehaviour
 
         //呼び出し
         gm = FindObjectOfType<TotalGM>();
+        positionCon = FindObjectOfType<HearPositionCon>();
         //timeGm = FindObjectOfType<TimeGM>();
         //col2D = GetComponent<EdgeCollider2D>();
         rb = GetComponent<Rigidbody2D>();
@@ -204,7 +207,7 @@ public class MoveObject : MonoBehaviour
         if (fallFlag == true)
         {
             //レイを出す
-            Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.down * hRayRange, Color.red);
+            Debug.DrawRay((Vector2)downRayPosition.position, Vector2.down * hRayRange, Color.red);
             
             //地面に触れた時に各種フラグとアニメーション制御
             if (downObject && downObject.transform.gameObject.CompareTag("Ground") 
@@ -229,7 +232,7 @@ public class MoveObject : MonoBehaviour
         //地面から離れた時の処理
         else
         {
-           Debug.DrawRay((Vector2)centerRayPosition.position, Vector2.down * hRayRange, Color.blue);
+           Debug.DrawRay((Vector2)downRayPosition.position, Vector2.down * hRayRange, Color.blue);
            //地面から空中にいった時(fallFlag == false　から　true　になる時)
            if (!IsOnGrounds(downObject))
            {
@@ -256,7 +259,7 @@ public class MoveObject : MonoBehaviour
     {
         RaycastHit2D hit2D;
         
-        hit2D = Physics2D.Linecast((Vector2)centerRayPosition.position, (Vector2)centerRayPosition.position + Vector2.down * hRayRange, LayerMask.GetMask("Ground"));
+        hit2D = Physics2D.Linecast((Vector2)downRayPosition.position, (Vector2)downRayPosition.position + Vector2.down * hRayRange, LayerMask.GetMask("Ground"));
         return hit2D;
     }
 
@@ -347,6 +350,13 @@ public class MoveObject : MonoBehaviour
         //横方向のオブジェクト検知
         var tan = 0f;
         var getObject = CenterHitObj();
+        if(getObject.collider != null)
+        {
+            Debug.Log(getObject.collider);
+            positionCon.RayHit = getObject;
+        }
+
+
         if(getObject.collider == null || getObject.collider == getObject.collider.CompareTag("Ground"))
         {
             jumpingFlag = false;
