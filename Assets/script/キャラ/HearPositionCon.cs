@@ -7,12 +7,13 @@ public class HearPositionCon : MonoBehaviour
 
     [SerializeField]
     private GameObject moveObject;
-    private float yAdjustMaxDistance = 0.6f;
+    private float yAdjustMaxDistance = 0.5f;
     private MoveObject moveObject_cs;
     private RaycastHit2D rayHit;
     private bool setFlag;
 
     public RaycastHit2D RayHit { get => rayHit; set => rayHit = value; }
+    public bool SetFlag { get => setFlag; set => setFlag = value; }
 
 
     // Start is called before the first frame update
@@ -26,11 +27,11 @@ public class HearPositionCon : MonoBehaviour
     {
         gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
-        if(moveObject_cs.JumpFlag == false || setFlag == false)
+        if(moveObject_cs.JumpFlag == false && setFlag == false && moveObject_cs.FallFlag == false && moveObject_cs.LindingFlag == false)
         {
             
-            var castResult = Physics2D.Linecast((Vector2)transform.position,(Vector2)transform.position + Vector2.down * yAdjustMaxDistance, LayerMask.GetMask("Ground"));
-            Debug.DrawRay((Vector2)transform.position, Vector2.down * yAdjustMaxDistance, Color.black);
+            var castResult = Physics2D.Linecast((Vector2)transform.position,(Vector2)transform.position + Vector2.down* yAdjustMaxDistance, LayerMask.GetMask("Ground"));
+            Debug.DrawRay((Vector2)transform.position, Vector2.down* yAdjustMaxDistance, Color.black);
             // âΩÇ∆Ç‡ñΩíÜÇµÇ»Ç©Ç¡ÇΩèÍçá
 
             if(rayHit.collider != null)
@@ -53,16 +54,22 @@ public class HearPositionCon : MonoBehaviour
                 StartCoroutine(SetTrans(castResult));
                 setFlag = true;
             }
-
         }
     }
 
 
     private IEnumerator SetTrans(RaycastHit2D hit)
     {
-        var yAdjustDistance = 0.3f;
-        yield return new WaitForSeconds(0.2f);
-        moveObject.transform.position = new Vector2(transform.position.x, transform.position.y + yAdjustDistance);
+        var yAdjustDistance =Mathf.Abs(hit.point.y -transform.position.y);
+        var a = new Vector2(transform.position.x,transform.position.y + yAdjustDistance);
+        float time =0f;
+        while(time < 1)
+        {
+            time += 0.1f;
+            moveObject.transform.position = Vector2.MoveTowards(transform.position, a,time);
+            yield return new WaitForSeconds(0.2f);
+        }
+
         setFlag = false;
         Debug.Log("ç≈å„ÇÃèàóùÇæÇÊ");
         StopAllCoroutines();

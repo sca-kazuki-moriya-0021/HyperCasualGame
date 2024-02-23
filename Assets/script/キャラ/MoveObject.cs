@@ -115,6 +115,9 @@ public class MoveObject : MonoBehaviour
         set { this.jumpFlag = value; }
     }
 
+    public bool FallFlag { get => fallFlag; set => fallFlag = value; }
+    public bool LindingFlag { get => lindingFlag; set => lindingFlag = value; }
+
     private void Awake()
     {
         audios = GetComponent<AudioSource>();
@@ -172,20 +175,20 @@ public class MoveObject : MonoBehaviour
                 //移動のアニメーション流しと移動
                 if (iceWalkFlag == false)
                 {
-                    transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.2f, 0, 0);
+                    transform.Translate(xMoveFloorSpeed * Time.deltaTime * 0.3f, 0, 0);
                     if (moveAnimaFlag == false)
                         OnCompleteAnimation();
                 }
                 if (iceWalkFlag == true)
                 {
-                    transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.2f, 0, 0);
+                    transform.Translate(xMoveIceSpeed * Time.deltaTime * 0.5f, 0, 0);
                     if (moveAnimaFlag == false)
                         OnCompleteAnimation();
                 }
             }
 
             //レイの角度計算
-            if (lineCastF != null || jumpFlag == true || fallFlag == true)
+            if ((lineCastF != null || jumpFlag == true || fallFlag == true))// && positionCon.SetFlag == false)
                 RayAngleIns();
         }
     }
@@ -351,11 +354,7 @@ public class MoveObject : MonoBehaviour
         var tan = 0f;
         var getObject = CenterHitObj();
         if(getObject.collider != null)
-        {
-            Debug.Log(getObject.collider);
-            positionCon.RayHit = getObject;
-        }
-
+            //positionCon.RayHit = getObject;
 
         if(getObject.collider == null || getObject.collider == getObject.collider.CompareTag("Ground"))
         {
